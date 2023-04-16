@@ -11,9 +11,8 @@ public class Entity {
     public int counter=0;
     public int num=1;
     public String lastPressed="right";
-    private static Rectangle2D.Float solidArea;
-    public static int Height=48;
-    public static int Width=48;
+    private  Rectangle2D.Float solidArea;
+
     public static int xOffset=12;
     public static int yOffset=12;
 
@@ -23,7 +22,6 @@ public class Entity {
         this.y=y;
         this.speed=s;
         direction="right";
-
     }
 
     protected void initSolidArea(float x,float y, float width,float height)
@@ -34,20 +32,5 @@ public class Entity {
         return solidArea;
     }
 
-    protected void updateNum() {
-        if(num==1) {
-            num = 2;
-        }
-        else if(num==2) {
-            num = 3;
-        }
-        else if(num==3)
-        {
-            num=4;
-        }
-        else if(num==4)
-        {
-            num=1;
-        }
-    }
+
 }

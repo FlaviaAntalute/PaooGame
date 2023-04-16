@@ -40,4 +40,11 @@ public class SpriteSheet
         /// se obtine inmultind numarul de ordine al dalei cu dimensiunea in pixeli a unei dale.
         return spriteSheet.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
     }
+    public BufferedImage crop1(int x, int y,int Width, int Height)
+    {
+        /// Subimaginea (dala) este regasita in sprite sheet specificad coltul stanga sus
+        /// al imaginii si apoi latimea si inaltimea (totul in pixeli). Coltul din stanga sus al imaginii
+        /// se obtine inmultind numarul de ordine al dalei cu dimensiunea in pixeli a unei dale.
+        return spriteSheet.getSubimage(x * Width, y * Height,Width,Height);
+    }
 }

@@ -56,7 +56,7 @@ public class Assets
     public static BufferedImage M_idle1;
     public static BufferedImage M_idle2;
     public static BufferedImage peste;
-    public static BufferedImage mouse;
+    public static BufferedImage [] mouse=new BufferedImage[6];
 
     public static BufferedImage bg1;
     public static BufferedImage bg2;
@@ -76,7 +76,6 @@ public class Assets
         /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/textures/TilesNonSliced.png"));
         ///sheet cu martha
-        SpriteSheet MarthaSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Martha.png"));
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
         grass1 = sheet.crop(0, 0);
@@ -128,7 +127,16 @@ public class Assets
         M_attackS3=ImageLoader.LoadImage("/textures/M_attackS3.png");
 
         peste=ImageLoader.LoadImage("/textures/peste.png");
-        mouse=ImageLoader.LoadImage("/textures/peste.png");
+
+        SpriteSheet mouseSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_right.png"));
+        SpriteSheet mouseSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_left.png"));
+
+        mouse[0]=mouseSheetD.crop1(0,0,32,20);
+        mouse[1]=mouseSheetD.crop1(1,0,32,20);
+        mouse[2]=mouseSheetD.crop1(2,0,32,20);
+        mouse[3]=mouseSheetS.crop1(0,0,32,20);
+        mouse[4]=mouseSheetS.crop1(1,0,32,20);
+        mouse[5]=mouseSheetS.crop1(2,0,32,20);
 
         bg1=ImageLoader.LoadImage("/BG/1.png");
         bg2=ImageLoader.LoadImage("/BG/2.png");

@@ -14,7 +14,7 @@ public class Points {
     {
         Points+=5;
     }
-    public static void PrintPoints(Graphics g, int lvlOffset,Level level)
+    public static void PrintPoints(Graphics g,Level level)
     {
         Font f1=new Font("font1", BOLD,18);
         char []msg=("Points:  "+Points+"/"+level.getPoints()).toCharArray();
@@ -22,4 +22,17 @@ public class Points {
         g.setFont(f1);
         g.drawChars(msg,0, msg.length, 10,20);
     }
-}
+    public static boolean wining(Graphics g,Level level)
+    {
+        if(level.getPoints()==Points)
+            level.setWin();
+        else
+            return false;
+
+        return true;
+    }
+    public static int getPoints()
+    {
+        return Points;
+    }
+ }

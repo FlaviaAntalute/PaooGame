@@ -1,4 +1,5 @@
 package PaooGame;
+import PaooGame.Entity.Mouse;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inputs.MouseHandler;
 import PaooGame.Entity.Player;
@@ -74,7 +75,7 @@ public class Game extends JPanel implements Runnable
     private Player Martha;
     public Map map1;
     public Level level1;
-
+    private Mouse mouse;
 
     private int xLvlOffset=0;
     private int leftBorder ;
@@ -128,7 +129,7 @@ public class Game extends JPanel implements Runnable
         /// Se incarca toate elementele grafice (dale)
         Assets.Init();
         map1=new Map("res/map.txt");
-        level1=new Level(map1,7);
+        level1=new Level(map1,9);
 
         leftBorder = (int) (0.2 * wnd.GetWndWidth());
         rightBorder = (int) (0.8 * wnd.GetWndWidth());
@@ -142,7 +143,7 @@ public class Game extends JPanel implements Runnable
         this.setFocusable(true);
         Martha=new Player(this,keyH,level1.getMap());
         Martha.loadMap(level1.getMap());
-
+        mouse=new Mouse(10,366,1);
 
     }
 
@@ -244,8 +245,9 @@ public class Game extends JPanel implements Runnable
      */
     private void Update()
     {
-        Martha.update(level1);
+        Martha.update(level1,mouse);
         IsCloseToBorder();
+        mouse.update();
     }
 
     private void IsCloseToBorder() {
@@ -296,8 +298,9 @@ public class Game extends JPanel implements Runnable
         /// operatie de desenare
         // ...............
         map1.drawMap(g,xLvlOffset);
+        mouse.draw(g,xLvlOffset);
         Martha.draw(g,xLvlOffset);
-        PrintPoints(g,xLvlOffset,level1);
+        PrintPoints(g,level1);
         // end operatie de desenare
         /// Se afiseaza pe ecran
         bs.show();

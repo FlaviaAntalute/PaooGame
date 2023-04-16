@@ -5,6 +5,7 @@ import PaooGame.Graphics.Map;
 public class Level {
     private  Map m;
     private int pointsNeded=0;
+    private boolean win=false;
     public Level(Map map,int pointsNeded) {
         this.m=map;
         this.pointsNeded=pointsNeded;
@@ -19,6 +20,9 @@ public class Level {
     }
     public int getPoints(){
         return pointsNeded;
+    }
+    public void setWin(){
+        win=true;
     }
 }
 

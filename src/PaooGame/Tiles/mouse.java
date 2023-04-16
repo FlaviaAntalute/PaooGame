@@ -10,7 +10,7 @@ public class mouse extends Tile {
      */
     public mouse(int id) {
         /// Apel al constructorului clasei de baza
-        super(Assets.mouse, id);
+        super(Assets.mouse[0], id);
     }
 
 }

@@ -15,6 +15,8 @@ public class Player extends Entity {
     public float airSpeed=0f;
     public float gravity=0.06f;
     public float jumpSPEED=-2.8f;
+    public static int Height=48;
+    public static int Width=48;
     private float fallSpeedAfterCollision=0.5f;
     private boolean inAir=false;
     public Player(Game game, KeyHandler keyH, int[][] map) {
@@ -28,10 +30,10 @@ public class Player extends Entity {
     {
         this.map=map;
     }
-    public void update(Level level) {
+    public void update(Level level,Mouse mouse) {
         updatePosition();
         IsFish(getSolidArea(),level);
-        IsMouse(getSolidArea(),level);
+        IsMouse(getSolidArea(),mouse);
     }
 
       private void updatePosition() {
@@ -108,7 +110,7 @@ public class Player extends Entity {
 
     private void updateXPos(float xSpeed) {
         if(CanMoveHere(getSolidArea().x+xSpeed,getSolidArea().y,getSolidArea().width,getSolidArea().height,map))
-        getSolidArea().x+=xSpeed;
+            getSolidArea().x+=xSpeed;
     }
 
     public void draw(Graphics g,int lvlOffset) {
@@ -216,7 +218,16 @@ public class Player extends Entity {
             counter = 0;
         }
     }
-
+    protected void updateNum() {
+        if(num==1)
+            num = 2;
+        else if(num==2)
+            num = 3;
+        else if(num==3)
+            num=4;
+        else if(num==4)
+            num=1;
+    }
 
 }
 
