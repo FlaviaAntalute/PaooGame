@@ -1,5 +1,4 @@
 package PaooGame.Tiles;
-import  PaooGame.Martha.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -31,36 +30,18 @@ public class Tile
     public static Tile waterTile1 = new WaterTile1(8);
     public static Tile soilTile = new SoilTile(9);      /*!< Dala de tip sol/pamant*/
     public static Tile waterTile2 = new WaterTile2(10);
-    public static Tile M_walkD1 = new M_walkD1(11);
-    public static Tile M_walkD2 = new M_walkD2(12);
-    public static Tile M_walkD3 = new M_walkD3(13);
-    public static Tile M_walkD4 = new M_walkD4(14);
-    public static Tile M_walkS1  = new M_walkS1(15);
-    public static Tile M_walkS2= new M_walkS2(16);
-    public static Tile M_walkS3 = new M_walkS3(17);
-    public static Tile M_walkS4   = new M_walkS4(18);
-    public static Tile M_jumpD1 = new M_jumpD1(19);
-    public static Tile M_jumpD2 = new M_jumpD2(20);
-    public static Tile M_jumpD3= new M_jumpD3(21);
-    public static Tile M_jumpS1 = new M_jumpS1(22);
-    public static Tile M_jumpS2 = new M_jumpS2(23);
-    public static Tile M_jumpS3 = new M_jumpS3(24);
-    public static Tile M_walkD0= new M_walkD0(25);
-    public static Tile M_walkS0  = new M_walkS0(26);
     public static Tile tufis1 = new tufis1(27);
     public static Tile tufis2  = new tufis2(28);
     public static Tile copac1 = new copac1(29);
     public static Tile copac2 = new copac2(30);
     public static Tile iarba1 = new iarba1(31);
     public static Tile pietre = new pietre(32);
-    public static Tile M_idle1 = new M_idle1(33);
-
-    public static Tile M_idle2= new M_idle2(34);
-    public static Tile soil1= new Soil1(35);      /*!< Dala de tip sol/pamant*/
-    public static Tile soil2 = new Soil2(36);      /*!< Dala de tip sol/pamant*/
-    public static Tile soil3 = new Soil3(37);      /*!< Dala de tip sol/pamant*/
-    public static Tile soil4 = new Soil4(38);      /*!< Dala de tip sol/pamant*/
-    public static Tile peste = new peste(39);      /*!< Dala de tip sol/pamant*/
+    public static Tile soil1= new Soil1(35);
+    public static Tile soil2 = new Soil2(36);
+    public static Tile soil3 = new Soil3(37);
+    public static Tile soil4 = new Soil4(38);
+    public static Tile peste = new peste(39);
+    public static Tile mouse = new mouse(40);
 
     /*! \fn public Tile(BufferedImage texture, int id)
         \brief Constructorul aferent clasei.

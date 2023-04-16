@@ -1,16 +1,16 @@
-package PaooGame.Martha;
+package PaooGame.Tiles;
 
 import PaooGame.Graphics.Assets;
-import PaooGame.Tiles.Tile;
 
-public class M_walkS1 extends Tile {
+public class mouse extends Tile {
     /*! \fn public GrassTile(int id)
         \brief Constructorul de initializare al clasei
 
         \param id Id-ul dalei util in desenarea hartii.
      */
-    public M_walkS1(int id) {
+    public mouse(int id) {
         /// Apel al constructorului clasei de baza
-        super(Assets.M_walkS1, id);
+        super(Assets.mouse, id);
     }
+
 }

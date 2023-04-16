@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import PaooGame.Game;
 import PaooGame.Graphics.Assets;
 import PaooGame.Inputs.KeyHandler;
+import PaooGame.Levels.Level;
 
 import static PaooGame.Entity.Collision.*;
 
@@ -27,12 +28,15 @@ public class Player extends Entity {
     {
         this.map=map;
     }
-    public void update() {
+    public void update(Level level) {
         updatePosition();
+        IsFish(getSolidArea(),level);
+        IsMouse(getSolidArea(),level);
     }
 
       private void updatePosition() {
         float xSpeed=0;
+
 
         if(keyH.upPressed)
         {
@@ -42,11 +46,18 @@ public class Player extends Entity {
                 airSpeed = jumpSPEED;
             }
         }
-        if(!inAir)
-            if((!keyH.leftPressed && !keyH.rightPressed)||(keyH.leftPressed && keyH.rightPressed)) {
-                direction="idle";
+        if(!inAir) {
+            if(keyH.attackPressed)
+                direction="attack";
+            if ((!keyH.leftPressed && !keyH.rightPressed) || (keyH.leftPressed && keyH.rightPressed)) {
+                if(keyH.attackPressed) {
+                    direction = "attack";
+                }else {
+                    direction = "idle";
+                }
                 return;
             }
+        }
         if(keyH.leftPressed )
         {
             lastPressed = "left";
@@ -79,15 +90,14 @@ public class Player extends Entity {
             }
         }else
             updateXPos(xSpeed);
+
         if(inAir)
             if((!keyH.leftPressed && !keyH.rightPressed)||(keyH.leftPressed && keyH.rightPressed))
                 direction="down";
 
-        counter++;
-        if (counter > 12) {
-            this.updateNum();
-            counter = 0;
-        }
+        if(keyH.attackPressed)
+            direction="attack";
+       updateCounter();
 
     }
 
@@ -169,13 +179,44 @@ public class Player extends Entity {
                         image = Assets.M_idle1;
                     if(num==2 || num==4)
                         image = Assets.M_idle2;
-                    counter++;
-                    if (counter > 12) {
-                        this.updateNum();
-                        counter = 0;
+                    updateCounter();
+                    break;
+                case "attack":
+                    if (lastPressed == "right") {
+                        if (num == 1)
+                            image = Assets.M_attackD0;
+                        if (num == 2)
+                            image = Assets.M_attackD1;
+                        if (num == 3)
+                            image = Assets.M_attackD3;
+                        if (num == 4)
+                            image = Assets.M_attackD1;
+                        updateCounter();
                     }
+                    else if (lastPressed == "left") {
+                        if (num == 1)
+                            image = Assets.M_attackS0;
+                        if (num == 2)
+                            image = Assets.M_attackS1;
+                        if (num == 3)
+                            image = Assets.M_attackS3;
+                        if (num == 4)
+                            image = Assets.M_attackS1;
+                        updateCounter();
+                    }
+                    break;
             }
 
             g.drawImage(image,(int)(getSolidArea().x-xOffset)-lvlOffset,(int) (getSolidArea().y-yOffset), Width, Height, null);
     }
+    private void updateCounter() {
+        counter++;
+        if (counter > 12) {
+            this.updateNum();
+            counter = 0;
+        }
+    }
+
+
 }
+

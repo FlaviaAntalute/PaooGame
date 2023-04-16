@@ -1,7 +1,9 @@
 package PaooGame.Entity;
 import PaooGame.Game;
+import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.geom.Rectangle2D;
+import static PaooGame.Levels.Points.*;
 
 public class Collision {
     public static boolean CanMoveHere(float x, float y,float width,float height,int[][] map)
@@ -34,4 +36,24 @@ public class Collision {
                return false;
        return true;
    }
+
+   public static void IsFish(Rectangle2D.Float solidArea,Level level)
+   {
+       float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
+       float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
+       if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.peste.GetId()) {
+           level.setId((int) yIndex, (int) xIndex, 0);
+           addPointsFish();
+       }
+   }
+    public static void IsMouse(Rectangle2D.Float solidArea,Level level)
+    {
+        float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
+        float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
+        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.mouse.GetId()) {
+            level.setId((int) yIndex, (int) xIndex, 0);
+            addPointsMouse();
+        }
+    }
+
 }

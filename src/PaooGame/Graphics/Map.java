@@ -45,5 +45,8 @@ public class Map{
     public int getId(int i,int j){
         return m[i][j];
     }
+    public void setId(int i,int j,int val){
+         m[i][j]=val;
+    }
     public int[][] getMap(){return m;}
 }

@@ -41,6 +41,12 @@ public class Assets
     public static BufferedImage M_jumpS1;
     public static BufferedImage M_jumpS2;
     public static BufferedImage M_jumpS3;
+    public static BufferedImage M_attackD0;
+    public static BufferedImage M_attackD1;
+    public static BufferedImage M_attackD3;
+    public static BufferedImage M_attackS0;
+    public static BufferedImage M_attackS1;
+    public static BufferedImage M_attackS3;
     public static BufferedImage tufis1;
     public static BufferedImage tufis2;
     public static BufferedImage copac1;
@@ -50,11 +56,12 @@ public class Assets
     public static BufferedImage M_idle1;
     public static BufferedImage M_idle2;
     public static BufferedImage peste;
+    public static BufferedImage mouse;
+
     public static BufferedImage bg1;
     public static BufferedImage bg2;
     public static BufferedImage bg3;
     public static BufferedImage bg4;
-    public static BufferedImage cloud;
 
 
 
@@ -113,14 +120,20 @@ public class Assets
         pietre=ImageLoader.LoadImage("/textures/pietre.png");
         M_idle1=ImageLoader.LoadImage("/textures/M_idle1.png");
         M_idle2=ImageLoader.LoadImage("/textures/M_idle2.png");
+        M_attackD0=ImageLoader.LoadImage("/textures/M_attackD0.png");
+        M_attackD1=ImageLoader.LoadImage("/textures/M_attackD1.png");
+        M_attackD3=ImageLoader.LoadImage("/textures/M_attackD3.png");
+        M_attackS0=ImageLoader.LoadImage("/textures/M_attackS0.png");
+        M_attackS1=ImageLoader.LoadImage("/textures/M_attackS1.png");
+        M_attackS3=ImageLoader.LoadImage("/textures/M_attackS3.png");
 
         peste=ImageLoader.LoadImage("/textures/peste.png");
+        mouse=ImageLoader.LoadImage("/textures/peste.png");
 
         bg1=ImageLoader.LoadImage("/BG/1.png");
         bg2=ImageLoader.LoadImage("/BG/2.png");
         bg3=ImageLoader.LoadImage("/BG/3.png");
         bg4=ImageLoader.LoadImage("/BG/4.png");
-        cloud=ImageLoader.LoadImage("/BG/PikPng.com_dust-cloud-png_3211007.png");
 
     }
 }

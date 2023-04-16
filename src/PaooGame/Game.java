@@ -13,6 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+import static PaooGame.Entity.Collision.IsFish;
+import static PaooGame.Levels.Points.*;
+
 
 /*! \class Game
     \brief Clasa principala a intregului proiect. Implementeaza Game - Loop (Update -> Draw)
@@ -125,7 +128,7 @@ public class Game extends JPanel implements Runnable
         /// Se incarca toate elementele grafice (dale)
         Assets.Init();
         map1=new Map("res/map.txt");
-        level1=new Level(map1);
+        level1=new Level(map1,7);
 
         leftBorder = (int) (0.2 * wnd.GetWndWidth());
         rightBorder = (int) (0.8 * wnd.GetWndWidth());
@@ -241,7 +244,7 @@ public class Game extends JPanel implements Runnable
      */
     private void Update()
     {
-        Martha.update();
+        Martha.update(level1);
         IsCloseToBorder();
     }
 
@@ -294,6 +297,7 @@ public class Game extends JPanel implements Runnable
         // ...............
         map1.drawMap(g,xLvlOffset);
         Martha.draw(g,xLvlOffset);
+        PrintPoints(g,xLvlOffset,level1);
         // end operatie de desenare
         /// Se afiseaza pe ecran
         bs.show();
