@@ -1,22 +1,18 @@
 package PaooGame;
 import PaooGame.Entity.Mouse;
+import PaooGame.GameStates.Gamestate;
+import PaooGame.GameStates.Menu;
+import PaooGame.GameStates.Playing;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inputs.MouseHandler;
-import PaooGame.Entity.Player;
 import PaooGame.GameWindow.GameWindow;
 import PaooGame.Graphics.Assets;
-import PaooGame.Graphics.Background;
-import PaooGame.Graphics.Map;
-import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import static PaooGame.GameStates.Playing.*;
 
-import static PaooGame.Entity.Collision.IsFish;
-import static PaooGame.Levels.Lives.drawLives;
-import static PaooGame.Levels.Points.*;
 
 
 /*! \class Game
@@ -71,19 +67,11 @@ public class Game extends JPanel implements Runnable
     ///                 ****************          *****************        ***************
     private Graphics        g;          /*!< Referinta catre un context grafic.*/
     private Tile tile; /*!< variabila membra temporara. Este folosita in aceasta etapa doar pentru a desena ceva pe ecran.*/
-    private KeyHandler keyH=new KeyHandler();
-    private MouseHandler mouseH=new MouseHandler();
-    private Player Martha;
-    public Map map1;
-    public Level level1;
-    private Mouse mouse;
+    private KeyHandler keyH=new KeyHandler(this);
+    private MouseHandler mouseH=new MouseHandler(this);
+    private Playing playing;
+    private Menu menu;
 
-    private int xLvlOffset=0;
-    private int leftBorder ;
-    private int rightBorder ;
-    private int lvlTilesWide;
-    private int maxTilesOffset ;
-    private int maxLvlOffsetX;
 
     /*! \fn public Game(String title, int width, int height)
         \brief Constructor de initializare al clasei Game.
@@ -105,15 +93,12 @@ public class Game extends JPanel implements Runnable
         runState = false;
 
     }
-
     public static float GetWndHeight() {
         return wnd.GetWndHeight();
     }
-
     public static float GetWndWidth() {
         return wnd.GetWndWidth();
     }
-
 
     /*! \fn private void init()
         \brief  Metoda construieste fereastra jocului, initializeaza aseturile, listenerul de tastatura etc.
@@ -129,23 +114,12 @@ public class Game extends JPanel implements Runnable
         wnd.BuildGameWindow();
         /// Se incarca toate elementele grafice (dale)
         Assets.Init();
-        map1=new Map("res/map.txt");
-        level1=new Level(map1,9);
-
-        leftBorder = (int) (0.2 * wnd.GetWndWidth());
-        rightBorder = (int) (0.8 * wnd.GetWndWidth());
-        lvlTilesWide = level1.getMap()[0].length;
-        maxTilesOffset = lvlTilesWide-Tile.NrTileWidth;
-        maxLvlOffsetX = maxTilesOffset * Tile.TILE_WIDTH;
-
+        menu=new Menu(this);
+        playing=new Playing(this);
         wnd.GetCanvas().addKeyListener(keyH);
         wnd.GetCanvas().addMouseListener(mouseH);
         wnd.GetCanvas().addMouseMotionListener(mouseH);
         this.setFocusable(true);
-        Martha=new Player(this,keyH,level1.getMap());
-        Martha.loadMap(level1.getMap());
-        mouse=new Mouse(10,366,1);
-
     }
 
     /*! \fn public void run()
@@ -246,24 +220,17 @@ public class Game extends JPanel implements Runnable
      */
     private void Update()
     {
-        Martha.update(level1,mouse);
-        IsCloseToBorder();
-        mouse.update();
-    }
-
-    private void IsCloseToBorder() {
-        int playerX=(int)Martha.getSolidArea().x;
-        int dif=playerX-xLvlOffset;
-
-        if(dif>rightBorder)
-            xLvlOffset+=dif-rightBorder;
-        else if (dif<leftBorder)
-            xLvlOffset+=dif-leftBorder;
-        if(xLvlOffset>maxLvlOffsetX)
-            xLvlOffset = maxLvlOffsetX;
-
-        else if(xLvlOffset<0)
-            xLvlOffset=0;
+        switch (Gamestate.state)
+        {
+            case MENU :
+                menu.update();
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            default:
+                break;
+        }
     }
 
     /*! \fn private void Draw()
@@ -294,22 +261,42 @@ public class Game extends JPanel implements Runnable
         /// Se obtine contextul grafic curent in care se poate desena.
         g = bs.getDrawGraphics();
         /// Se sterge ce era
-        g.clearRect(0, 0, wnd.GetWndWidth(), wnd.GetWndHeight());
-        Background.drawBgT(g,xLvlOffset);
-        /// operatie de desenare
-        // ...............
-        map1.drawMap(g,xLvlOffset);
-        mouse.draw(g,xLvlOffset);
-        Martha.draw(g,xLvlOffset);
-        PrintPoints(g,level1);
-        PrintBone(g);
-        drawLives(g,xLvlOffset,Martha);
+        draw();
         // end operatie de desenare
         /// Se afiseaza pe ecran
         bs.show();
         /// Elibereaza resursele de memorie aferente contextului grafic curent (zonele de memorie ocupate de
         /// elementele grafice ce au fost desenate pe canvas).
         g.dispose();
+    }
+    private void draw()
+    {
+        switch (Gamestate.state)
+        {
+            case MENU :
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            default:
+                break;
+        }
+    }
+    public KeyHandler getKeyH(){
+        return keyH;
+    }
+    public GameWindow getWnd()
+    {
+        return  wnd;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public Playing getPlaying() {
+        return playing;
     }
 }
 

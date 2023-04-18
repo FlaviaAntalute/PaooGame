@@ -6,11 +6,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Mouse extends Entity{
-    int Width=30;
-    int Height=20;
-    int times=0;
-    boolean isMouse=true;
-    public static int yOffset=13;
+    private int Width=30;
+    private int Height=20;
+    private int times=0;
+    protected boolean isMouse=true;
+    private static int yOffset=13;
     public Mouse(int x, int y, int s) {
         super(x, y, s);
     }
@@ -68,5 +68,8 @@ public class Mouse extends Entity{
             this.updateNum();
             counter = 0;
         }
+    }
+    public static int getyOffset() {
+        return yOffset;
     }
 }

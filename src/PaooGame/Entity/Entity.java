@@ -3,19 +3,21 @@ package PaooGame.Entity;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-public class Entity {
-    public int x;
-    public int y;
-    public int speed;
-    public String direction;
-    public int counter=0;
-    public int num=1;
-    public String lastPressed="right";
-    private  Rectangle2D.Float solidArea;
-    private int lives=3;
+public abstract class Entity {
+    protected int x;
+    protected int y;
+    protected int speed;
+    protected int Height=48;
+    protected int Width=48;
+    protected String direction;
+    protected int counter=0;
+    protected int num=1;
+    protected String lastPressed="right";
+    protected  Rectangle2D.Float solidArea;
+    protected int lives=3;
 
-    public static int xOffset=12;
-    public static int yOffset=12;
+    protected static int xOffset=12;
+    protected static int yOffset=12;
 
     public Entity(int x, int y, int s)
     {

@@ -3,6 +3,8 @@ import PaooGame.Game;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.geom.Rectangle2D;
+
+import static PaooGame.Entity.Mouse.getyOffset;
 import static PaooGame.Levels.Points.*;
 
 public class Collision {
@@ -57,7 +59,7 @@ public class Collision {
     }
     public static void IsMouse(Rectangle2D.Float solidArea,Mouse mouse)
     {
-        if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y-mouse.yOffset)  {
+        if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y-getyOffset())  {
             addPointsMouse();
             mouse.isMouse=false;
         }

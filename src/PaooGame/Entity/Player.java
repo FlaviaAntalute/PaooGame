@@ -10,16 +10,16 @@ import static PaooGame.Entity.Collision.*;
 
 public class Player extends Entity {
     private KeyHandler keyH;
+    public boolean leftPressed,rightPressed,upPressed,attackPressed,collectPressed;
     private int [][] map;
     //jumping or falling
-    public float airSpeed=0f;
-    public float gravity=0.06f;
-    public float jumpSPEED=-2.8f;
-    public static int Height=48;
-    public static int Width=48;
+    private float airSpeed=0f;
+    private float gravity=0.06f;
+    private float jumpSPEED=-2.8f;
+
     private float fallSpeedAfterCollision=0.5f;
     private boolean inAir=false;
-    public Player(Game game, KeyHandler keyH, int[][] map) {
+    public Player( KeyHandler keyH, int[][] map) {
         super(0, 513, 3);
         this.keyH = keyH;
         initSolidArea(x,y,25,30);
@@ -41,7 +41,7 @@ public class Player extends Entity {
         float xSpeed=0;
 
 
-        if(keyH.upPressed)
+        if(upPressed)
         {
             if(!inAir) {
                 direction="up";
@@ -50,10 +50,10 @@ public class Player extends Entity {
             }
         }
         if(!inAir) {
-            if(keyH.attackPressed)
+            if(attackPressed)
                 direction="attack";
-            if ((!keyH.leftPressed && !keyH.rightPressed) || (keyH.leftPressed && keyH.rightPressed)) {
-                if(keyH.attackPressed) {
+            if ((!leftPressed && !rightPressed) || (leftPressed && rightPressed)) {
+                if(attackPressed) {
                     direction = "attack";
                 }else {
                     direction = "idle";
@@ -61,13 +61,13 @@ public class Player extends Entity {
                 return;
             }
         }
-        if(keyH.leftPressed )
+        if(leftPressed )
         {
             lastPressed = "left";
             direction = "left";
             xSpeed -= this.speed;
         }
-        if (keyH.rightPressed)
+        if (rightPressed)
         {
             lastPressed = "right";
             direction = "right";
@@ -95,10 +95,10 @@ public class Player extends Entity {
             updateXPos(xSpeed);
 
         if(inAir)
-            if((!keyH.leftPressed && !keyH.rightPressed)||(keyH.leftPressed && keyH.rightPressed))
+            if((!leftPressed && !rightPressed)||(leftPressed && rightPressed))
                 direction="down";
 
-        if(keyH.attackPressed)
+        if(attackPressed)
             direction="attack";
        updateCounter();
 

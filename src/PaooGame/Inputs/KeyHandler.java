@@ -1,43 +1,46 @@
 package PaooGame.Inputs;
+import PaooGame.Game;
+import PaooGame.GameStates.Gamestate;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-    public boolean leftPressed,rightPressed,upPressed,attackPressed,collectPressed;
+    Game game;
+    public KeyHandler(Game game) {
+        this.game=game;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int code=e.getKeyCode();
-        if(code==KeyEvent.VK_UP)
-            upPressed=true;
-        if(code==KeyEvent.VK_DOWN)
-            collectPressed=true;
-        if(code==KeyEvent.VK_RIGHT)
-            rightPressed=true;
-        if(code==KeyEvent.VK_LEFT)
-            leftPressed=true;
-
-        if(code==KeyEvent.VK_SPACE)
-            attackPressed=true;
+        switch (Gamestate.state){
+            case MENU :
+                game.getMenu().keyPressed(e);
+                break;
+            case PLAYING:
+                game.getPlaying().keyPressed(e);
+                break;
+            default:
+                break;
+        }
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int code=e.getKeyCode();
-        if(code==KeyEvent.VK_RIGHT)
-            rightPressed=false;
-        if(code==KeyEvent.VK_LEFT)
-            leftPressed=false;
-        if(code==KeyEvent.VK_UP)
-            upPressed=false;
-        if(code==KeyEvent.VK_DOWN)
-            collectPressed=false;
-        if(code==KeyEvent.VK_SPACE)
-            attackPressed=false;
-
+        switch (Gamestate.state){
+            case MENU :
+                game.getMenu().keyReleased(e);
+                break;
+            case PLAYING:
+                game.getPlaying().keyReleased(e);
+                break;
+            default:
+                break;
+        }
     }
 }
