@@ -34,6 +34,7 @@ public class Player extends Entity {
         updatePosition();
         IsFish(getSolidArea(),level);
         IsMouse(getSolidArea(),mouse);
+        IsBone(getSolidArea(),level);
     }
 
       private void updatePosition() {
@@ -228,6 +229,8 @@ public class Player extends Entity {
         else if(num==4)
             num=1;
     }
+
+
 
 }
 

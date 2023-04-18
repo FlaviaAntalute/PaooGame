@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 import static PaooGame.Entity.Collision.IsFish;
+import static PaooGame.Levels.Lives.drawLives;
 import static PaooGame.Levels.Points.*;
 
 
@@ -301,6 +302,8 @@ public class Game extends JPanel implements Runnable
         mouse.draw(g,xLvlOffset);
         Martha.draw(g,xLvlOffset);
         PrintPoints(g,level1);
+        PrintBone(g);
+        drawLives(g,xLvlOffset,Martha);
         // end operatie de desenare
         /// Se afiseaza pe ecran
         bs.show();

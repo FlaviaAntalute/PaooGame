@@ -46,6 +46,15 @@ public class Collision {
            addPointsFish();
        }
    }
+    public static void IsBone(Rectangle2D.Float solidArea,Level level)
+    {
+        float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
+        float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
+        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.bone.GetId()) {
+            level.setId((int) yIndex, (int) xIndex, 0);
+            addBone();
+        }
+    }
     public static void IsMouse(Rectangle2D.Float solidArea,Mouse mouse)
     {
         if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y-mouse.yOffset)  {

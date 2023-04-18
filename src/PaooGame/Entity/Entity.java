@@ -12,6 +12,7 @@ public class Entity {
     public int num=1;
     public String lastPressed="right";
     private  Rectangle2D.Float solidArea;
+    private int lives=3;
 
     public static int xOffset=12;
     public static int yOffset=12;
@@ -32,5 +33,8 @@ public class Entity {
         return solidArea;
     }
 
-
+    public  int getLives()
+    {
+        return lives;
+    }
 }

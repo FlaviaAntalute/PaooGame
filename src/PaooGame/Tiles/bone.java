@@ -2,10 +2,10 @@ package PaooGame.Tiles;
 
 import PaooGame.Graphics.Assets;
 
-public class peste extends Tile {
+public class bone extends Tile {
 
-    public peste(int id) {
+    public bone(int id) {
         /// Apel al constructorului clasei de baza
-        super(Assets.peste, id);
+        super(Assets.bone, id);
     }
 }

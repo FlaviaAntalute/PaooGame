@@ -41,7 +41,8 @@ public class Tile
     public static Tile soil3 = new Soil3(37);
     public static Tile soil4 = new Soil4(38);
     public static Tile peste = new peste(39);
-    public static Tile mouse = new mouse(40);
+    public static Tile bone = new bone(40);
+
 
     /*! \fn public Tile(BufferedImage texture, int id)
         \brief Constructorul aferent clasei.
