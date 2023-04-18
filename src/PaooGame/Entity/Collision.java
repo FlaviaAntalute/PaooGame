@@ -64,5 +64,12 @@ public class Collision {
             mouse.isMouse=false;
         }
     }
+    public static boolean IsFloor(Rectangle2D.Float solidArea,float xSpeed,String dir ,int [][] map)
+    {
+        if(dir=="left")
+            return isSolid(solidArea.x+xSpeed,solidArea.y+ solidArea.height+1,map);
+        else
+            return isSolid(solidArea.x+xSpeed+solidArea.width,solidArea.y+ solidArea.height+1,map);
+    }
 
 }

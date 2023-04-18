@@ -21,7 +21,6 @@ public class EnemyManager {
             for (int j = 0; j < playing.level1.getMap()[0].length; ++j) {
                 if (playing.level1.getMap()[i][j] == Tile.max.GetId()) {
                     max.add( new Max(j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
-
                 }
             }
         }
@@ -34,6 +33,6 @@ public class EnemyManager {
     public void update()
     {
         for(Max m: max)
-            m.update();
+            m.update(playing.level1.getMap());
     }
 }
