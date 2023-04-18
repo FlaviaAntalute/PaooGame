@@ -1,17 +1,17 @@
 package PaooGame.Entity;
 
-public abstract class Enamy extends Entity{
-    private int enamyType;
-    public Enamy(int x, int y, int s, int type) {
-        super(x, y, s);
-        this.enamyType=type;
+public abstract class Enemy extends Entity{
+    private int enemyType;
+    public Enemy(int x, int y, int s, int type,String dir) {
+        super(x, y, s,dir);
+        this.enemyType=type;
         initSolidArea(x,y,Width,Height);
     }
 
     public void update(){
         updateCounter();
     }
-    private void updateCounter() {
+    public void updateCounter() {
         counter++;
         if (counter > 12) {
             this.updateNum();

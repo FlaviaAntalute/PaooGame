@@ -42,6 +42,7 @@ public class Tile
     public static Tile soil4 = new Soil4(38);
     public static Tile peste = new peste(39);
     public static Tile bone = new bone(40);
+    public static Tile max=new max(41);
 
 
     /*! \fn public Tile(BufferedImage texture, int id)

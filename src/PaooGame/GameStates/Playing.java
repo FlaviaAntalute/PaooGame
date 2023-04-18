@@ -1,5 +1,6 @@
 package PaooGame.GameStates;
 
+import PaooGame.Entity.EnemyManager;
 import PaooGame.Entity.Mouse;
 import PaooGame.Entity.Player;
 import PaooGame.Game;
@@ -22,6 +23,7 @@ public class Playing extends State implements StateMethods{
     public Map map1;
     public static Level level1;
     private Mouse mouse;
+    private EnemyManager enemyManager;
     private int xLvlOffset=0;
     private int leftBorder ;
     private int rightBorder ;
@@ -45,9 +47,10 @@ public class Playing extends State implements StateMethods{
     {
         map1=new Map("res/map.txt");
         level1=new Level(map1,9);
-        Martha=new Player(keyH,level1.getMap());
+        Martha=new Player(0,513,3,"right",keyH,level1.getMap());
         Martha.loadMap(level1.getMap());
-        mouse=new Mouse(10,366,1);
+        mouse=new Mouse(10,366,1,"right");
+        enemyManager=new EnemyManager(this);
     }
     public static Player getMartha()
     {
@@ -63,16 +66,19 @@ public class Playing extends State implements StateMethods{
         Martha.update(level1,mouse);
         IsCloseToBorder();
         mouse.update();
+        enemyManager.update();
     }
 
     @Override
     public void draw(Graphics g) {
-        Background.drawBgT(g,xLvlOffset);         map1.drawMap(g,xLvlOffset);
+        Background.drawBgT(g,xLvlOffset);
+        map1.drawMap(g,xLvlOffset);
         mouse.draw(g,xLvlOffset);
         Martha.draw(g,xLvlOffset);
         PrintPoints(g,level1);
         PrintBone(g);
         drawLives(g,xLvlOffset,Martha);
+        enemyManager.draw(g,xLvlOffset);
     }
 
     @Override
@@ -108,6 +114,9 @@ public class Playing extends State implements StateMethods{
             Martha.leftPressed=true;
         if(code==KeyEvent.VK_SPACE)
             Martha.attackPressed=true;
+        if(code==KeyEvent.VK_ESCAPE)
+            Gamestate.state=Gamestate.MENU;
+
     }
 
     @Override

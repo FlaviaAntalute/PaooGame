@@ -19,8 +19,8 @@ public class Player extends Entity {
 
     private float fallSpeedAfterCollision=0.5f;
     private boolean inAir=false;
-    public Player( KeyHandler keyH, int[][] map) {
-        super(0, 513, 3);
+    public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map) {
+        super(x, y,speed,dir);
         this.keyH = keyH;
         initSolidArea(x,y,25,30);
         if (!IsEntityOnFloor(getSolidArea(), map))

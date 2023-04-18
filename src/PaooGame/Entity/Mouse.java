@@ -11,8 +11,8 @@ public class Mouse extends Entity{
     private int times=0;
     protected boolean isMouse=true;
     private static int yOffset=13;
-    public Mouse(int x, int y, int s) {
-        super(x, y, s);
+    public Mouse(int x, int y, int s,String dir) {
+        super(x, y, s,dir);
     }
     public void draw(Graphics g, int lvlOffset) {
         BufferedImage image = Assets.mouse[0];

@@ -63,6 +63,7 @@ public class Assets
     public static BufferedImage bg2;
     public static BufferedImage bg3;
     public static BufferedImage bg4;
+    public static BufferedImage [] Max=new BufferedImage[15];
 
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
@@ -131,6 +132,10 @@ public class Assets
         SpriteSheet mouseSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_right.png"));
         SpriteSheet mouseSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_left.png"));
         SpriteSheet livesSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/lives.png"));
+        SpriteSheet MaxSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_walk_S.png"));
+        SpriteSheet MaxDSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_walk_D.png"));
+        SpriteSheet MaxIdleSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_idle.png"));
+
         mouse[0]=mouseSheetD.crop1(0,0,32,20);
         mouse[1]=mouseSheetD.crop1(1,0,32,20);
         mouse[2]=mouseSheetD.crop1(2,0,32,20);
@@ -145,6 +150,24 @@ public class Assets
         bg2=ImageLoader.LoadImage("/BG/2.png");
         bg3=ImageLoader.LoadImage("/BG/3.png");
         bg4=ImageLoader.LoadImage("/BG/4.png");
+
+        Max[0]=MaxDSheet.crop2(254,5,56,31);
+        Max[1]=MaxDSheet.crop2(197,5,49,31);
+        Max[2]=MaxDSheet.crop2(131,5,51,31);
+        Max[3]=MaxDSheet.crop2(62,5,56,31);
+        Max[4]=MaxDSheet.crop2(0,5,54,31);
+
+        Max[5]=MaxSSheet.crop2(0,5,56,31);
+        Max[6]=MaxSSheet.crop2(64,5,49,31);
+        Max[7]=MaxSSheet.crop2(128,5,51,31);
+        Max[8]=MaxSSheet.crop2(192,5,56,31);
+        Max[9]=MaxSSheet.crop2(256,5,54,31);
+
+        Max[10]=MaxIdleSheet.crop2(0,0,52,31);
+        Max[11]=MaxIdleSheet.crop2(64,0,52,31);
+        Max[12]=MaxIdleSheet.crop2(128,0,51,31);
+        Max[13]=MaxIdleSheet.crop2(192,0,51,31);
+        Max[14]=MaxIdleSheet.crop2(256,0,47,31);
 
     }
 }

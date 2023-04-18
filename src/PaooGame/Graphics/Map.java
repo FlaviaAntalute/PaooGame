@@ -35,7 +35,7 @@ public class Map{
     {
         for(int i=0;i<rows;++i) {
             for(int j=0;j<columns;++j) {
-                if (m[i][j] == 0)
+                if (m[i][j] == 0 || m[i][j]==Tile.max.GetId())
                     continue;
                 else
                     Tile.tiles[m[i][j]].Draw(g, j * Tile.TILE_WIDTH - lvlOffset, i * Tile.TILE_WIDTH, m[i][j]);

@@ -19,12 +19,12 @@ public abstract class Entity {
     protected static int xOffset=12;
     protected static int yOffset=12;
 
-    public Entity(int x, int y, int s)
+    public Entity(int x, int y, int s,String dir)
     {
         this.x=x;
         this.y=y;
         this.speed=s;
-        direction="right";
+        this.direction=dir;
     }
 
     protected void initSolidArea(float x,float y, float width,float height)

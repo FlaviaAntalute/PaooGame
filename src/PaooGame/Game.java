@@ -96,9 +96,6 @@ public class Game extends JPanel implements Runnable
     public static float GetWndHeight() {
         return wnd.GetWndHeight();
     }
-    public static float GetWndWidth() {
-        return wnd.GetWndWidth();
-    }
 
     /*! \fn private void init()
         \brief  Metoda construieste fereastra jocului, initializeaza aseturile, listenerul de tastatura etc.
