@@ -14,8 +14,6 @@ public abstract class Entity {
     protected int num=1;
     protected String lastPressed="right";
     protected  Rectangle2D.Float solidArea;
-    protected int lives=3;
-
     protected static int xOffset=12;
     protected static int yOffset=12;
 
@@ -35,8 +33,5 @@ public abstract class Entity {
         return solidArea;
     }
 
-    public  int getLives()
-    {
-        return lives;
-    }
+
 }

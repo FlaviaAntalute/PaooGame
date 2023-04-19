@@ -1,10 +1,7 @@
 package PaooGame.Entity;
-
 import PaooGame.GameStates.Playing;
 import PaooGame.Tiles.Tile;
-
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class EnemyManager {
@@ -30,9 +27,9 @@ public class EnemyManager {
            m.drawMax(g,xLvlOffset);
     }
 
-    public void update()
+    public void update(Player player)
     {
         for(Max m: max)
-            m.update(playing.level1.getMap());
+            m.update(playing.level1.getMap(),player);
     }
 }

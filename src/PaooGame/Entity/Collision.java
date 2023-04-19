@@ -3,7 +3,7 @@ import PaooGame.Game;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.geom.Rectangle2D;
-
+import static PaooGame.Entity.Player.*;
 import static PaooGame.Entity.Mouse.getyOffset;
 import static PaooGame.Levels.Points.*;
 
@@ -30,6 +30,14 @@ public class Collision {
         if(map[(int)yIndex][(int)xIndex]==0)
             return false;
         return Tile.tiles[map[(int)yIndex][(int)xIndex]].IsSolid();
+    }
+
+    public static boolean IsTileSolid(int x, int y, int[][] map)
+    {
+        if(map[(int)y][(int)x]==0)
+            return false;
+        return Tile.tiles[map[(int)y][(int)x]].IsSolid();
+
     }
    public static boolean IsEntityOnFloor(Rectangle2D.Float solidArea,int [][] map)
    {
@@ -70,6 +78,42 @@ public class Collision {
             return isSolid(solidArea.x+xSpeed,solidArea.y+ solidArea.height+1,map);
         else
             return isSolid(solidArea.x+xSpeed+solidArea.width,solidArea.y+ solidArea.height+1,map);
+    }
+    public static void IsWater(Player player ,int [][] map )
+    {
+        float xIndex= player.getSolidArea().x/ Tile.TILE_HEIGHT;
+        float yIndex= player.getSolidArea().y/ Tile.TILE_HEIGHT;
+        if(map[(int)yIndex][(int)xIndex]==Tile.waterTile.GetId() || map[(int)yIndex][(int)xIndex]==Tile.waterTile.GetId()
+                || map[(int)yIndex][(int)xIndex]==Tile.waterTile1.GetId()
+                || map[(int)yIndex][(int)xIndex]==Tile.waterTile2.GetId()) {
+           changeLife();
+           player.changeCoord();
+        }
+
+    }
+    public static boolean IsClear(int[][] map, Rectangle2D.Float solidArea, Rectangle2D.Float solidArea1, int yIndexEnemy) {
+        int XTile=(int)solidArea.x/Tile.TILE_HEIGHT;
+        int XTile1=(int)solidArea1.x/Tile.TILE_HEIGHT;
+        if(XTile>XTile1)
+        {
+            for(int i=0;i<XTile-XTile1;++i)
+            {
+                if(IsTileSolid(XTile1+i,yIndexEnemy,map))
+                    return false;
+                if(!IsTileSolid(XTile1+i,yIndexEnemy+1,map))
+                    return false;
+            }
+        }
+        else {
+            for(int i=0;i<XTile1-XTile;++i)
+            {
+                if(IsTileSolid(XTile+i,yIndexEnemy,map))
+                    return false;
+                if(!IsTileSolid(XTile+i,yIndexEnemy+1,map))
+                    return false;
+            }
+        }
+        return true;
     }
 
 }

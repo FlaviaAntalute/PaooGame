@@ -63,7 +63,7 @@ public class Assets
     public static BufferedImage bg2;
     public static BufferedImage bg3;
     public static BufferedImage bg4;
-    public static BufferedImage [] Max=new BufferedImage[15];
+    public static BufferedImage [] Max=new BufferedImage[24];
 
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
@@ -75,6 +75,15 @@ public class Assets
     {
         /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/textures/TilesNonSliced.png"));
+        SpriteSheet mouseSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_right.png"));
+        SpriteSheet mouseSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_left.png"));
+        SpriteSheet livesSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/lives.png"));
+        SpriteSheet MaxSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_walk_S.png"));
+        SpriteSheet MaxDSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_walk_D.png"));
+        SpriteSheet MaxIdleSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_idle.png"));
+        SpriteSheet MaxSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/max.png"));
+        SpriteSheet MaxSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/maxD.png"));
+
         ///sheet cu martha
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
@@ -129,13 +138,6 @@ public class Assets
         bone=ImageLoader.LoadImage("/textures/os.png");
         peste=ImageLoader.LoadImage("/textures/peste.png");
 
-        SpriteSheet mouseSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_right.png"));
-        SpriteSheet mouseSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_left.png"));
-        SpriteSheet livesSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/lives.png"));
-        SpriteSheet MaxSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_walk_S.png"));
-        SpriteSheet MaxDSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_walk_D.png"));
-        SpriteSheet MaxIdleSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_idle.png"));
-
         mouse[0]=mouseSheetD.crop1(0,0,32,20);
         mouse[1]=mouseSheetD.crop1(1,0,32,20);
         mouse[2]=mouseSheetD.crop1(2,0,32,20);
@@ -144,7 +146,7 @@ public class Assets
         mouse[5]=mouseSheetS.crop1(2,0,32,20);
 
         lives[0]=livesSheet.crop1(0,0,36,32);
-        lives[1]=livesSheet.crop1(1,0,36,32);
+        lives[1]=livesSheet.crop1(2,0,36,32);
 
         bg1=ImageLoader.LoadImage("/BG/1.png");
         bg2=ImageLoader.LoadImage("/BG/2.png");
@@ -168,6 +170,12 @@ public class Assets
         Max[12]=MaxIdleSheet.crop2(128,0,51,31);
         Max[13]=MaxIdleSheet.crop2(192,0,51,31);
         Max[14]=MaxIdleSheet.crop2(256,0,47,31);
+//stanga
+        Max[15]=MaxSheet.crop2(8,256,47,32);
+        Max[16]=MaxSheet.crop2(7,63,49,33);
+//dreapta
+        Max[17]=MaxSheetD.crop2(777,256,47,32);
+        Max[18]=MaxSheetD.crop2(776,63,49,33);
 
     }
 }

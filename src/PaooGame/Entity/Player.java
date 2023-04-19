@@ -6,7 +6,10 @@ import PaooGame.Graphics.Assets;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.Level;
 
+import javax.xml.transform.SourceLocator;
+
 import static PaooGame.Entity.Collision.*;
+import static PaooGame.Useful.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
     private KeyHandler keyH;
@@ -14,10 +17,10 @@ public class Player extends Entity {
     private int [][] map;
     //jumping or falling
     private float airSpeed=0f;
-    private float gravity=0.06f;
-    private float jumpSPEED=-2.8f;
-
-    private float fallSpeedAfterCollision=0.5f;
+    private final float gravity=0.06f;
+    private final float jumpSPEED=-2.8f;
+    protected static int lives=3;
+    private final float fallSpeedAfterCollision=0.5f;
     private boolean inAir=false;
     public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map) {
         super(x, y,speed,dir);
@@ -35,6 +38,7 @@ public class Player extends Entity {
         IsFish(getSolidArea(),level);
         IsMouse(getSolidArea(),mouse);
         IsBone(getSolidArea(),level);
+        IsWater(this,this.map);
     }
 
       private void updatePosition() {
@@ -229,8 +233,20 @@ public class Player extends Entity {
         else if(num==4)
             num=1;
     }
+    public  void changeCoord()
+    {
+        solidArea.x=STARTX;
+        solidArea.y=STARTY;
+    }
+    public static void  changeLife()
+    {
+        lives--;
+    }
 
-
+    public  static int getLives()
+    {
+        return lives;
+    }
 
 }
 

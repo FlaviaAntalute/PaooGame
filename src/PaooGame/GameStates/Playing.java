@@ -17,12 +17,13 @@ import java.awt.event.MouseEvent;
 import static PaooGame.Levels.Lives.drawLives;
 import static PaooGame.Levels.Points.PrintBone;
 import static PaooGame.Levels.Points.PrintPoints;
+import static PaooGame.Useful.Constants.PlayerConstants.*;
 
 public class Playing extends State implements StateMethods{
     private static Player Martha;
     public Map map1;
     public  Level level1;
-    private Mouse mouse;
+    private Mouse mouse,mouse1;
     private EnemyManager enemyManager;
     private int xLvlOffset=0;
     private int leftBorder ;
@@ -47,10 +48,12 @@ public class Playing extends State implements StateMethods{
     {
         map1=new Map("res/map.txt");
         level1=new Level(map1,9);
-        Martha=new Player(700,513,3,"right",keyH,level1.getMap());
+        enemyManager=new EnemyManager(this);
+        Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,level1.getMap());
         Martha.loadMap(level1.getMap());
         mouse=new Mouse(10,366,1,"right");
-        enemyManager=new EnemyManager(this);
+        mouse1 = new Mouse(200, 513, 1, "right");
+
     }
     public static Player getMartha()
     {
@@ -66,7 +69,7 @@ public class Playing extends State implements StateMethods{
         Martha.update(level1,mouse);
         IsCloseToBorder();
         mouse.update();
-        enemyManager.update();
+        enemyManager.update(Martha);
     }
 
     @Override
