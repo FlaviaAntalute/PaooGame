@@ -7,21 +7,21 @@ import PaooGame.Game;
 import PaooGame.Graphics.Background;
 import PaooGame.Graphics.Map;
 import PaooGame.Inputs.KeyHandler;
+import PaooGame.Inteface.GameOverScreen;
+import PaooGame.Inteface.GameWonScreen;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 
 import static PaooGame.Levels.Lives.drawLives;
-import static PaooGame.Levels.Points.PrintBone;
-import static PaooGame.Levels.Points.PrintPoints;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
 
 public class Playing extends State implements StateMethods{
     private static Player Martha;
-    public Map map1;
     public  Level level1;
     private Mouse mouse,mouse1;
     private EnemyManager enemyManager;
@@ -31,7 +31,10 @@ public class Playing extends State implements StateMethods{
     private int lvlTilesWide;
     private int maxTilesOffset ;
     private int maxLvlOffsetX;
-
+    public boolean gameOver=false;
+    private GameOverScreen gameOverScreen;
+    public boolean gameWon=false;
+    private GameWonScreen gameWonScreen;
 
     public Playing(Game game) {
         super(game);
@@ -46,14 +49,14 @@ public class Playing extends State implements StateMethods{
 
     public void init(KeyHandler keyH)
     {
-        map1=new Map("res/map.txt");
-        level1=new Level(map1,9);
+        level1=new Level(9);
         enemyManager=new EnemyManager(this);
-        Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,level1.getMap());
+        Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,level1.getMap(), this);
         Martha.loadMap(level1.getMap());
-        mouse=new Mouse(10,366,1,"right");
-        mouse1 = new Mouse(200, 513, 1, "right");
-
+        mouse=new Mouse(50,12*32+18,1,"right");
+        //mouse1 = new Mouse(500, 17*32+18, 1, "right");
+        gameOverScreen=new GameOverScreen(this);
+        gameWonScreen=new GameWonScreen(this);
     }
     public static Player getMartha()
     {
@@ -66,22 +69,33 @@ public class Playing extends State implements StateMethods{
 
     @Override
     public void update() {
-        Martha.update(level1,mouse);
-        IsCloseToBorder();
-        mouse.update();
-        enemyManager.update(Martha);
+        if(!gameOver) {
+            Martha.update(level1, mouse,enemyManager);
+            IsCloseToBorder();
+            mouse.update();
+            enemyManager.update(Martha);
+        }
     }
 
     @Override
     public void draw(Graphics g) {
         Background.drawBgT(g,xLvlOffset);
-        map1.drawMap(g,xLvlOffset);
+        level1.GetMap().drawMap(g,xLvlOffset);
         mouse.draw(g,xLvlOffset);
         Martha.draw(g,xLvlOffset);
-        PrintPoints(g,level1);
-        PrintBone(g);
+        Player.points.PrintPoints(g,level1);
+        Player.points.PrintBone(g);
         drawLives(g,xLvlOffset,Martha);
         enemyManager.draw(g,xLvlOffset);
+
+        if(gameOver)
+        {
+            gameOverScreen.draw(g);
+        }
+        if(gameWon)
+        {
+            gameWonScreen.draw(g);
+        }
     }
 
     @Override
@@ -106,35 +120,43 @@ public class Playing extends State implements StateMethods{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int code=e.getKeyCode();
-        if(code==KeyEvent.VK_UP)
-            Martha.upPressed=true;
-        if(code==KeyEvent.VK_DOWN)
-            Martha.collectPressed=true;
-        if(code==KeyEvent.VK_RIGHT)
-            Martha.rightPressed=true;
-        if(code==KeyEvent.VK_LEFT)
-            Martha.leftPressed=true;
-        if(code==KeyEvent.VK_SPACE)
-            Martha.attackPressed=true;
-        if(code==KeyEvent.VK_ESCAPE)
-            Gamestate.state=Gamestate.MENU;
-
+        if(gameOver)
+        {
+            gameOverScreen.keyPressed(e);
+        } else if (gameWon) {
+            gameWonScreen.keyPressed(e);
+        } else {
+            int code = e.getKeyCode();
+            if (code == KeyEvent.VK_UP)
+                Martha.upPressed = true;
+            if (code == KeyEvent.VK_DOWN)
+                Martha.collectPressed = true;
+            if (code == KeyEvent.VK_RIGHT)
+                Martha.rightPressed = true;
+            if (code == KeyEvent.VK_LEFT)
+                Martha.leftPressed = true;
+            if (code == KeyEvent.VK_SPACE)
+                Martha.attackPressed = true;
+            if (code == KeyEvent.VK_ESCAPE)
+                Gamestate.state = Gamestate.MENU;
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int code=e.getKeyCode();
-        if(code==KeyEvent.VK_RIGHT)
-            Martha.rightPressed=false;
-        if(code==KeyEvent.VK_LEFT)
-            Martha.leftPressed=false;
-        if(code==KeyEvent.VK_UP)
-            Martha.upPressed=false;
-        if(code==KeyEvent.VK_DOWN)
-            Martha.collectPressed=false;
-        if(code==KeyEvent.VK_SPACE)
-            Martha.attackPressed=false;
+        if(!gameOver) {
+            int code = e.getKeyCode();
+            if (code == KeyEvent.VK_RIGHT)
+                Martha.rightPressed = false;
+            if (code == KeyEvent.VK_LEFT)
+                Martha.leftPressed = false;
+            if (code == KeyEvent.VK_UP)
+                Martha.upPressed = false;
+            if (code == KeyEvent.VK_DOWN)
+                Martha.collectPressed = false;
+            if (code == KeyEvent.VK_SPACE)
+                Martha.attackPressed = false;
+        }
 
     }
     private void IsCloseToBorder() {
@@ -151,5 +173,26 @@ public class Playing extends State implements StateMethods{
         else if(xLvlOffset<0)
             xLvlOffset=0;
     }
+    public void checkEnemyHit(Rectangle2D.Float attackArea)
+    {
+        enemyManager.CheckHit(attackArea,Martha);
+    }
+    public void SetGameOver(boolean value)
+    {
+        this.gameOver=value;
+    }
+    public void resetAll()
+    {
+        gameOver=false;
+        gameWon=false;
+        Martha.resetAll();
+        enemyManager.resetAll();
+        level1.resetAll("res/map.txt",9);
+        mouse.resetAll();
 
+    }
+
+    public void getGameWon(boolean value) {
+        gameWon=true;
+    }
 }

@@ -5,6 +5,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
 import static PaooGame.Entity.Collision.*;
+import static PaooGame.Entity.Player.*;
+import static PaooGame.Useful.Constants.PlayerConstants.STARTX;
+import static PaooGame.Useful.Constants.PlayerConstants.STARTY;
 
 public abstract class Enemy extends Entity{
     protected int enemyType;
@@ -14,7 +17,9 @@ public abstract class Enemy extends Entity{
     protected float gravity=0.04f;
     protected String lastDir="left";
     protected float attackRange=Tile.TILE_WIDTH+5;
-    protected int tileY;
+    protected boolean isAlive=true;
+    protected boolean attackChecked;
+    public int lives;
     public Enemy(int x, int y, int s, int type,String dir) {
         super(x, y, s,dir);
         this.enemyType=type;
@@ -61,7 +66,18 @@ public abstract class Enemy extends Entity{
                 return IsClear(map, solidArea, player.getSolidArea(), yIndexEnemy);
         return false;
     }
+    protected void checkPlayerHit(Rectangle2D.Float attackArea,Player player)
+    {
+        if(attackArea.intersects(player.solidArea)) {
+            player.changeLife();
+            if(Objects.equals(player.lastPressed, "right"))
+                player.changeCoord((int)solidArea.x-50,(int)solidArea.y);
+            else
+                player.changeCoord((int)solidArea.x+50,(int)solidArea.y);
 
+        }
+        attackChecked=true;
+    }
     protected boolean IsPlayerInRange(Player player) {
         int distance=(int)Math.abs(player.solidArea.x-solidArea.x);
         return distance<=attackRange*5;
@@ -104,12 +120,30 @@ public abstract class Enemy extends Entity{
             num=5;
         else if (num==5) {
             num = 1;
-            if (Objects.equals(direction, "attack"))
+            if (Objects.equals(direction, "attack")
+                    || Objects.equals(direction, "hurt"))
                 direction = "idle";
+            else if (Objects.equals(direction, "dead"))
+                isAlive=false;
         }
+    }
+    public void resetEnemy()
+    {
+        solidArea.x=x;
+        solidArea.y=y;
+        first=true;
+        lives=1;
+        fall=0;
+        direction="idle";
+        isAlive=true;
+
     }
     public String getDirection()
     {
         return direction;
+    }
+    public boolean getIsAlive()
+    {
+        return isAlive;
     }
 }

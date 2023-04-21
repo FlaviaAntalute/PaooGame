@@ -6,13 +6,16 @@ public class Level {
     private Map m;
     private int pointsNeded=0;
     private boolean win=false;
-    public Level(Map map,int pointsNeded) {
-        this.m=map;
+    public Level(int pointsNeded) {
+        this.m=new Map("res/map.txt");
         this.pointsNeded=pointsNeded;
     }
 
     public int[][] getMap() {
         return this.m.getMap();
+    }
+    public Map GetMap(){
+        return m;
     }
     public void setId(int x, int y, int val)
     {
@@ -23,6 +26,13 @@ public class Level {
     }
     public void setWin(){
         win=true;
+    }
+
+    public void resetAll(String path,int points) {
+        Map temp=new Map(path);
+        this.m=temp;
+        pointsNeded=points;
+
     }
 }
 

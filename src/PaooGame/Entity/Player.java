@@ -1,10 +1,15 @@
 package PaooGame.Entity;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
+
 import PaooGame.Game;
+import PaooGame.GameStates.Playing;
 import PaooGame.Graphics.Assets;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.Level;
+import PaooGame.Levels.Points;
 
 import javax.xml.transform.SourceLocator;
 
@@ -19,29 +24,76 @@ public class Player extends Entity {
     private float airSpeed=0f;
     private final float gravity=0.06f;
     private final float jumpSPEED=-2.8f;
-    protected static int lives=3;
+    protected  int lives=3;
     private final float fallSpeedAfterCollision=0.5f;
     private boolean inAir=false;
-    public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map) {
+    //attack box
+    private Rectangle2D.Float attackArea;
+    private boolean attackChecked;
+    private Playing playing;
+    public static Points points;
+    public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map,Playing playing) {
         super(x, y,speed,dir);
+        points=new Points();
         this.keyH = keyH;
+        this.playing=playing;
         initSolidArea(x,y,25,30);
+        initAttackArea();
         if (!IsEntityOnFloor(getSolidArea(), map))
             inAir = true;
     }
+
+    private void initAttackArea() {
+        attackArea=new Rectangle2D.Float(x,y,20,20);
+    }
+
     public void loadMap(int[][] map)
     {
         this.map=map;
     }
-    public void update(Level level,Mouse mouse) {
-        updatePosition();
-        IsFish(getSolidArea(),level);
-        IsMouse(getSolidArea(),mouse);
-        IsBone(getSolidArea(),level);
-        IsWater(this,this.map);
+    public void update(Level level,Mouse mouse,EnemyManager enemyManager) {
+
+            if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead())
+                playing.getGameWon(true);
+
+            if (lives <= 0) {
+                playing.SetGameOver(true);
+                direction = "death";
+                return;
+            }
+
+            updatePosition();
+            updateAttackArea();
+            if (Objects.equals(direction, "attack"))
+                checkAttack();
+
+            IsFish(getSolidArea(), level,this);
+            IsMouse(getSolidArea(), mouse,this);
+            IsBone(getSolidArea(), level,this,keyH);
+            IsWater(this, this.map);
+        }
+
+    private void checkAttack() {
+        if (attackChecked)
+            return;
+        attackChecked = true;
+        playing.checkEnemyHit(attackArea);
     }
 
-      private void updatePosition() {
+    private void updateAttackArea() {
+        if(Objects.equals(direction, "right")
+                || (Objects.equals(direction, "up")
+                && Objects.equals(lastPressed, "right"))){
+            attackArea.x=solidArea.x+solidArea.width+5;
+        } else if (Objects.equals(direction, "left")
+                || (Objects.equals(direction, "up")
+                && Objects.equals(lastPressed, "left"))) {
+            attackArea.x=solidArea.x - solidArea.width - 5;
+        }
+        attackArea.y=solidArea.y+10;
+    }
+
+    private void updatePosition() {
         float xSpeed=0;
 
 
@@ -119,20 +171,22 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g,int lvlOffset) {
+
         drawPlayer(g,lvlOffset);
+        g.setColor(Color.RED);
     }
 
     private void drawPlayer(Graphics g,int lvlOffset) {
             BufferedImage image = Assets.M_walkD0;
 
-            if (lastPressed == "right")
+            if (Objects.equals(lastPressed, "right"))
                 image = Assets.M_jumpD2;
-            else if (lastPressed == "left")
+            else if (Objects.equals(lastPressed, "left"))
                 image = Assets.M_jumpS2;
 
             switch (direction) {
                 case "up":
-                    if (lastPressed == "right") {
+                    if (Objects.equals(lastPressed, "right")) {
                         if (num == 1)
                             image = Assets.M_jumpD1;
                         if (num == 2)
@@ -143,7 +197,7 @@ public class Player extends Entity {
                             image = Assets.M_jumpD2;
                         break;
                     }
-                    else if (lastPressed == "left") {
+                    else if (Objects.equals(lastPressed, "left")) {
                         if (num == 1)
                             image = Assets.M_jumpS1;
                         if (num == 2)
@@ -176,9 +230,9 @@ public class Player extends Entity {
                         image = Assets.M_walkD3;
                     break;
                 case "down":
-                    if (lastPressed == "right")
+                    if (Objects.equals(lastPressed, "right"))
                         image = Assets.M_jumpD2;
-                    else if (lastPressed == "left")
+                    else if (Objects.equals(lastPressed, "left"))
                         image = Assets.M_jumpS2;
                     break;
                 case "idle":
@@ -189,7 +243,7 @@ public class Player extends Entity {
                     updateCounter();
                     break;
                 case "attack":
-                    if (lastPressed == "right") {
+                    if (Objects.equals(lastPressed, "right")) {
                         if (num == 1)
                             image = Assets.M_attackD0;
                         if (num == 2)
@@ -200,7 +254,7 @@ public class Player extends Entity {
                             image = Assets.M_attackD1;
                         updateCounter();
                     }
-                    else if (lastPressed == "left") {
+                    else if (Objects.equals(lastPressed, "left")) {
                         if (num == 1)
                             image = Assets.M_attackS0;
                         if (num == 2)
@@ -210,6 +264,19 @@ public class Player extends Entity {
                         if (num == 4)
                             image = Assets.M_attackS1;
                         updateCounter();
+                    }
+                    break;
+                case "death":
+                    if (Objects.equals(lastPressed, "right")) {
+
+                        image = Assets.MarthaDeath[2];
+                        if(!playing.gameOver)
+                            updateCounter();
+                    }
+                    else if (Objects.equals(lastPressed, "left")) {
+                        image = Assets.MarthaDeath[6];
+                        if(!playing.gameOver)
+                            updateCounter();
                     }
                     break;
             }
@@ -230,23 +297,42 @@ public class Player extends Entity {
             num = 3;
         else if(num==3)
             num=4;
-        else if(num==4)
-            num=1;
+        else if(num==4) {
+            num = 1;
+            attackChecked=false;
+        }
     }
-    public  void changeCoord()
+    public  void changeCoord(int x, int y)
     {
-        solidArea.x=STARTX;
-        solidArea.y=STARTY;
+        solidArea.x=x;
+        solidArea.y=y;
     }
-    public static void  changeLife()
+    public  void  changeLife()
     {
-        lives--;
+        if(this.lives>0)
+            lives--;
     }
 
-    public  static int getLives()
+    public  int getLives()
     {
         return lives;
     }
+//    public boolean getCollectPressed(){
+//        return collectPressed;
+//    }
+    public void resetAll() {
+        direction="right";
+        inAir=false;
+        this.lives=3;
 
+        solidArea.x=STARTX;
+        solidArea.y=STARTY;
+        attackArea.x=x;
+        attackArea.y=y;
+        points.setPoints(0);
+        points.setBone(false );
+        if (!IsEntityOnFloor(getSolidArea(), map))
+            inAir = true;
+  }
 }
 

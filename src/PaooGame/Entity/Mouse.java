@@ -10,10 +10,11 @@ public class Mouse extends Entity{
     private int Height=20;
     private int times=0;
     protected boolean isMouse=true;
-    private static int yOffset=13;
+    private static int yOffset=17;
     public Mouse(int x, int y, int s,String dir) {
         super(x, y, s,dir);
     }
+
     public void draw(Graphics g, int lvlOffset) {
         BufferedImage image = Assets.mouse[0];
         if(direction=="right")
@@ -71,5 +72,11 @@ public class Mouse extends Entity{
     }
     public static int getyOffset() {
         return yOffset;
+    }
+
+    public void resetAll() {
+        isMouse=true;
+        times=0;
+        x=10;
     }
 }

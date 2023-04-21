@@ -93,8 +93,11 @@ public class Game extends JPanel implements Runnable
         runState = false;
 
     }
-    public static float GetWndHeight() {
+    public static int GetWndHeight() {
         return wnd.GetWndHeight();
+    }
+    public static int GetWndWidth() {
+        return wnd.GetWndWidth();
     }
 
     /*! \fn private void init()

@@ -64,6 +64,9 @@ public class Assets
     public static BufferedImage bg3;
     public static BufferedImage bg4;
     public static BufferedImage [] Max=new BufferedImage[24];
+    public static BufferedImage [] MarthaDeath=new BufferedImage[10];
+    public static BufferedImage [] BlackSoil=new  BufferedImage[10];
+
 
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
@@ -83,6 +86,8 @@ public class Assets
         SpriteSheet MaxIdleSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/Max_idle.png"));
         SpriteSheet MaxSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/max.png"));
         SpriteSheet MaxSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/maxD.png"));
+        SpriteSheet MarthaDeathDSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathD.png"));
+        SpriteSheet MarthaDeathSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathS.png"));
 
         ///sheet cu martha
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
@@ -103,6 +108,18 @@ public class Assets
         soil2= sheet.crop(2, 2);
         soil3 = sheet.crop(1, 2);
         soil4 = sheet.crop(2, 1);
+
+        BlackSoil[0] = sheet.crop(7, 0);
+        BlackSoil[1] = sheet.crop(8, 0);
+        BlackSoil[2]=sheet.crop(9, 0);
+        BlackSoil[3] = sheet.crop(7, 1);
+        BlackSoil[4] = sheet.crop(8, 1);
+        BlackSoil[5] = sheet.crop(9, 1);
+        BlackSoil[6] = sheet.crop(7, 2);
+        BlackSoil[7] = sheet.crop(8, 2);
+        BlackSoil[8] = sheet.crop(9, 2);
+        BlackSoil[9] = sheet.crop(10, 6);
+
 
         M_walkD0=ImageLoader.LoadImage("/textures/M_walkD0.png");
         M_walkD1=ImageLoader.LoadImage("/textures/M_walkD1.png");
@@ -146,7 +163,7 @@ public class Assets
         mouse[5]=mouseSheetS.crop1(2,0,32,20);
 
         lives[0]=livesSheet.crop1(0,0,36,32);
-        lives[1]=livesSheet.crop1(2,0,36,32);
+        lives[1]=livesSheet.crop2(75,0,36,32);
 
         bg1=ImageLoader.LoadImage("/BG/1.png");
         bg2=ImageLoader.LoadImage("/BG/2.png");
@@ -170,12 +187,21 @@ public class Assets
         Max[12]=MaxIdleSheet.crop2(128,0,51,31);
         Max[13]=MaxIdleSheet.crop2(192,0,51,31);
         Max[14]=MaxIdleSheet.crop2(256,0,47,31);
-//stanga
+
         Max[15]=MaxSheet.crop2(8,256,47,32);
         Max[16]=MaxSheet.crop2(7,63,49,33);
-//dreapta
+
         Max[17]=MaxSheetD.crop2(777,256,47,32);
         Max[18]=MaxSheetD.crop2(776,63,49,33);
 
+        MarthaDeath[0]=MarthaDeathDSheet.crop2(0,0,28,14);
+        MarthaDeath[1]=MarthaDeathDSheet.crop2(32,0,29,13);
+        MarthaDeath[2]=MarthaDeathDSheet.crop2(64,0,29,12);
+        MarthaDeath[3]=ImageLoader.LoadImage("/textures/MarthaDeathD0.png");
+
+        MarthaDeath[4]=MarthaDeathDSheet.crop2(0,0,28,14);
+        MarthaDeath[5]=MarthaDeathDSheet.crop2(31,0,29,13);
+        MarthaDeath[6]=MarthaDeathDSheet.crop2(63,0,29,12);
+        MarthaDeath[7]=ImageLoader.LoadImage("/textures/MarthaDeathS0.png");
     }
 }

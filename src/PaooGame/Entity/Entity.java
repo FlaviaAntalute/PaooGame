@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class Entity {
     protected int x;
-    protected int y;
+    public int y;
     protected int speed;
     protected int Height=48;
     protected int Width=48;

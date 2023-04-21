@@ -1,11 +1,13 @@
 package PaooGame.Entity;
 import PaooGame.Game;
+import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.geom.Rectangle2D;
-import static PaooGame.Entity.Player.*;
+
 import static PaooGame.Entity.Mouse.getyOffset;
-import static PaooGame.Levels.Points.*;
+import static PaooGame.Useful.Constants.PlayerConstants.STARTX;
+import static PaooGame.Useful.Constants.PlayerConstants.STARTY;
 
 public class Collision {
     public static boolean CanMoveHere(float x, float y,float width,float height,int[][] map)
@@ -47,28 +49,28 @@ public class Collision {
        return true;
    }
 
-   public static void IsFish(Rectangle2D.Float solidArea,Level level)
+   public static void IsFish(Rectangle2D.Float solidArea,Level level,Player player)
    {
        float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
        float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.peste.GetId()) {
            level.setId((int) yIndex, (int) xIndex, 0);
-           addPointsFish();
+           player.points.addPointsFish();
        }
    }
-    public static void IsBone(Rectangle2D.Float solidArea,Level level)
+    public static void IsBone(Rectangle2D.Float solidArea, Level level, Player player, KeyHandler keyH)
     {
         float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
         float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
-        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.bone.GetId()) {
+        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.bone.GetId() && player.collectPressed) {
             level.setId((int) yIndex, (int) xIndex, 0);
-            addBone();
+            player.points.addBone();
         }
     }
-    public static void IsMouse(Rectangle2D.Float solidArea,Mouse mouse)
+    public static void IsMouse(Rectangle2D.Float solidArea,Mouse mouse,Player player)
     {
         if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y-getyOffset())  {
-            addPointsMouse();
+            player.points.addPointsMouse();
             mouse.isMouse=false;
         }
     }
@@ -86,8 +88,8 @@ public class Collision {
         if(map[(int)yIndex][(int)xIndex]==Tile.waterTile.GetId() || map[(int)yIndex][(int)xIndex]==Tile.waterTile.GetId()
                 || map[(int)yIndex][(int)xIndex]==Tile.waterTile1.GetId()
                 || map[(int)yIndex][(int)xIndex]==Tile.waterTile2.GetId()) {
-           changeLife();
-           player.changeCoord();
+           player.changeLife();
+           player.changeCoord(STARTX,STARTY);
         }
 
     }

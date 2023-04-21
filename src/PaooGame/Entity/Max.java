@@ -3,6 +3,7 @@ package PaooGame.Entity;
 import PaooGame.Graphics.Assets;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
@@ -13,10 +14,20 @@ public class Max extends Enemy {
     private static int Width = 60;
     private static int Height = 55;
     protected static int yOffset = 20;//CA SA FIE DESENAT PE PAMANT
+    //attack box
+    private Rectangle2D.Float attackArea;
+    private int attackAreaOffsetX;
 
     public Max(int x, int y, int s, String dir) {
         super(x, y, s, MAX, dir);
+        lives=1;
         initSolidArea(x, y, 35, 31);
+        initAttackArea();
+
+    }
+    private void initAttackArea() {
+        attackArea=new Rectangle2D.Float(x,y,80,45);
+        attackAreaOffsetX=25;
     }
 
     public static int GetYOffset() {
@@ -96,7 +107,15 @@ public class Max extends Enemy {
     public void update(int[][] map,Player player) {
         updateWalk(map,player);
         updateCounter();
+        updateAttackArea();
     }
+
+    public void updateAttackArea()
+    {
+        attackArea.x=solidArea.x-attackAreaOffsetX;
+        attackArea.y=solidArea.y-10;
+    }
+
 
     public void updateWalk(int[][] map,Player player) {
         if (first)
@@ -108,13 +127,21 @@ public class Max extends Enemy {
                 direction="left";
             else if(Objects.equals(direction, "right") || Objects.equals(direction, "left"))
             {
-                if (PlayerIsClose(map, player))
+                if (PlayerIsClose(map, player)){
                     TurnToPlayer(player);
-                if (CanAttack(player)) {
-                    lastDir = direction;
-                    direction = "attack";
+                    if (CanAttack(player)) {
+                        lastDir = direction;
+                        direction = "attack";
+                    }
                 }
                 moveEnemy(map);
+            } else if (Objects.equals(direction, "attack")) {
+                if(num==1)
+                    attackChecked=false;
+                if(num==2 && !attackChecked)
+                    checkPlayerHit(attackArea,player);
+            } else if (Objects.equals(direction, "hurt")) {
+                
             }
         }
     }

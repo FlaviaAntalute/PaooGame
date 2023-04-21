@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import static java.awt.Font.BOLD;
+
 public class Menu extends State implements StateMethods {
 
     public Menu(Game game) {
@@ -19,10 +21,14 @@ public class Menu extends State implements StateMethods {
     }
     @Override
     public void draw(Graphics g) {
+        Font f1=new Font("font1", BOLD,18);
         Background.drawBgT(g,0);
         g.setColor(Color.ORANGE);
+        g.setFont(f1);
         g.drawString("MENU",game.getWnd().GetWndWidth()/2-20, 180);
-        g.drawString("Press ENTER to start",game.getWnd().GetWndWidth()/2-60, 200);
+        g.drawString("Press ENTER to start",game.getWnd().GetWndWidth()/2-90, 215);
+        g.drawString("To win you have to collect all the food and defeat all the enemies",game.getWnd().GetWndWidth()/2-250, 245);
+
     }
 
     @Override

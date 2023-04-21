@@ -11,8 +11,8 @@ public class Tile
     public static Tile[] tiles = new Tile[NO_TILES];       /*!< Vector de referinte de tipuri de dale.*/
     public static final int TILE_WIDTH  = 32;                       /*!< Latimea unei dale.*/
     public static final int TILE_HEIGHT = 32;                       /*!< Inaltimea unei dale.*/
-    public static final int NrTileWidth=25;
-    public static final int NrTileHeight=19;
+    public static final int NrTileWidth=29;
+    public static final int NrTileHeight=21;
 
     protected BufferedImage img;                                    /*!< Imaginea aferenta tipului de dala.*/
     protected final int id;                                         /*!< Id-ul unic aferent tipului de dala.*/
@@ -30,6 +30,18 @@ public class Tile
     public static Tile waterTile1 = new WaterTile1(8);
     public static Tile soilTile = new SoilTile(9);      /*!< Dala de tip sol/pamant*/
     public static Tile waterTile2 = new WaterTile2(10);
+
+    public static Tile BlackSoil0=new BlackSoil0(11);
+    public static Tile BlackSoil1=new BlackSoil1(12);
+    public static Tile BlackSoil2=new BlackSoil2(13);
+    public static Tile BlackSoil3=new BlackSoil3(14);
+    public static Tile BlackSoil4=new BlackSoil4(15);
+    public static Tile BlackSoil5=new BlackSoil5(16);
+    public static Tile BlackSoil6=new BlackSoil6(17);
+    public static Tile BlackSoil7=new BlackSoil7(18);
+    public static Tile BlackSoil8=new BlackSoil8(19);
+    public static Tile BlackSoil9=new BlackSoil9(20);
+
     public static Tile tufis1 = new tufis1(27);
     public static Tile tufis2  = new tufis2(28);
     public static Tile copac1 = new copac1(29);
@@ -43,6 +55,8 @@ public class Tile
     public static Tile peste = new peste(39);
     public static Tile bone = new bone(40);
     public static Tile max=new max(41);
+
+
 
 
     /*! \fn public Tile(BufferedImage texture, int id)
