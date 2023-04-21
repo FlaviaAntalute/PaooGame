@@ -4,6 +4,7 @@ import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 
 import static PaooGame.Entity.Mouse.getyOffset;
 import static PaooGame.Useful.Constants.PlayerConstants.STARTX;
@@ -55,7 +56,7 @@ public class Collision {
        float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.peste.GetId()) {
            level.setId((int) yIndex, (int) xIndex, 0);
-           player.points.addPointsFish();
+           Player.points.addPointsFish();
        }
    }
     public static void IsBone(Rectangle2D.Float solidArea, Level level, Player player, KeyHandler keyH)
@@ -64,19 +65,19 @@ public class Collision {
         float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
         if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.bone.GetId() && player.collectPressed) {
             level.setId((int) yIndex, (int) xIndex, 0);
-            player.points.addBone();
+            Player.points.addBone();
         }
     }
     public static void IsMouse(Rectangle2D.Float solidArea,Mouse mouse,Player player)
     {
         if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y-getyOffset())  {
-            player.points.addPointsMouse();
+            Player.points.addPointsMouse();
             mouse.isMouse=false;
         }
     }
     public static boolean IsFloor(Rectangle2D.Float solidArea,float xSpeed,String dir ,int [][] map)
     {
-        if(dir=="left")
+        if(Objects.equals(dir, "left"))
             return isSolid(solidArea.x+xSpeed,solidArea.y+ solidArea.height+1,map);
         else
             return isSolid(solidArea.x+xSpeed+solidArea.width,solidArea.y+ solidArea.height+1,map);

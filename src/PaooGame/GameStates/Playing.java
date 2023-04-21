@@ -53,7 +53,7 @@ public class Playing extends State implements StateMethods{
         enemyManager=new EnemyManager(this);
         Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,level1.getMap(), this);
         Martha.loadMap(level1.getMap());
-        mouse=new Mouse(50,12*32+18,1,"right");
+        mouse=new Mouse(50,5*32+18,1,"right");
         //mouse1 = new Mouse(500, 17*32+18, 1, "right");
         gameOverScreen=new GameOverScreen(this);
         gameWonScreen=new GameWonScreen(this);

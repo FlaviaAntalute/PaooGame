@@ -15,6 +15,9 @@ public class Assets
     public static BufferedImage soil2;
     public static BufferedImage soil3;
     public static BufferedImage soil4;
+    public static BufferedImage soil5;
+
+    public static BufferedImage soilPlatform;
 
     public static BufferedImage grass1;
     public static BufferedImage grass2;
@@ -89,7 +92,6 @@ public class Assets
         SpriteSheet MarthaDeathDSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathD.png"));
         SpriteSheet MarthaDeathSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathS.png"));
 
-        ///sheet cu martha
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
         grass1 = sheet.crop(0, 0);
@@ -108,6 +110,10 @@ public class Assets
         soil2= sheet.crop(2, 2);
         soil3 = sheet.crop(1, 2);
         soil4 = sheet.crop(2, 1);
+        soil5 = sheet.crop(0, 1);
+
+
+        soilPlatform=sheet.crop(2,3);
 
         BlackSoil[0] = sheet.crop(7, 0);
         BlackSoil[1] = sheet.crop(8, 0);

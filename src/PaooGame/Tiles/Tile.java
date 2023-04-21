@@ -30,6 +30,11 @@ public class Tile
     public static Tile waterTile1 = new WaterTile1(8);
     public static Tile soilTile = new SoilTile(9);      /*!< Dala de tip sol/pamant*/
     public static Tile waterTile2 = new WaterTile2(10);
+    public static Tile soil1= new Soil1(35);
+    public static Tile soil2 = new Soil2(36);
+    public static Tile soil3 = new Soil3(37);
+    public static Tile soil4 = new Soil4(38);
+    public static Tile soil5 = new soil5(22);
 
     public static Tile BlackSoil0=new BlackSoil0(11);
     public static Tile BlackSoil1=new BlackSoil1(12);
@@ -41,6 +46,7 @@ public class Tile
     public static Tile BlackSoil7=new BlackSoil7(18);
     public static Tile BlackSoil8=new BlackSoil8(19);
     public static Tile BlackSoil9=new BlackSoil9(20);
+    public static Tile soilPlatform=new soilPlatform(21);
 
     public static Tile tufis1 = new tufis1(27);
     public static Tile tufis2  = new tufis2(28);
@@ -48,10 +54,6 @@ public class Tile
     public static Tile copac2 = new copac2(30);
     public static Tile iarba1 = new iarba1(31);
     public static Tile pietre = new pietre(32);
-    public static Tile soil1= new Soil1(35);
-    public static Tile soil2 = new Soil2(36);
-    public static Tile soil3 = new Soil3(37);
-    public static Tile soil4 = new Soil4(38);
     public static Tile peste = new peste(39);
     public static Tile bone = new bone(40);
     public static Tile max=new max(41);
@@ -92,10 +94,16 @@ public class Tile
         /// Desenare dala
         if(idd==Tile.copac2.GetId()||idd==Tile.copac1.GetId())
             g.drawImage(img, x, y,4* TILE_WIDTH, 4*TILE_HEIGHT, null);
-        else if(idd==Tile.tufis1.GetId()||idd==Tile.pietre.GetId())
+        else if(idd==Tile.tufis1.GetId())
             g.drawImage(img, x, y,2* TILE_WIDTH, TILE_HEIGHT, null);
         else if(idd==Tile.peste.GetId())
             g.drawImage(img, x, y,20, 20, null);
+        else if(idd==Tile.iarba1.GetId())
+            g.drawImage(img, x, y+22,25,15 , null);
+        else if(idd==Tile.tufis2.GetId())
+            g.drawImage(img, x, y,45,TILE_HEIGHT , null);
+        else if(idd==Tile.pietre.GetId())
+            g.drawImage(img, x, y+22,25,15 , null);
         else
             g.drawImage(img, x, y, TILE_WIDTH, TILE_HEIGHT, null);
     }

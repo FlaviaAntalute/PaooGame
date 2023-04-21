@@ -2,12 +2,12 @@ package PaooGame.Tiles;
 
 import PaooGame.Graphics.Assets;
 
-/*! \class public class GrassTile extends Tile
+/*! \class public class GrassTile4 extends Tile
     \brief Abstractizeaza notiunea de dala de tip iarba.
  */
 public class GrassTile4 extends Tile
 {
-    /*! \fn public GrassTile(int id)
+    /*! \fn public GrassTile4(int id)
         \brief Constructorul de initializare al clasei
 
         \param id Id-ul dalei util in desenarea hartii.
