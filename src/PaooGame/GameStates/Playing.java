@@ -5,7 +5,6 @@ import PaooGame.Entity.Mouse;
 import PaooGame.Entity.Player;
 import PaooGame.Game;
 import PaooGame.Graphics.Background;
-import PaooGame.Graphics.Map;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inteface.GameOverScreen;
 import PaooGame.Inteface.GameWonScreen;
@@ -21,32 +20,51 @@ import static PaooGame.Levels.Lives.drawLives;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
 
 public class Playing extends State implements StateMethods{
-    private static Player Martha;
-    public  Level level1;
-    private Mouse mouse,mouse1;
-    private EnemyManager enemyManager;
-    private int xLvlOffset=0;
-    private int leftBorder ;
-    private int rightBorder ;
-    private int lvlTilesWide;
-    private int maxTilesOffset ;
-    private int maxLvlOffsetX;
-    public boolean gameOver=false;
-    private GameOverScreen gameOverScreen;
-    public boolean gameWon=false;
-    private GameWonScreen gameWonScreen;
+    private static Player Martha; /// jucătorul controlat de utilizator
+    public  Level level1;    // nivelul1
+    private Mouse mouse,mouse1;// obiecte de tipul Mouse
+    private EnemyManager enemyManager; // managerul inamicilor
+    private int xLvlOffset=0;/// offset-ul pe axa X al nivelului, pentru a-l muta la stânga sau la dreapta
+    private int leftBorder ;// marginea stângă a ferestrei, folosită pentru a detecta când jucătorul se apropie de ea
+    private int rightBorder ;// marginea dreaptă a ferestrei, folosită pentru a detecta când jucătorul se apropie de ea
+    private int lvlTilesWide;// numărul de dale din nivel pe axa X
+    private int maxTilesOffset ;// numărul maxim de dale cu care se poate muta nivelul într-o parte sau alta
+    private int maxLvlOffsetX;// numărul maxim de pixeli cu care se poate muta nivelul într-o parte sau alta
+    public boolean gameOver=false;// indica dacă jocul s-a terminat cu eșec
+    private GameOverScreen gameOverScreen;// ecranul de sfârșit de joc cu eșec
+    public boolean gameWon=false; // indica dacă jocul s-a terminat cu succes
+    private GameWonScreen gameWonScreen;// ecranul de sfârșit de joc cu succes
 
+    /*!
+    \brief Constructorul clasei Playing.
+    \param game Obiectul de tip Game pentru care se creează instanța clasei.
+    Acest constructor inițializează instanța clasei și apelează metoda init pentru inițializarea variabilelor membru.
+     De asemenea, se calculează limitele ecranului în care jucătorul poate mișca stânga/dreapta
+      și se inițializează variabilele ce țin de dimensiunea hărții.
+    \return Nicio valoare nu este returnată.
+    */
     public Playing(Game game) {
         super(game);
         init(game.getKeyH());
-        leftBorder = (int) (0.2 * game.getWnd().GetWndWidth());
-        rightBorder = (int) (0.8 * game.getWnd().GetWndWidth());
+        // se calculează limitele ecranului în care jucătorul poate mișca
+        leftBorder = (int) (0.3 * game.getWnd().GetWndWidth());
+        rightBorder = (int) (0.7 * game.getWnd().GetWndWidth());
         lvlTilesWide = getLevel1().getMap()[0].length;
         maxTilesOffset = lvlTilesWide- Tile.NrTileWidth;
         maxLvlOffsetX = maxTilesOffset * Tile.TILE_WIDTH;
 
     }
 
+    /*!
+
+    \fn public void init(KeyHandler keyH)
+
+    \brief Funcția initializează nivelul, jucătorul, inamicul, șoarecele și ecranele de joc.
+
+    \param keyH obiectul de tip KeyHandler care este utilizat pentru a gestiona intrările de la tastatură.
+
+    \return Nicio valoare nu este returnată de această funcție.
+    */
     public void init(KeyHandler keyH)
     {
         level1=new Level(9);
@@ -67,6 +85,14 @@ public class Playing extends State implements StateMethods{
         return this.level1;
     }
 
+    /*! \fn  public void update()
+
+    \brief Actualizează starea jocului.
+    Această metodă este apelată de obiectul Game pentru a actualiza starea jocului.
+    Dacă jocul nu este în starea de game over, atunci se actualizează poziția jucătorului Martha,
+    se verifică dacă se apropie de marginea ecranului, se actualizează poziția șoarecelui mouse și se actualizează pozițiile inamicilor în funcție de poziția jucătorului Martha.
+    \return Nicio valoare nu este returnată.
+    */
     @Override
     public void update() {
         if(!gameOver) {
@@ -77,6 +103,16 @@ public class Playing extends State implements StateMethods{
         }
     }
 
+
+    /*! \fn public void draw(Graphics g)
+    \brief Funcția de desenare a jocului.
+    Funcția desenează fundalul, harta, obiectele de pe hartă (șobolani, jucător, șoricel),
+    numărul de puncte, numărul de vieți și ecranele de final (dacă este cazul).
+    De asemenea, calculează și desenează offset-ul nivelului, pentru a putea realiza
+    efectul de deplasare a jocului pe axa X.
+    \param g Un obiect Graphics, pe care se realizează desenarea.
+    \return Nicio valoare nu este returnată de această funcție.
+    */
     @Override
     public void draw(Graphics g) {
         Background.drawBgT(g,xLvlOffset);
@@ -117,7 +153,18 @@ public class Playing extends State implements StateMethods{
     public void mouseMoved(MouseEvent e) {
 
     }
+    /*!
 
+    \fn public void keyPressed(KeyEvent e)
+    \brief Funcția este apelată atunci când utilizatorul apasă o tastă.
+    Funcția primește un obiect KeyEvent care conține informații despre tastă și
+    verifică dacă jocul s-a terminat, dacă jucătorul a câștigat sau dacă jocul este în desfășurare.
+    În funcție de acest lucru, funcția va seta variabilele corespunzătoare ale jucătorului pentru a indica că o anumită tastă a fost apăsată.
+    Dacă utilizatorul apasă tasta "Escape", funcția va schimba starea jocului în starea meniu.
+    \param e Obiectul KeyEvent care conține informații despre tastă.
+    \return Nicio valoare nu este returnată de această funcție.
+
+    */
     @Override
     public void keyPressed(KeyEvent e) {
         if(gameOver)

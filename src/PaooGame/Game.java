@@ -1,5 +1,4 @@
 package PaooGame;
-import PaooGame.Entity.Mouse;
 import PaooGame.GameStates.Gamestate;
 import PaooGame.GameStates.Menu;
 import PaooGame.GameStates.Playing;
@@ -11,7 +10,7 @@ import PaooGame.Tiles.Tile;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import static PaooGame.GameStates.Playing.*;
+
 
 
 
@@ -67,10 +66,10 @@ public class Game extends JPanel implements Runnable
     ///                 ****************          *****************        ***************
     private Graphics        g;          /*!< Referinta catre un context grafic.*/
     private Tile tile; /*!< variabila membra temporara. Este folosita in aceasta etapa doar pentru a desena ceva pe ecran.*/
-    private KeyHandler keyH=new KeyHandler(this);
-    private MouseHandler mouseH=new MouseHandler(this);
-    private Playing playing;
-    private Menu menu;
+    private KeyHandler keyH=new KeyHandler(this);/*! Reprezintă un obiect KeyHandler care este asociat cu obiectul curent și este folosit pentru a gestiona input-ul de la tastatură în joc.*/
+    private MouseHandler mouseH=new MouseHandler(this);/*!Reprezintă un obiect MouseHandler care este asociat cu obiectul curent și este folosit pentru a gestiona input-ul de la mouse în joc.*/
+    private Playing playing;/*!Reprezintă un obiect Playing care este utilizat pentru a gestiona starea și mecanica jocului atunci când jocul este în desfășurare.*/
+    private Menu menu;/*!Reprezintă un obiect Menu care este utilizat pentru a afișa meniul principal al jocului și pentru a gestiona selecțiile utilizatorului în meniu.*/
 
 
     /*! \fn public Game(String title, int width, int height)
@@ -93,9 +92,17 @@ public class Game extends JPanel implements Runnable
         runState = false;
 
     }
+
+    /*!
+     Returnează înălțimea ferestrei aplicației.
+    */
     public static int GetWndHeight() {
         return wnd.GetWndHeight();
     }
+
+    /*!
+     Returnează lățimea ferestrei aplicației.
+    */
     public static int GetWndWidth() {
         return wnd.GetWndWidth();
     }
@@ -114,11 +121,17 @@ public class Game extends JPanel implements Runnable
         wnd.BuildGameWindow();
         /// Se incarca toate elementele grafice (dale)
         Assets.Init();
+        /// Inițializează un nou obiect Menu care este asociat cu obiectul curent
         menu=new Menu(this);
+        /// Inițializează o nouă instanță a clasei Playing care este asociată cu obiectul curent.
         playing=new Playing(this);
+        /// Adaugă un nou KeyListener la canvas-ul asociat obiectului Wnd curent.
         wnd.GetCanvas().addKeyListener(keyH);
+        /// Adaugă un nou MouseListener la canvas-ul asociat obiectului Wnd curent.
         wnd.GetCanvas().addMouseListener(mouseH);
+        /// Adaugă un nou MouseMotionListener la canvas-ul asociat obiectului Wnd curent.
         wnd.GetCanvas().addMouseMotionListener(mouseH);
+        ///  Setează obiectul curent ca fiind focusabil, ceea ce înseamnă că acesta poate primi focusul tastaturii.
         this.setFocusable(true);
     }
 
@@ -223,9 +236,11 @@ public class Game extends JPanel implements Runnable
         switch (Gamestate.state)
         {
             case MENU :
+                /// Dacă starea jocului este MENU, apelăm metoda update() a obiectului menu.
                 menu.update();
                 break;
             case PLAYING:
+                /// Dacă starea jocului este PLAYING, apelăm metoda update() a obiectului playing.
                 playing.update();
                 break;
             default:
@@ -260,7 +275,7 @@ public class Game extends JPanel implements Runnable
         }
         /// Se obtine contextul grafic curent in care se poate desena.
         g = bs.getDrawGraphics();
-        /// Se sterge ce era
+        /// Desenează elementele grafice corespunzătoare stării curente a jocului.
         draw();
         // end operatie de desenare
         /// Se afiseaza pe ecran
@@ -269,33 +284,65 @@ public class Game extends JPanel implements Runnable
         /// elementele grafice ce au fost desenate pe canvas).
         g.dispose();
     }
+
+
+    /*! \fn private void draw()
+        \brief Desenează elementele grafice corespunzătoare stării curente a jocului, prin apelarea metodei draw() a obiectului corespunzător.
+
+        Metoda este declarata privat deoarece trebuie apelata doar in metoda Draw()
+     */
     private void draw()
     {
         switch (Gamestate.state)
         {
             case MENU :
+                ///  Dacă starea jocului este MENU, apelăm metoda draw() a obiectului menu, transmițându-i obiectul Graphics g.
                 menu.draw(g);
                 break;
             case PLAYING:
+                /// Dacă starea jocului este PLAYING, apelăm metoda draw() a obiectului playing, transmițându-i obiectul Graphics g.
                 playing.draw(g);
                 break;
             default:
                 break;
         }
     }
+
+    /*!\fn public KeyHandler getKeyH()
+        \brief Returnează obiectul KeyHandler pentru evenimentele tastaturii înregistrate în fereastra jocului.
+
+        Metoda este folosită pentru a obține referința la obiectul KeyHandler creat pentru a trata evenimentele tastaturii în fereastra jocului.
+    */
     public KeyHandler getKeyH(){
+        /// Returnează obiectul KeyHandler asociat evenimentelor tastaturii.
         return keyH;
     }
+    /*!\fn public GameWindow getWnd()
+        \brief Returnează obiectul GameWindow asociat cu fereastra jocului.
+
+        Metoda este folosită pentru a obține referința la obiectul GameWindow asociat cu fereastra jocului, care gestionează interfața grafică a utilizatorului (UI). Obiectul GameWindow conține fereastra jocului și metodele necesare pentru a-l gestiona.
+     */
     public GameWindow getWnd()
     {
+        ///Returnează obiectul GameWindow asociat cu fereastra jocului.
         return  wnd;
     }
+    /*!\fn public Menu getMenu()
+        \brief Returnează obiectul Menu pentru meniul jocului.
 
+        Metoda este folosită pentru a obține referința la obiectul Menu creat pentru afișarea meniului jocului. Obiectul Menu conține elementele grafice și metodele necesare pentru a afișa și gestiona meniul jocului.
+    */
     public Menu getMenu() {
+        ///Returnează obiectul Menu pentru meniul jocului.
         return menu;
     }
+    /*!\fn public Playing getPlaying()
+        \brief Returnează obiectul Playing pentru jocul în sine.
 
+        Metoda este folosită pentru a obține referința la obiectul Playing creat pentru gestionarea jocului în sine. Obiectul Playing conține elementele grafice și metodele necesare pentru a gestiona jocul și a afișa elementele grafice asociate.
+    */
     public Playing getPlaying() {
+        ///  Returnează obiectul Playing pentru jocul în sine.
         return playing;
     }
 }
