@@ -5,12 +5,15 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-    /*! \class EnemyManager
-        \brief Clasa care gestionează inamicii din joc.
-    */
+
+/*! \class EnemyManager
+    \brief Clasa care gestionează inamicii din joc.
+*/
 public class EnemyManager {
+    private EnemyFactory factory=new EnemyFactory();
     private Playing playing; /// Referință către instanța curentă a jocului.
-    private ArrayList<Max> max=new ArrayList<>(); ///Lista de obiecte Max, care reprezintă inamicii.
+    private ArrayList<Enemy> max=new ArrayList<>(); ///Lista de obiecte Max, care reprezintă inamicii.
+    private ArrayList<Enemy> snakes=new ArrayList<>(); ///Lista de obiecte Max, care reprezintă inamicii.
 
         /*! \fn public EnemyManager(Playing playing)
             \brief Constructorul clasei EnemyManager.
@@ -31,7 +34,10 @@ public class EnemyManager {
         for(int i=0;i<playing.level1.getMap().length;i++) {
             for (int j = 0; j < playing.level1.getMap()[0].length; ++j) {
                 if (playing.level1.getMap()[i][j] == Tile.max.GetId()) {
-                    max.add( new Max(j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
+                    max.add( factory.createEnemy("Max",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
+                }
+                else if (playing.level1.getMap()[i][j] == Tile.snake.GetId()) {
+                    snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
                 }
             }
         }
@@ -43,9 +49,12 @@ public class EnemyManager {
             \ xLvlOffset offset-ul orizontal al nivelului.
          */
     public void draw(Graphics g, int xLvlOffset) {
-       for(Max m: max)
+       for(Enemy m: max)
            if(m.isAlive)
-                m.drawMax(g,xLvlOffset);
+                m.drawIndividual(g,xLvlOffset);
+       for(Enemy s: snakes)
+           if(s.isAlive)
+               s.drawIndividual(g,xLvlOffset);
     }
 
         /*! \fn public void update(Player player)
@@ -54,10 +63,13 @@ public class EnemyManager {
          */
     public void update(Player player)
     {
-        for(Max m: max) {
+        for(Enemy m: max) {
             if(m.isAlive)
                 m.update(playing.level1.getMap(), player);
         }
+        for(Enemy s: snakes)
+            if(s.isAlive)
+               s.update(playing.level1.getMap(),player);
     }
 
         /*! \fn public void CheckHit(Rectangle2D.Float attackArea,Player player)
@@ -67,10 +79,16 @@ public class EnemyManager {
          */
     public void CheckHit(Rectangle2D.Float attackArea,Player player)
     {
-        for (Max m : max)
+        for (Enemy m : max)
             if(m.isAlive) {
                 if (attackArea.intersects(m.getSolidArea())) {
                     changeEnemyLife(m);
+                }
+            }
+        for (Enemy s : snakes)
+            if(s.isAlive) {
+                if (attackArea.intersects(s.getSolidArea())) {
+                    changeEnemyLife(s);
                 }
             }
     }
@@ -81,24 +99,25 @@ public class EnemyManager {
             În caz contrar, schimbă direcția de mișcare a inamicului la "hurt".
             \param m obiectul Max asupra căruia se aplică schimbarea.
          */
-    public void changeEnemyLife(Max m)
+    public void changeEnemyLife(Enemy e)
     {
-        m.lives--;
-        if(m.lives==0) {
-            m.direction = "dead";
-            m.isAlive=false;
+        e.lives--;
+        if(e.lives==0) {
+            e.direction = "dead";
+            e.isAlive=false;
         }
         else
-            m.direction="hurt";
-
+            e.direction="hurt";
     }
 
         /*! \fn public void resetAll()
             \brief Resetează toți inamicii la starea lor inițială.
          */
     public void resetAll() {
-        for(Max m: max)
+        for(Enemy m: max)
             m.resetEnemy();
+        for(Enemy s: snakes)
+            s.resetEnemy();
     }
 
         /*! \fn public boolean allEnemyAreDead()
@@ -106,10 +125,17 @@ public class EnemyManager {
             \return True dacă toți inamicii sunt morți, False în caz contrar.
          */
     public boolean allEnemyAreDead() {
-        for(Max m : max)
+        boolean ok=true;
+        for(Enemy m : max)
             if (m.getIsAlive())
-                return false;
+                ok=false;
+        for(Enemy s : snakes)
+            if (s.getIsAlive())
+                ok=false;
 
-        return true;
+        if(ok)
+            return true;
+        else
+            return false;
     }
 }

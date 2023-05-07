@@ -49,6 +49,7 @@ import java.awt.image.BufferStrategy;
  */
 public class Game extends JPanel implements Runnable
 {
+    private static Game game=null;
     private static GameWindow      wnd;        /*!< Fereastra in care se va desena tabla jocului*/
     private boolean         runState;   /*!< Flag ce starea firului de executie.*/
     private Thread          gameThread; /*!< Referinta catre thread-ul de update si draw al ferestrei*/
@@ -82,15 +83,20 @@ public class Game extends JPanel implements Runnable
         \param width Latimea ferestrei in pixeli.
         \param height Inaltimea ferestrei in pixeli.
      */
-    public Game(String title, int width, int height)
+    private Game(String title, int width, int height)
     {
         /// Obiectul GameWindow este creat insa fereastra nu este construita
         /// Acest lucru va fi realizat in metoda init() prin apelul
         /// functiei BuildGameWindow();
-        wnd = new GameWindow(title, width, height);
+       // wnd = new GameWindow(title, width, height);
         /// Resetarea flagului runState ce indica starea firului de executie (started/stoped)
         runState = false;
 
+    }
+    public static Game GetInstance() {
+        if (game==null)
+            return new Game("Catventure", Tile.NrTileWidth*Tile.TILE_WIDTH, Tile.NrTileHeight*Tile.TILE_HEIGHT);
+        return game;
     }
 
     /*!
@@ -116,7 +122,7 @@ public class Game extends JPanel implements Runnable
      */
     private void InitGame()
     {
-        wnd = new GameWindow("Schelet Proiect PAOO", Tile.NrTileWidth*Tile.TILE_WIDTH, Tile.NrTileHeight*Tile.TILE_HEIGHT);
+        wnd = new GameWindow("Catventure", Tile.NrTileWidth*Tile.TILE_WIDTH, Tile.NrTileHeight*Tile.TILE_HEIGHT);
         /// Este construita fereastra grafica.
         wnd.BuildGameWindow();
         /// Se incarca toate elementele grafice (dale)

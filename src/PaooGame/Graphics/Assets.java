@@ -69,6 +69,8 @@ public class Assets
     public static BufferedImage [] Max=new BufferedImage[24];
     public static BufferedImage [] MarthaDeath=new BufferedImage[10];
     public static BufferedImage [] BlackSoil=new  BufferedImage[10];
+    public static BufferedImage [] Snake=new  BufferedImage[20];
+
 
 
     /*! \fn public static void Init()
@@ -90,7 +92,9 @@ public class Assets
         SpriteSheet MaxSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/max.png"));
         SpriteSheet MaxSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/maxD.png"));
         SpriteSheet MarthaDeathDSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathD.png"));
-        SpriteSheet MarthaDeathSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathS.png"));
+        //SpriteSheet MarthaDeathSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathS.png"));
+        SpriteSheet SnakeSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/sarpe_drt.png"));
+        SpriteSheet SnakeSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/sarpe_stg.png"));
 
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
@@ -209,5 +213,33 @@ public class Assets
         MarthaDeath[5]=MarthaDeathDSheet.crop2(31,0,29,13);
         MarthaDeath[6]=MarthaDeathDSheet.crop2(63,0,29,12);
         MarthaDeath[7]=ImageLoader.LoadImage("/textures/MarthaDeathS0.png");
+
+        //Mers dreapta
+        Snake[0]=SnakeSheetD.crop2(43,86,10,10);
+        Snake[1]=SnakeSheetD.crop2(74,86,13,10);
+        Snake[2]=SnakeSheetD.crop2(107,86,14,10);
+        Snake[3]=SnakeSheetD.crop2(140,86,13,10);
+        Snake[4]=SnakeSheetD.crop2(171,85,12,11);
+        //Mers stanga
+        Snake[5]=SnakeSheetS.crop2(267,86,10,10);
+        Snake[6]=SnakeSheetS.crop2(233,86,13,10);
+        Snake[7]=SnakeSheetS.crop2(199,86,14,10);
+        Snake[8]=SnakeSheetS.crop2(167,86,13,10);
+        Snake[9]=SnakeSheetS.crop2(137,85,12,11);
+        //atac dreapta
+        Snake[10]=SnakeSheetD.crop2(10,118,12,10);
+        Snake[11]=SnakeSheetD.crop2(43,120,13,8);
+        Snake[12]=SnakeSheetD.crop2(75,120,15,8);
+        Snake[13]=SnakeSheetD.crop2(106,119,18,8);
+        Snake[14]=SnakeSheetD.crop2(136,119,17,8);
+        //atac stanga
+        Snake[15]=SnakeSheetS.crop2(298,118,12,10);
+        Snake[16]=SnakeSheetS.crop2(264,118,13,10);
+        Snake[17]=SnakeSheetS.crop2(230,118,15,10);
+        Snake[18]=SnakeSheetS.crop2(196,118,18,9);
+        Snake[19]=SnakeSheetS.crop2(167,118,17,10);
+
+
+
     }
 }

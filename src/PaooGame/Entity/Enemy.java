@@ -1,6 +1,7 @@
 package PaooGame.Entity;
 import PaooGame.Tiles.Tile;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 import static PaooGame.Entity.Collision.*;
@@ -23,6 +24,8 @@ public abstract class Enemy extends Entity{
     protected boolean isAlive=true; ///Starea vieții. Această variabilă este utilizată pentru a indica dacă inamicul este încă în viață sau nu.
     protected boolean attackChecked;  ///Starea verificării atacului. Această variabilă este utilizată pentru a indica dacă atacul a fost verificat sau nu.
     public int lives; ///Numărul de vieți ale inamicului.
+    protected Rectangle2D.Float attackArea; /// Zona de atac a inamicului Max, reprezentată ca un obiect de tip Rectangle2D.Float.
+    protected int attackAreaOffsetX; ///Offset-ul în pixeli față de zona solidă a inamicului Max pentru a plasa zona de atac în mod corespunzător.
 
         /*! \fn public Enemy(int x, int y, int s, int type,String dir)
             \brief Constructorul clasei.
@@ -137,9 +140,9 @@ public abstract class Enemy extends Entity{
         if(attackArea.intersects(player.solidArea)) {
             player.changeLife();
             if(Objects.equals(player.lastPressed, "right"))
-                player.changeCoord((int)solidArea.x-50,(int)solidArea.y);
+                player.changeCoord((int)solidArea.x-50,(int)player.solidArea.y);
             else
-                player.changeCoord((int)solidArea.x+50,(int)solidArea.y);
+                player.changeCoord((int)solidArea.x+50,(int)player.solidArea.y);
 
         }
         attackChecked=true;
@@ -266,4 +269,80 @@ public abstract class Enemy extends Entity{
     {
         return isAlive;
     }
-}
+        /*! \fn private void initAttackArea()
+
+            \Inițializează zona de atac asociată entității.
+            \attackArea o formă rectangulară 2D ce reprezintă zona de atac
+            \attackAreaOffsetX o valoare numerică ce reprezintă offset-ul poziției x a zonei de atac
+        */
+        protected void initAttackArea(int width,int height,int offset) {
+            attackArea=new Rectangle2D.Float(x,y,width,height);
+            attackAreaOffsetX=offset;
+        }
+        /*! \fn public void update(int[][] map,Player player)
+           \brief Metoda de actualizare a stării inamicului Snake.
+
+           \ map harta jocului în format matrice de intregi
+           \ player jucătorul din joc
+
+           Metoda actualizează starea inamicului Snake prin apelarea a trei metode ajutătoare:
+           updateWalk() - actualizează poziția și starea de deplasare a inamicului;
+           updateCounter() - actualizează numărul de cadre până la următoarea acțiune a inamicului;
+           updateAttackArea() - actualizează poziția și dimensiunile zonei de atac a inamicului.
+       */
+        public void update(int[][] map,Player player) {
+            updateWalk(map,player);
+            updateCounter();
+            updateAttackArea();
+        }
+
+        /*! \fn public void updateAttackArea()
+            Actualizează poziția zonei de atac în funcție de poziția zonei solide.
+        */
+        public void updateAttackArea()
+        {
+            attackArea.x=solidArea.x-attackAreaOffsetX;
+            attackArea.y=solidArea.y-10;
+        }
+
+        /*! \fn public void updateWalk(int[][] map,Player player)
+        \brief Actualizează poziția și mișcarea inamicului.
+        Funcția verifică starea inamicului și actualizează direcția de deplasare și acțiunile în funcție de aceasta.
+        - Dacă inamicul nu s-a mișcat încă, se actualizează poziția.
+        - Dacă inamicul se află în aer, se apelează funcția InAir().
+        - Dacă inamicul este în stare de repaus, se va deplasa spre stânga și va căuta jucătorul.
+        - Dacă inamicul este în stare de atac, se verifică dacă jucătorul este în raza de acțiune a atacului și se efectuează atacul.
+        - Dacă inamicul este rănit, nu se face nimic.
+        \param map Matricea de tip Tile ce reprezintă harta nivelului curent.
+        \param player Obiectul de tip Player ce reprezintă jucătorul.
+        */
+        public void updateWalk(int[][] map,Player player) {
+            if (first)
+                firstUpdate(map);
+            if (inAir)
+                InAir(map);
+            else {
+                if(Objects.equals(direction, "idle"))
+                    direction="left";
+                else if(Objects.equals(direction, "right") || Objects.equals(direction, "left"))
+                {
+                    if (PlayerIsClose(map, player)){
+                        TurnToPlayer(player);
+                        if (CanAttack(player)) {
+                            lastDir = direction;
+                            direction = "attack";
+                        }
+                    }
+                    moveEnemy(map);
+                } else if (Objects.equals(direction, "attack")) {
+                    if(num==1)
+                        attackChecked=false;
+                    if(num==2 && !attackChecked)
+                        checkPlayerHit(attackArea,player);
+                } else if (Objects.equals(direction, "hurt")) {
+
+                }
+            }
+        }
+        public abstract void drawIndividual(Graphics g, int xLvlOffset);
+} 

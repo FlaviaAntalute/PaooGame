@@ -5,7 +5,7 @@ public class Constants {
         public static final int MAX=0;
         public static final int MaxXOffset=17;
         public static final int MaxYOffset=15;
-
+        public static final int SNAKE=0;
     }
 
     public static class PlayerConstants{

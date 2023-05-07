@@ -4,7 +4,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Game paooGame = new Game("Catventure", 800, 608);
+        Game paooGame = Game.GetInstance();
         paooGame.StartGame();
     }
 }
