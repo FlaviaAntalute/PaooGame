@@ -5,14 +5,15 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 import static PaooGame.Entity.Collision.*;
+import static PaooGame.Useful.Constants.EnemyConstants.REX;
 
-    /*! \class public abstract class Enemy extends Entity{
-        \brief Clasa abstractă pentru entitățile inamice din joc.
+/*! \class public abstract class Enemy extends Entity{
+    \brief Clasa abstractă pentru entitățile inamice din joc.
 
-        Clasa Enemy este o clasă abstractă care servește drept bază pentru toate entitățile inamice din joc.
-         Ea moștenește clasa Entity și adaugă câmpuri și metode specifice pentru inamici.
+    Clasa Enemy este o clasă abstractă care servește drept bază pentru toate entitățile inamice din joc.
+     Ea moștenește clasa Entity și adaugă câmpuri și metode specifice pentru inamici.
 
-     */
+ */
 public abstract class Enemy extends Entity{
     protected int enemyType; /// Tipul inamicului. Această variabilă este folosită pentru a distinge între diferitele tipuri de inamici.
     protected boolean first=true; /// Starea primului update. Această variabilă este utilizată pentru a asigura că metodele specifice inamicului nu sunt apelate înainte ca entitatea să fie inițializată.
@@ -26,6 +27,9 @@ public abstract class Enemy extends Entity{
     public int lives; ///Numărul de vieți ale inamicului.
     protected Rectangle2D.Float attackArea; /// Zona de atac a inamicului Max, reprezentată ca un obiect de tip Rectangle2D.Float.
     protected int attackAreaOffsetX; ///Offset-ul în pixeli față de zona solidă a inamicului Max pentru a plasa zona de atac în mod corespunzător.
+    public boolean isHurt=false;
+
+
 
         /*! \fn public Enemy(int x, int y, int s, int type,String dir)
             \brief Constructorul clasei.
@@ -254,7 +258,7 @@ public abstract class Enemy extends Entity{
         fall=0;
         direction="idle";
         isAlive=true;
-
+        isHurt=false;
     }
 //    public String getDirection()
 //    {
@@ -333,14 +337,16 @@ public abstract class Enemy extends Entity{
                             direction = "attack";
                         }
                     }
-                    moveEnemy(map);
+                    if(this.enemyType!=REX)
+                        moveEnemy(map);
                 } else if (Objects.equals(direction, "attack")) {
                     if(num==1)
                         attackChecked=false;
                     if(num==2 && !attackChecked)
                         checkPlayerHit(attackArea,player);
                 } else if (Objects.equals(direction, "hurt")) {
-
+                    if(enemyType==2)
+                        direction="calm";
                 }
             }
         }

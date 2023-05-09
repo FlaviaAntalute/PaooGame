@@ -32,7 +32,6 @@ public class Max extends Enemy {
 
     }
 
-
         /*! \fn public void drawMax(Graphics g, int xLvlOffset)
          \brief Desenează sprite-ul corespunzător stării și direcției entității Max.
 

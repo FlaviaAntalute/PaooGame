@@ -242,4 +242,8 @@ public class Playing extends State implements StateMethods{
     public void getGameWon(boolean value) {
         gameWon=true;
     }
+
+    public EnemyManager getEnemyManager() {
+        return enemyManager;
+    }
 }

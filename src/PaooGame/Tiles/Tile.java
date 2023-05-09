@@ -58,6 +58,8 @@ public class Tile
     public static Tile bone = new bone(40);
     public static Tile max=new max(41);
     public static Tile snake=new snake(42);
+    public static Tile rex=new rex(43);
+
 
 
 

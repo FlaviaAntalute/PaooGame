@@ -70,7 +70,7 @@ public class Assets
     public static BufferedImage [] MarthaDeath=new BufferedImage[10];
     public static BufferedImage [] BlackSoil=new  BufferedImage[10];
     public static BufferedImage [] Snake=new  BufferedImage[20];
-
+    public static BufferedImage [] Rex=new  BufferedImage[20];
 
 
     /*! \fn public static void Init()
@@ -95,6 +95,8 @@ public class Assets
         //SpriteSheet MarthaDeathSSheet=new SpriteSheet(ImageLoader.LoadImage("/textures/MarthaDeathS.png"));
         SpriteSheet SnakeSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/sarpe_drt.png"));
         SpriteSheet SnakeSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/sarpe_stg.png"));
+        SpriteSheet RexSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/RexD.png"));
+        SpriteSheet RexSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/RexS.png"));
 
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
@@ -238,6 +240,36 @@ public class Assets
         Snake[17]=SnakeSheetS.crop2(230,118,15,10);
         Snake[18]=SnakeSheetS.crop2(196,118,18,9);
         Snake[19]=SnakeSheetS.crop2(167,118,17,10);
+
+        //idle dreapta
+        Rex[0]=RexSheetD.crop2(772,17,52,31);
+        Rex[1]=RexSheetD.crop2(708,17,52,31);
+        Rex[2]=RexSheetD.crop2(645,17,51,31);
+        Rex[3]=RexSheetD.crop2(581,17,50,31);
+        Rex[4]=RexSheetD.crop2(521,17,50,31);
+        //idle stanga
+        Rex[5]=RexSheetS.crop2(8,17,52,31);
+        Rex[6]=RexSheetS.crop2(72,17,52,31);
+        Rex[7]=RexSheetS.crop2(136,17,51,31);
+        Rex[8]=RexSheetS.crop2(201,17,50,31);
+        Rex[9]=RexSheetS.crop2(264,17,50,31);
+        //jos dreapta
+        Rex[10]=RexSheetD.crop2(716,256,46,32);
+        Rex[11]=RexSheetD.crop2(649,256,46,32);
+        Rex[12]=RexSheetD.crop2(586,256,47,32);
+        Rex[13]=RexSheetD.crop2(523,256,47,32);
+        //jos stanga
+        Rex[14]=RexSheetS.crop2(74 ,256,46,32);
+        Rex[15]=RexSheetS.crop2(137,256,46,32);
+        Rex[16]=RexSheetS.crop2(198,256,47,32);
+        Rex[17]=RexSheetS.crop2(262,256,47,32);
+
+        //latrat stanga
+        Rex[18]=RexSheetS.crop2(8,256,47,32);
+        //latrat dreapta
+        Rex[19]=RexSheetD.crop2(777,256,47,32);
+
+
 
 
 

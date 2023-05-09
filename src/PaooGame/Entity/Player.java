@@ -2,6 +2,7 @@ package PaooGame.Entity;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import PaooGame.Game;
@@ -10,6 +11,7 @@ import PaooGame.Graphics.Assets;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.Level;
 import PaooGame.Levels.Points;
+import PaooGame.Tiles.Tile;
 
 import javax.xml.transform.SourceLocator;
 
@@ -104,7 +106,9 @@ public class Player extends Entity {
                 return;
             }
 
+
             updatePosition();
+
             updateAttackArea();
             if (Objects.equals(direction, "attack"))
                 checkAttack();
@@ -113,6 +117,14 @@ public class Player extends Entity {
             IsMouse(getSolidArea(), mouse,this);
             IsBone(getSolidArea(), level,this,keyH);
             IsWater(this, this.map);
+        }
+
+        private boolean Intersect( ArrayList<Enemy> rex) {
+            for(Enemy r: rex)
+                if ((!r.isHurt && solidArea.intersects(r.solidArea)) ) {
+                        return true;
+                }
+            return false;
         }
 
         /*!
@@ -256,7 +268,7 @@ public class Player extends Entity {
 
         */
     private void updateXPos(float xSpeed) {
-        if(CanMoveHere(getSolidArea().x+xSpeed,getSolidArea().y,getSolidArea().width,getSolidArea().height,map))
+        if(CanMoveHere(getSolidArea().x+xSpeed,getSolidArea().y,getSolidArea().width,getSolidArea().height,map) && !Intersect(playing.getEnemyManager().getRex()))
             getSolidArea().x+=xSpeed;
     }
         /*! \fn public void draw(Graphics g,int lvlOffset)
@@ -489,5 +501,9 @@ public class Player extends Entity {
         if (!IsEntityOnFloor(getSolidArea(), map))
             inAir = true;
   }
-}
+
+        public Points getPoints() {
+            return points;
+        }
+    }
 

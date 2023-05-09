@@ -39,19 +39,7 @@ public class Points {
         g.setFont(f1);
         g.drawChars(msg,0, msg.length, 240,35);
     }
-    public  void addBone()
-    {
-        isBone=true;
-    }
-    public  boolean wining(Graphics g,Level level)
-    {
-        if(level.getPoints()==Points)
-            level.setWin();
-        else
-            return false;
 
-        return true;
-    }
     public int getPoints()
     {
         return Points;
@@ -65,4 +53,7 @@ public class Points {
         isBone=p;
     }
 
- }
+    public boolean getBone() {
+        return isBone;
+    }
+}

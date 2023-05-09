@@ -7,6 +7,8 @@ public class EnemyFactory {
             return new Max(x,y,s,direction);
         else if (type=="Snake")
             return new Snake(x,y,s,direction);
+        else if(type=="Rex")
+            return new Rex(x,y,s,direction);
         else
             throw new IllegalArgumentException("Tip de inamic necunoscut:"+type);
     }

@@ -5,12 +5,14 @@ public class Constants {
         public static final int MAX=0;
         public static final int MaxXOffset=17;
         public static final int MaxYOffset=15;
-        public static final int SNAKE=0;
+        public static final int SNAKE=1;
+        public static final int REX=2;
+
     }
 
     public static class PlayerConstants{
-        public static final int STARTX=50;
-        public static final int STARTY=513;
+        public static final int STARTX=600;
+        public static final int STARTY=70;
         public static final String STARTDIR="right";
         public static final int SPEED=3;
 

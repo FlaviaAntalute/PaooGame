@@ -4,6 +4,7 @@ import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static PaooGame.Entity.Mouse.getyOffset;
@@ -148,7 +149,7 @@ public class Collision {
         float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
         if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.bone.GetId() && player.collectPressed) {
             level.setId((int) yIndex, (int) xIndex, 0);
-            Player.points.addBone();
+            Player.points.setBone(true);
         }
     }
 

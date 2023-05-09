@@ -14,6 +14,7 @@ public class EnemyManager {
     private Playing playing; /// Referință către instanța curentă a jocului.
     private ArrayList<Enemy> max=new ArrayList<>(); ///Lista de obiecte Max, care reprezintă inamicii.
     private ArrayList<Enemy> snakes=new ArrayList<>(); ///Lista de obiecte Max, care reprezintă inamicii.
+    private ArrayList<Enemy> rex=new ArrayList<>(); ///Lista de obiecte Max, care reprezintă inamicii.
 
         /*! \fn public EnemyManager(Playing playing)
             \brief Constructorul clasei EnemyManager.
@@ -37,7 +38,10 @@ public class EnemyManager {
                     max.add( factory.createEnemy("Max",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
                 }
                 else if (playing.level1.getMap()[i][j] == Tile.snake.GetId()) {
-                    snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
+                    snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 1, "idle"));
+                }
+                else if (playing.level1.getMap()[i][j] == Tile.rex.GetId()) {
+                    rex.add( factory.createEnemy("Rex",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "right"));
                 }
             }
         }
@@ -49,12 +53,16 @@ public class EnemyManager {
             \ xLvlOffset offset-ul orizontal al nivelului.
          */
     public void draw(Graphics g, int xLvlOffset) {
-       for(Enemy m: max)
-           if(m.isAlive)
-                m.drawIndividual(g,xLvlOffset);
-       for(Enemy s: snakes)
-           if(s.isAlive)
-               s.drawIndividual(g,xLvlOffset);
+        drawEach(g,xLvlOffset,max);
+        drawEach(g,xLvlOffset,snakes);
+        drawEach(g,xLvlOffset,rex);
+
+    }
+    public static void drawEach(Graphics g, int xLvlOffset,ArrayList<Enemy> ar)
+    {
+        for(Enemy e: ar)
+            if(e.isAlive)
+                e.drawIndividual(g,xLvlOffset);
     }
 
         /*! \fn public void update(Player player)
@@ -70,6 +78,9 @@ public class EnemyManager {
         for(Enemy s: snakes)
             if(s.isAlive)
                s.update(playing.level1.getMap(),player);
+        for(Enemy r: rex)
+            if(r.isAlive)
+                r.update(playing.level1.getMap(),player);
     }
 
         /*! \fn public void CheckHit(Rectangle2D.Float attackArea,Player player)
@@ -91,6 +102,13 @@ public class EnemyManager {
                     changeEnemyLife(s);
                 }
             }
+        for (Enemy r : rex)
+            if(r.isAlive) {
+                if (attackArea.intersects(r.getSolidArea()) && player.getPoints().getBone()) {
+                    changeEnemyLife(r);
+                }
+            }
+
     }
         /*! \fn public void changeEnemyLife(Max m)
             \brief Scade viața inamicului cu 1.
@@ -103,8 +121,14 @@ public class EnemyManager {
     {
         e.lives--;
         if(e.lives==0) {
-            e.direction = "dead";
-            e.isAlive=false;
+            if(e.enemyType==2) {
+                e.direction = "hurt";
+                e.isHurt=true;
+            }
+            else {
+                e.direction = "dead";
+                e.isAlive = false;
+            }
         }
         else
             e.direction="hurt";
@@ -118,8 +142,14 @@ public class EnemyManager {
             m.resetEnemy();
         for(Enemy s: snakes)
             s.resetEnemy();
+        for(Enemy r: rex)
+            r.resetEnemy();
     }
 
+    ArrayList<Enemy> getRex()
+    {
+        return rex;
+    }
         /*! \fn public boolean allEnemyAreDead()
             \brief Verifică dacă toți inamicii sunt morți.
             \return True dacă toți inamicii sunt morți, False în caz contrar.
@@ -132,7 +162,9 @@ public class EnemyManager {
         for(Enemy s : snakes)
             if (s.getIsAlive())
                 ok=false;
-
+        for(Enemy r : rex)
+            if(!r.isHurt)
+                ok=false;
         if(ok)
             return true;
         else
