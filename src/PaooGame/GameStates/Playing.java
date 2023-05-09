@@ -3,7 +3,9 @@ package PaooGame.GameStates;
 import PaooGame.Entity.EnemyManager;
 import PaooGame.Entity.Mouse;
 import PaooGame.Entity.Player;
+import PaooGame.Exceptions.IndexOutOfRangeException;
 import PaooGame.Game;
+import PaooGame.Graphics.Assets;
 import PaooGame.Graphics.Background;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inteface.GameOverScreen;
@@ -16,8 +18,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
+import static PaooGame.Exceptions.IndexOutOfRangeException.handleException;
 import static PaooGame.Levels.Lives.drawLives;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
+import static java.awt.Font.BOLD;
 
 public class Playing extends State implements StateMethods{
     private static Player Martha; /// jucătorul controlat de utilizator
@@ -115,14 +119,15 @@ public class Playing extends State implements StateMethods{
     */
     @Override
     public void draw(Graphics g) {
-        Background.drawBgT(g,xLvlOffset);
-        level1.GetMap().drawMap(g,xLvlOffset);
-        mouse.draw(g,xLvlOffset);
-        Martha.draw(g,xLvlOffset);
-        Player.points.PrintPoints(g,level1);
-        Player.points.PrintBone(g);
-        drawLives(g,xLvlOffset,Martha);
-        enemyManager.draw(g,xLvlOffset);
+        try {
+            Background.drawBgT(g, xLvlOffset);
+            level1.GetMap().drawMap(g, xLvlOffset);
+            mouse.draw(g, xLvlOffset);
+            Martha.draw(g, xLvlOffset);
+            Player.points.PrintPoints(g, level1);
+            this.PrintBone(g);
+            drawLives(g, xLvlOffset, Martha);
+            enemyManager.draw(g, xLvlOffset);
 
         if(gameOver)
         {
@@ -132,8 +137,25 @@ public class Playing extends State implements StateMethods{
         {
             gameWonScreen.draw(g);
         }
-    }
+        }catch (IndexOutOfRangeException e)
+        {
+            handleException(e);
+            game.StopGame();
 
+        }
+
+    }
+    public void PrintBone(Graphics g)
+    {
+        Font f1=new Font("font1", BOLD,18);
+        int is=0;
+        if(Martha.getHasBone())
+            is=1;
+        char []msg=("Bone:  "+is).toCharArray();
+        g.setColor(Color.RED);
+        g.setFont(f1);
+        g.drawChars(msg,0, msg.length, 240,35);
+    }
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -239,7 +261,7 @@ public class Playing extends State implements StateMethods{
 
     }
 
-    public void getGameWon(boolean value) {
+    public void setGameWon(boolean value) {
         gameWon=true;
     }
 

@@ -1,5 +1,8 @@
 package PaooGame.Graphics;
 
+import PaooGame.Exceptions.IncorectPathException;
+import PaooGame.Exceptions.IndexCropException;
+
 import java.awt.image.BufferedImage;
 
 /*! \class public class SpriteSheet
@@ -19,10 +22,9 @@ public class SpriteSheet
 
         \param img Un obiect BufferedImage valid.
      */
-    public SpriteSheet(BufferedImage buffImg)
-    {
-        /// Retine referinta catre BufferedImage object.
-        spriteSheet = buffImg;
+    public SpriteSheet(BufferedImage buffImg)    {
+            /// Retine referinta catre BufferedImage object.
+            spriteSheet = buffImg;
     }
 
     /*! \fn public BufferedImage crop(int x, int y)
@@ -33,19 +35,32 @@ public class SpriteSheet
         \param x numarul dalei din sprite sheet pe axa x.
         \param y numarul dalei din sprite sheet pe axa y.
      */
-    public BufferedImage crop(int x, int y)
+    public BufferedImage crop(int x, int y)throws IndexCropException
     {
-        /// Subimaginea (dala) este regasita in sprite sheet specificad coltul stanga sus
-        /// al imaginii si apoi latimea si inaltimea (totul in pixeli). Coltul din stanga sus al imaginii
-        /// se obtine inmultind numarul de ordine al dalei cu dimensiunea in pixeli a unei dale.
-        return spriteSheet.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+        try {
+            /// Subimaginea (dala) este regasita in sprite sheet specificad coltul stanga sus
+            /// al imaginii si apoi latimea si inaltimea (totul in pixeli). Coltul din stanga sus al imaginii
+            /// se obtine inmultind numarul de ordine al dalei cu dimensiunea in pixeli a unei dale.
+            return spriteSheet.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+        }
+        catch (Exception e){
+            throw new IndexCropException(e.getMessage());
+        }
     }
-    public BufferedImage crop1(int x, int y,int Width, int Height)
-    {
+    public BufferedImage crop1(int x, int y,int Width, int Height)throws IndexCropException
+    { try {
         return spriteSheet.getSubimage(x * Width, y * Height,Width,Height);
     }
-    public BufferedImage crop2(int x, int y,int Width, int Height)
-    {
+    catch (Exception e){
+        throw new IndexCropException(e.getMessage());
+    }
+    }
+    public BufferedImage crop2(int x, int y,int Width, int Height)throws IndexCropException
+    { try {
         return spriteSheet.getSubimage(x, y ,Width,Height);
+    }
+    catch (Exception e){
+        throw new IndexCropException(e.getMessage());
+    }
     }
 }

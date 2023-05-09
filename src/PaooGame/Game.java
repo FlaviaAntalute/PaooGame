@@ -83,7 +83,7 @@ public class Game extends JPanel implements Runnable
         \param width Latimea ferestrei in pixeli.
         \param height Inaltimea ferestrei in pixeli.
      */
-    private Game(String title, int width, int height)
+    private Game()
     {
         /// Obiectul GameWindow este creat insa fereastra nu este construita
         /// Acest lucru va fi realizat in metoda init() prin apelul
@@ -95,7 +95,7 @@ public class Game extends JPanel implements Runnable
     }
     public static Game GetInstance() {
         if (game==null)
-            return new Game("Catventure", Tile.NrTileWidth*Tile.TILE_WIDTH, Tile.NrTileHeight*Tile.TILE_HEIGHT);
+            return new Game();
         return game;
     }
 
@@ -351,5 +351,6 @@ public class Game extends JPanel implements Runnable
         ///  Returnează obiectul Playing pentru jocul în sine.
         return playing;
     }
+
 }
 

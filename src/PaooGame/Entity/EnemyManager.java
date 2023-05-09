@@ -104,8 +104,9 @@ public class EnemyManager {
             }
         for (Enemy r : rex)
             if(r.isAlive) {
-                if (attackArea.intersects(r.getSolidArea()) && player.getPoints().getBone()) {
+                if (attackArea.intersects(r.getSolidArea()) && player.getHasBone()) {
                     changeEnemyLife(r);
+                    player.loseBone();
                 }
             }
 

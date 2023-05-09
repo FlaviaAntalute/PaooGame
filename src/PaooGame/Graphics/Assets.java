@@ -1,6 +1,12 @@
 package PaooGame.Graphics;
 
+import PaooGame.Exceptions.IncorectPathException;
+import PaooGame.Exceptions.IndexCropException;
+
 import java.awt.image.BufferedImage;
+
+import static PaooGame.Exceptions.IndexCropException.handleException;
+import static PaooGame.Exceptions.IncorectPathException.handleException;
 
 /*! \class public class Assets
     \brief Clasa incarca fiecare element grafic necesar jocului.
@@ -81,6 +87,7 @@ public class Assets
      */
     public static void Init()
     {
+        try {
         /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/textures/TilesNonSliced.png"));
         SpriteSheet mouseSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/mouse_right.png"));
@@ -100,37 +107,38 @@ public class Assets
 
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
-        grass1 = sheet.crop(0, 0);
-        grass2 = sheet.crop(1, 0);
-        grass3 = sheet.crop(2, 0);
-        grass4 = sheet.crop(0, 6);
-        grass5 = sheet.crop(4, 6);
-        grass6 = sheet.crop(1, 5);
+            grass1 = sheet.crop(0, 0);
+            grass2 = sheet.crop(1, 0);
+            grass3 = sheet.crop(2, 0);
+            grass4 = sheet.crop(0, 6);
+            grass5 = sheet.crop(4, 6);
+            grass6 = sheet.crop(1, 5);
 
-        water = sheet.crop(6, 4);
-        water1= sheet.crop(6,5);
-        water2= sheet.crop(6,6);
+            water = sheet.crop(6, 4);
+            water1 = sheet.crop(6, 5);
+            water2 = sheet.crop(6, 6);
 
-        soil = sheet.crop(1, 1);
-        soil1 = sheet.crop(0, 2);
-        soil2= sheet.crop(2, 2);
-        soil3 = sheet.crop(1, 2);
-        soil4 = sheet.crop(2, 1);
-        soil5 = sheet.crop(0, 1);
+            soil = sheet.crop(1, 1);
+            soil1 = sheet.crop(0, 2);
+            soil2 = sheet.crop(2, 2);
+            soil3 = sheet.crop(1, 2);
+            soil4 = sheet.crop(2, 1);
+            soil5 = sheet.crop(0, 1);
 
 
-        soilPlatform=sheet.crop(2,3);
+            soilPlatform = sheet.crop(2, 3);
 
-        BlackSoil[0] = sheet.crop(7, 0);
-        BlackSoil[1] = sheet.crop(8, 0);
-        BlackSoil[2]=sheet.crop(9, 0);
-        BlackSoil[3] = sheet.crop(7, 1);
-        BlackSoil[4] = sheet.crop(8, 1);
-        BlackSoil[5] = sheet.crop(9, 1);
-        BlackSoil[6] = sheet.crop(7, 2);
-        BlackSoil[7] = sheet.crop(8, 2);
-        BlackSoil[8] = sheet.crop(9, 2);
-        BlackSoil[9] = sheet.crop(10, 6);
+            BlackSoil[0] = sheet.crop(7, 0);
+            BlackSoil[1] = sheet.crop(8, 0);
+            BlackSoil[2] = sheet.crop(9, 0);
+            BlackSoil[3] = sheet.crop(7, 1);
+            BlackSoil[4] = sheet.crop(8, 1);
+            BlackSoil[5] = sheet.crop(9, 1);
+            BlackSoil[6] = sheet.crop(7, 2);
+            BlackSoil[7] = sheet.crop(8, 2);
+            BlackSoil[8] = sheet.crop(9, 2);
+            BlackSoil[9] = sheet.crop(10, 6);
+
 
 
         M_walkD0=ImageLoader.LoadImage("/textures/M_walkD0.png");
@@ -270,7 +278,12 @@ public class Assets
         Rex[19]=RexSheetD.crop2(777,256,47,32);
 
 
-
+        }catch (IndexCropException e){
+            handleException(e);
+        }catch (IncorectPathException e)
+        {
+            handleException(e);
+        }
 
 
     }

@@ -13,7 +13,7 @@ import PaooGame.Game;
     Variabila care stochează instanța de joc.
 
      */
-public class State {
+public abstract class State {
     protected Game game;
 
     /*!

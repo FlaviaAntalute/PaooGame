@@ -1,5 +1,7 @@
 package PaooGame.Graphics;
 
+import PaooGame.Exceptions.IncorectPathException;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,7 +19,7 @@ public class ImageLoader
 
         \param path Calea relativa pentru localizarea fisierul imagine.
      */
-    public static BufferedImage LoadImage(String path)
+    public static BufferedImage LoadImage(String path)throws IncorectPathException
     {
         /// Avand in vedere exista situatii in care fisierul sursa sa nu poate fi accesat
         /// metoda read() arunca o excpetie ce trebuie tratata
@@ -29,12 +31,14 @@ public class ImageLoader
             /// proiectului sub forma de fisiere sursa.
             return ImageIO.read(ImageLoader.class.getResource(path));
         }
-        catch(IOException e)
+        catch(Exception e)
         {
+            throw new IncorectPathException("NULL IMAGE! INCORECT PATH");
             /// Afiseaza informatiile necesare depanarii.
-            e.printStackTrace();
+           // e.printStackTrace();
         }
-        return null;
+
+
     }
 }
 

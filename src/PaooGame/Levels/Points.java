@@ -6,10 +6,10 @@ import static java.awt.Font.BOLD;
 
 public class Points {
     private  int Points=0;
-    private  boolean isBone=false;
+//    private  boolean isBone=false;
     public Points()
     {
-        isBone=false;
+//        isBone=false;
         Points =0;
     }
     public  void addPointsFish()
@@ -28,17 +28,7 @@ public class Points {
         g.setFont(f1);
         g.drawChars(msg,0, msg.length, 120,35);
     }
-    public  void PrintBone(Graphics g)
-    {
-        Font f1=new Font("font1", BOLD,18);
-        int is=0;
-        if(isBone)
-            is=1;
-        char []msg=("Bone:  "+is).toCharArray();
-        g.setColor(Color.RED);
-        g.setFont(f1);
-        g.drawChars(msg,0, msg.length, 240,35);
-    }
+
 
     public int getPoints()
     {
@@ -48,12 +38,12 @@ public class Points {
     {
          Points=p;
     }
-    public void setBone(boolean p)
-    {
-        isBone=p;
-    }
-
-    public boolean getBone() {
-        return isBone;
-    }
+//    public void setBone(boolean p)
+//    {
+//        isBone=p;
+//    }
+//
+//    public boolean getBone() {
+//        return isBone;
+//    }
 }

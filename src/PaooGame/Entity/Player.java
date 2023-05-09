@@ -5,17 +5,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import PaooGame.Game;
+import PaooGame.Exceptions.BoneNotHereException;
 import PaooGame.GameStates.Playing;
 import PaooGame.Graphics.Assets;
 import PaooGame.Inputs.KeyHandler;
-import PaooGame.Levels.Level;
-import PaooGame.Levels.Points;
-import PaooGame.Tiles.Tile;
-
-import javax.xml.transform.SourceLocator;
+import PaooGame.Levels.*;
 
 import static PaooGame.Entity.Collision.*;
+import static PaooGame.Exceptions.BoneNotHereException.handleException;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
 
     /*! \class Player
@@ -23,7 +20,9 @@ import static PaooGame.Useful.Constants.PlayerConstants.*;
     Clasa Player moștenește clasa Entity și conține toate datele și metodele necesare
     pentru a descrie comportamentul jucătorului.
     */
-public class Player extends Entity {
+public class Player extends Entity implements Subject {
+    private ArrayList<Observer> observers =new ArrayList<>();
+    private boolean hasBone=false;
     private KeyHandler keyH;  /// KeyHandler este un obiect care se ocupă de gestionarea tastelor
     public boolean leftPressed,rightPressed,upPressed,attackPressed,collectPressed; /// Starea tastelor
     private int [][] map; /// Mapa jocului
@@ -56,6 +55,8 @@ public class Player extends Entity {
     public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map,Playing playing) {
         super(x, y,speed,dir);
         points=new Points();
+        BoneObserver boneObserver=new BoneObserver();
+        this.registerObserver(boneObserver);
         this.keyH = keyH;
         this.playing=playing;
         initSolidArea(x,y,25,30);
@@ -98,7 +99,7 @@ public class Player extends Entity {
     public void update(Level level,Mouse mouse,EnemyManager enemyManager) {
 
             if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead())
-                playing.getGameWon(true);
+                playing.setGameWon(true);
 
             if (lives <= 0) {
                 playing.SetGameOver(true);
@@ -115,7 +116,12 @@ public class Player extends Entity {
 
             IsFish(getSolidArea(), level,this);
             IsMouse(getSolidArea(), mouse,this);
-            IsBone(getSolidArea(), level,this,keyH);
+            try {
+                IsBone(getSolidArea(), level,this,keyH);
+            }catch (BoneNotHereException e)
+            {
+                handleException(e);
+            }
             IsWater(this, this.map);
         }
 
@@ -472,9 +478,7 @@ public class Player extends Entity {
     {
         return lives;
     }
-//    public boolean getCollectPressed(){
-//        return collectPressed;
-//    }
+
 
         /*!
 
@@ -497,13 +501,36 @@ public class Player extends Entity {
         attackArea.x=x;
         attackArea.y=y;
         points.setPoints(0);
-        points.setBone(false );
+//        points.setBone(false );
         if (!IsEntityOnFloor(getSolidArea(), map))
             inAir = true;
   }
 
         public Points getPoints() {
             return points;
+        }
+        public void collectBone(){
+            hasBone=true;
+            notifyObservers();
+        }
+        public void loseBone(){
+            hasBone=false;
+            notifyObservers();
+        }
+        public boolean getHasBone()
+        {
+            return hasBone;
+        }
+        public void registerObserver(Observer observer) {
+            observers.add(observer);
+        }
+        public void removeObserver(Observer observer) {
+            observers.remove(observer);
+        }
+        public void notifyObservers() {
+            for (Observer observer : observers) {
+                observer.update(hasBone);
+            }
         }
     }
 
