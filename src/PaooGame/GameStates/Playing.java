@@ -10,6 +10,7 @@ import PaooGame.Graphics.Background;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inteface.GameOverScreen;
 import PaooGame.Inteface.GameWonScreen;
+import PaooGame.Inteface.PauseScreen;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
@@ -38,7 +39,8 @@ public class Playing extends State implements StateMethods{
     private GameOverScreen gameOverScreen;// ecranul de sfârșit de joc cu eșec
     public boolean gameWon=false; // indica dacă jocul s-a terminat cu succes
     private GameWonScreen gameWonScreen;// ecranul de sfârșit de joc cu succes
-
+    private boolean paused=false;
+    private PauseScreen pauseScreen;
     /*!
     \brief Constructorul clasei Playing.
     \param game Obiectul de tip Game pentru care se creează instanța clasei.
@@ -79,6 +81,7 @@ public class Playing extends State implements StateMethods{
         //mouse1 = new Mouse(500, 17*32+18, 1, "right");
         gameOverScreen=new GameOverScreen(this);
         gameWonScreen=new GameWonScreen(this);
+        pauseScreen=new PauseScreen(this);
     }
     public static Player getMartha()
     {
@@ -100,10 +103,14 @@ public class Playing extends State implements StateMethods{
     @Override
     public void update() {
         if(!gameOver) {
-            Martha.update(level1, mouse,enemyManager);
-            IsCloseToBorder();
-            mouse.update();
-            enemyManager.update(Martha);
+            if(!paused) {
+                Martha.update(level1, mouse, enemyManager);
+                IsCloseToBorder();
+                mouse.update();
+                enemyManager.update(Martha);
+            }
+            else
+                pauseScreen.update();
         }
     }
 
@@ -137,6 +144,9 @@ public class Playing extends State implements StateMethods{
         {
             gameWonScreen.draw(g);
         }
+        if(paused)
+            pauseScreen.draw(g);
+
         }catch (IndexOutOfRangeException e)
         {
             handleException(e);
@@ -144,17 +154,24 @@ public class Playing extends State implements StateMethods{
 
         }
 
+
     }
     public void PrintBone(Graphics g)
     {
-        Font f1=new Font("font1", BOLD,18);
-        int is=0;
+        g.drawImage(Assets.bone,270,15,45,45,null);
         if(Martha.getHasBone())
-            is=1;
-        char []msg=("Bone:  "+is).toCharArray();
-        g.setColor(Color.RED);
-        g.setFont(f1);
-        g.drawChars(msg,0, msg.length, 240,35);
+            g.drawImage(Assets.gui[1],240,15,35,35,null);
+        else
+            g.drawImage(Assets.gui[0],240,15,35,35,null);
+
+//        Font f1=new Font("font1", BOLD,18);
+//        int is=0;
+//        if(Martha.getHasBone())
+//            is=1;
+//        char []msg=("Bone:  "+is).toCharArray();
+//        g.setColor(Color.RED);
+//        g.setFont(f1);
+//        g.drawChars(msg,0, msg.length, 240,35);
     }
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -163,17 +180,20 @@ public class Playing extends State implements StateMethods{
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if (paused)
+            pauseScreen.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if (paused)
+            pauseScreen.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        if (paused)
+            pauseScreen.mouseMoved(e);
     }
     /*!
 
@@ -207,7 +227,7 @@ public class Playing extends State implements StateMethods{
             if (code == KeyEvent.VK_SPACE)
                 Martha.attackPressed = true;
             if (code == KeyEvent.VK_ESCAPE)
-                Gamestate.state = Gamestate.MENU;
+                paused=!paused;
         }
     }
 
@@ -267,5 +287,8 @@ public class Playing extends State implements StateMethods{
 
     public EnemyManager getEnemyManager() {
         return enemyManager;
+    }
+    public void unpauseGame(){
+        paused=false;
     }
 }

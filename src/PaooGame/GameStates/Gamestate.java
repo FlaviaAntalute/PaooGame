@@ -14,6 +14,6 @@ package PaooGame.GameStates;
     Pentru a accesa starea curentă a jocului, se poate folosi sintaxa "Gamestate.state", unde "state" este variabila statică definită în cadrul acestei enumerații.
     */
 public enum Gamestate {
-    PLAYING,MENU;
+    PLAYING,MENU,OPTIONS,QUIT;
     public static Gamestate state=MENU;
 }

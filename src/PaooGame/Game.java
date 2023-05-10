@@ -249,7 +249,10 @@ public class Game extends JPanel implements Runnable
                 /// Dacă starea jocului este PLAYING, apelăm metoda update() a obiectului playing.
                 playing.update();
                 break;
+            case OPTIONS:
+            case QUIT:
             default:
+                System.exit(0);
                 break;
         }
     }

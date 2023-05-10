@@ -77,6 +77,13 @@ public class Assets
     public static BufferedImage [] BlackSoil=new  BufferedImage[10];
     public static BufferedImage [] Snake=new  BufferedImage[20];
     public static BufferedImage [] Rex=new  BufferedImage[20];
+    public static BufferedImage [] gui=new BufferedImage[20];
+    public static BufferedImage [] start=new BufferedImage[3];
+    public static BufferedImage [] quit=new BufferedImage[3];
+    public static BufferedImage [] options=new BufferedImage[3];
+    public static BufferedImage [] replay=new BufferedImage[3];
+    public static BufferedImage [] menu=new BufferedImage[3];
+    public static BufferedImage [] continuee=new BufferedImage[3];
 
 
     /*! \fn public static void Init()
@@ -104,6 +111,34 @@ public class Assets
         SpriteSheet SnakeSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/sarpe_stg.png"));
         SpriteSheet RexSheetD=new SpriteSheet(ImageLoader.LoadImage("/textures/RexD.png"));
         SpriteSheet RexSheetS=new SpriteSheet(ImageLoader.LoadImage("/textures/RexS.png"));
+        SpriteSheet GUI=new SpriteSheet(ImageLoader.LoadImage("/gui/Pixel UI pack 1.png"));
+
+        //imagini gui
+            gui[0]=ImageLoader.LoadImage("/gui/No.png");
+            gui[1]=ImageLoader.LoadImage("/gui/Yes.png");
+            gui[2]=GUI.crop2(581,133,86,22);//menu write
+            gui[3]=GUI.crop2(0,0,48,48);//menu
+            start[0]=GUI.crop2(385,321,62,30);//start1
+            start[1]=GUI.crop2(449,321,62,30);//start2
+            start[2]=GUI.crop2(513,321,62,30);//start3
+            quit[0]=GUI.crop2(385,449,62,30);//quit1
+            quit[1]=GUI.crop2(449,449,62,30);//quit2
+            quit[2]=GUI.crop2(513,449,62,30);//quit3
+            options[0]=GUI.crop2(577,65,78,30);//options
+            options[1]=GUI.crop2(705,65,78,30);//options
+            options[2]=GUI.crop2(832,65,78,30);//options
+
+            replay[0]=GUI.crop2(577,33,78,30);//replay
+            replay[1]=GUI.crop2(705,33,78,30);//replay
+            replay[2]=GUI.crop2(832,33,78,30);//replay
+
+            menu[0]=GUI.crop2(386,353,62,30);//options
+            menu[1]=GUI.crop2(449,353,62,30);//options
+            menu[2]=GUI.crop2(513,353,62,30);//options
+
+            continuee[0]=GUI.crop2(577,193,94,30);//continue
+            continuee[1]=GUI.crop2(705,193,94,30);//continue
+            continuee[2]=GUI.crop2(832,193,94,30);//continue
 
         /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
