@@ -6,8 +6,8 @@ public class Level {
     private Map m;
     private int pointsNeded=0;
     private boolean win=false;
-    public Level(int pointsNeded) {
-        this.m=new Map("res/map.txt");
+    public Level(int pointsNeded,String path) {
+        this.m=new Map(path);
         this.pointsNeded=pointsNeded;
     }
 

@@ -84,6 +84,7 @@ public class Assets
     public static BufferedImage [] replay=new BufferedImage[3];
     public static BufferedImage [] menu=new BufferedImage[3];
     public static BufferedImage [] continuee=new BufferedImage[3];
+    public static BufferedImage [] next=new BufferedImage[3];
 
 
     /*! \fn public static void Init()
@@ -118,12 +119,17 @@ public class Assets
             gui[1]=ImageLoader.LoadImage("/gui/Yes.png");
             gui[2]=GUI.crop2(581,133,86,22);//menu write
             gui[3]=GUI.crop2(0,0,48,48);//menu
+            gui[4]=ImageLoader.LoadImage("/gui/LevelComplete.png");
+
+
             start[0]=GUI.crop2(385,321,62,30);//start1
             start[1]=GUI.crop2(449,321,62,30);//start2
             start[2]=GUI.crop2(513,321,62,30);//start3
+
             quit[0]=GUI.crop2(385,449,62,30);//quit1
             quit[1]=GUI.crop2(449,449,62,30);//quit2
             quit[2]=GUI.crop2(513,449,62,30);//quit3
+
             options[0]=GUI.crop2(577,65,78,30);//options
             options[1]=GUI.crop2(705,65,78,30);//options
             options[2]=GUI.crop2(832,65,78,30);//options
@@ -132,15 +138,19 @@ public class Assets
             replay[1]=GUI.crop2(705,33,78,30);//replay
             replay[2]=GUI.crop2(832,33,78,30);//replay
 
-            menu[0]=GUI.crop2(386,353,62,30);//options
-            menu[1]=GUI.crop2(449,353,62,30);//options
-            menu[2]=GUI.crop2(513,353,62,30);//options
+            menu[0]=GUI.crop2(386,353,62,30);//menu
+            menu[1]=GUI.crop2(449,353,62,30);//menu
+            menu[2]=GUI.crop2(513,353,62,30);//menu
 
             continuee[0]=GUI.crop2(577,193,94,30);//continue
             continuee[1]=GUI.crop2(705,193,94,30);//continue
             continuee[2]=GUI.crop2(832,193,94,30);//continue
 
-        /// Se obtin subimaginile corespunzatoare elementelor necesare.
+            next[0]=GUI.crop2(1,449,62,30);//next
+            next[1]=GUI.crop2(65,449,62,30);//next
+            next[2]=GUI.crop2(128,449,62,30);//next
+
+            /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
             grass1 = sheet.crop(0, 0);
             grass2 = sheet.crop(1, 0);

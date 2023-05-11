@@ -10,6 +10,7 @@ import PaooGame.Graphics.Background;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inteface.GameOverScreen;
 import PaooGame.Inteface.GameWonScreen;
+import PaooGame.Inteface.LevelCompletedScreen;
 import PaooGame.Inteface.PauseScreen;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
@@ -39,8 +40,10 @@ public class Playing extends State implements StateMethods{
     private GameOverScreen gameOverScreen;// ecranul de sfârșit de joc cu eșec
     public boolean gameWon=false; // indica dacă jocul s-a terminat cu succes
     private GameWonScreen gameWonScreen;// ecranul de sfârșit de joc cu succes
+    private LevelCompletedScreen levelCompletedScreen;
     private boolean paused=false;
     private PauseScreen pauseScreen;
+    private boolean leveleCompleted=true;
     /*!
     \brief Constructorul clasei Playing.
     \param game Obiectul de tip Game pentru care se creează instanța clasei.
@@ -73,7 +76,7 @@ public class Playing extends State implements StateMethods{
     */
     public void init(KeyHandler keyH)
     {
-        level1=new Level(9);
+        level1=new Level(9,"res/Maps/map.txt");
         enemyManager=new EnemyManager(this);
         Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,level1.getMap(), this);
         Martha.loadMap(level1.getMap());
@@ -82,6 +85,7 @@ public class Playing extends State implements StateMethods{
         gameOverScreen=new GameOverScreen(this);
         gameWonScreen=new GameWonScreen(this);
         pauseScreen=new PauseScreen(this);
+        levelCompletedScreen=new LevelCompletedScreen(this);
     }
     public static Player getMartha()
     {
@@ -102,17 +106,19 @@ public class Playing extends State implements StateMethods{
     */
     @Override
     public void update() {
-        if(!gameOver) {
-            if(!paused) {
-                Martha.update(level1, mouse, enemyManager);
-                IsCloseToBorder();
-                mouse.update();
-                enemyManager.update(Martha);
-            }
-            else
-                pauseScreen.update();
+
+        if(paused)
+            pauseScreen.update();
+        else if (leveleCompleted)
+            levelCompletedScreen.update();
+        else if (!gameOver){
+            Martha.update(level1, mouse, enemyManager);
+            IsCloseToBorder();
+            mouse.update();
+            enemyManager.update(Martha);
         }
     }
+
 
 
     /*! \fn public void draw(Graphics g)
@@ -137,15 +143,13 @@ public class Playing extends State implements StateMethods{
             enemyManager.draw(g, xLvlOffset);
 
         if(gameOver)
-        {
             gameOverScreen.draw(g);
-        }
-        if(gameWon)
-        {
+        else if(gameWon)
             gameWonScreen.draw(g);
-        }
-        if(paused)
+        else if(paused)
             pauseScreen.draw(g);
+        else if(leveleCompleted)
+            levelCompletedScreen.draw(g);
 
         }catch (IndexOutOfRangeException e)
         {
@@ -154,7 +158,7 @@ public class Playing extends State implements StateMethods{
 
         }
 
-
+        levelCompletedScreen.draw(g);
     }
     public void PrintBone(Graphics g)
     {
@@ -180,20 +184,32 @@ public class Playing extends State implements StateMethods{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (paused)
-            pauseScreen.mousePressed(e);
+        if(!gameOver) {
+            if (paused)
+                pauseScreen.mousePressed(e);
+            else if (leveleCompleted)
+                levelCompletedScreen.mousePressed(e);
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (paused)
-            pauseScreen.mouseReleased(e);
+        if (!gameOver) {
+            if (paused)
+                pauseScreen.mouseReleased(e);
+            else if (leveleCompleted)
+                levelCompletedScreen.mouseReleased(e);
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (paused)
-            pauseScreen.mouseMoved(e);
+        if (!gameOver) {
+            if (paused)
+                pauseScreen.mouseMoved(e);
+            else if (leveleCompleted)
+                levelCompletedScreen.mouseMoved(e);
+        }
     }
     /*!
 
@@ -276,7 +292,7 @@ public class Playing extends State implements StateMethods{
         gameWon=false;
         Martha.resetAll();
         enemyManager.resetAll();
-        level1.resetAll("res/map.txt",9);
+        level1.resetAll("res/Maps/map.txt",9);
         mouse.resetAll();
 
     }
