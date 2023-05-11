@@ -81,7 +81,6 @@ public class Player extends Entity implements Subject {
          Funcția primește ca parametru o matrice bidimensională de întregi și o stochează în membrul de clasă map.
     */
     public void loadMap(int[][] map)
-
     {
         this.map=map;
     }
@@ -98,8 +97,12 @@ public class Player extends Entity implements Subject {
      */
     public void update(Level level,Mouse mouse,EnemyManager enemyManager) {
 
-            if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead())
-                playing.setGameWon(true);
+            if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead()) {
+                if(playing.getLvlIndex()==2)
+                    playing.setGameWon(true);
+                else
+                    playing.setLevelCompleted(true);//aici era set game won
+            }
 
             if (lives <= 0) {
                 playing.SetGameOver(true);

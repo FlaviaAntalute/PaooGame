@@ -1,6 +1,7 @@
 package PaooGame.Inteface;
 
 import PaooGame.Game;
+import PaooGame.GameStates.Gamestate;
 import PaooGame.GameStates.Playing;
 import PaooGame.Graphics.Assets;
 import PaooGame.Graphics.Background;
@@ -60,11 +61,14 @@ public class LevelCompletedScreen {
     public void mouseReleased(MouseEvent e){
         if(isIn(menu,e)) {
             if (menu.isMousePressed())
-                System.out.println("menu");
+            {
+                playing.resetAll();
+                Gamestate.state=Gamestate.MENU;
+            }
         }
         else if(isIn(next,e)) {
             if (next.isMousePressed())
-                System.out.println("next");
+                playing.loadNextLevel();
         }
 
         menu.resetBools();

@@ -1,5 +1,6 @@
 package PaooGame.Entity;
 import PaooGame.GameStates.Playing;
+import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -20,10 +21,10 @@ public class EnemyManager {
             \brief Constructorul clasei EnemyManager.
             \ playing obiectul Playing asociat jocului.
         */
-    public EnemyManager(Playing playing)
+    public EnemyManager(Playing playing,Level level)
     {
         this.playing=playing;
-        addEnemies();
+        addEnemies(level);
     }
 
         /*! \fn private void addEnemies()
@@ -31,16 +32,16 @@ public class EnemyManager {
              Pentru fiecare element din matricea hărții jocului, verifică dacă acesta
              este de tip Max, și dacă da, adaugă un obiect Max în lista de inamici.
         */
-    private void addEnemies() {
-        for(int i=0;i<playing.level1.getMap().length;i++) {
-            for (int j = 0; j < playing.level1.getMap()[0].length; ++j) {
-                if (playing.level1.getMap()[i][j] == Tile.max.GetId()) {
+    private void addEnemies(Level level) {
+        for(int i=0;i<level.getMap().length;i++) {
+            for (int j = 0; j < level.getMap()[0].length; ++j) {
+                if (level.getMap()[i][j] == Tile.max.GetId()) {
                     max.add( factory.createEnemy("Max",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
                 }
-                else if (playing.level1.getMap()[i][j] == Tile.snake.GetId()) {
+                else if (level.getMap()[i][j] == Tile.snake.GetId()) {
                     snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 1, "idle"));
                 }
-                else if (playing.level1.getMap()[i][j] == Tile.rex.GetId()) {
+                else if (level.getMap()[i][j] == Tile.rex.GetId()) {
                     rex.add( factory.createEnemy("Rex",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "right"));
                 }
             }
@@ -69,18 +70,18 @@ public class EnemyManager {
             \brief Actualizează toți inamicii care sunt încă în viață.
             \param player obiectul Player asociat jocului.
          */
-    public void update(Player player)
+    public void update(Player player,Level level)
     {
         for(Enemy m: max) {
             if(m.isAlive)
-                m.update(playing.level1.getMap(), player);
+                m.update(level.getMap(), player);
         }
         for(Enemy s: snakes)
             if(s.isAlive)
-               s.update(playing.level1.getMap(),player);
+               s.update(level.getMap(),player);
         for(Enemy r: rex)
             if(r.isAlive)
-                r.update(playing.level1.getMap(),player);
+                r.update(level.getMap(),player);
     }
 
         /*! \fn public void CheckHit(Rectangle2D.Float attackArea,Player player)

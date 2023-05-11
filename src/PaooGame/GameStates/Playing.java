@@ -20,14 +20,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
+
 import static PaooGame.Exceptions.IndexOutOfRangeException.handleException;
 import static PaooGame.Levels.Lives.drawLives;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
-import static java.awt.Font.BOLD;
 
 public class Playing extends State implements StateMethods{
     private static Player Martha; /// jucătorul controlat de utilizator
-    public  Level level1;    // nivelul1
+    public Level [] levels=new Level[3];    // lista cu nivele
+    int lvlIndex=0;
     private Mouse mouse,mouse1;// obiecte de tipul Mouse
     private EnemyManager enemyManager; // managerul inamicilor
     private int xLvlOffset=0;/// offset-ul pe axa X al nivelului, pentru a-l muta la stânga sau la dreapta
@@ -43,7 +44,7 @@ public class Playing extends State implements StateMethods{
     private LevelCompletedScreen levelCompletedScreen;
     private boolean paused=false;
     private PauseScreen pauseScreen;
-    private boolean leveleCompleted=true;
+    private boolean leveleCompleted=false;
     /*!
     \brief Constructorul clasei Playing.
     \param game Obiectul de tip Game pentru care se creează instanța clasei.
@@ -58,7 +59,7 @@ public class Playing extends State implements StateMethods{
         // se calculează limitele ecranului în care jucătorul poate mișca
         leftBorder = (int) (0.3 * game.getWnd().GetWndWidth());
         rightBorder = (int) (0.7 * game.getWnd().GetWndWidth());
-        lvlTilesWide = getLevel1().getMap()[0].length;
+        lvlTilesWide = levels[lvlIndex].getMap()[0].length;
         maxTilesOffset = lvlTilesWide- Tile.NrTileWidth;
         maxLvlOffsetX = maxTilesOffset * Tile.TILE_WIDTH;
 
@@ -76,10 +77,10 @@ public class Playing extends State implements StateMethods{
     */
     public void init(KeyHandler keyH)
     {
-        level1=new Level(9,"res/Maps/map.txt");
-        enemyManager=new EnemyManager(this);
-        Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,level1.getMap(), this);
-        Martha.loadMap(level1.getMap());
+        initLevels();
+        enemyManager=new EnemyManager(this,levels[lvlIndex]);
+        Martha=new Player(STARTX,STARTY,SPEED,STARTDIR,keyH,levels[lvlIndex].getMap(), this);
+        Martha.loadMap(levels[lvlIndex].getMap());
         mouse=new Mouse(50,5*32+18,1,"right");
         //mouse1 = new Mouse(500, 17*32+18, 1, "right");
         gameOverScreen=new GameOverScreen(this);
@@ -87,13 +88,14 @@ public class Playing extends State implements StateMethods{
         pauseScreen=new PauseScreen(this);
         levelCompletedScreen=new LevelCompletedScreen(this);
     }
+    private void initLevels() {
+        levels[0]=new Level(6,"res/Maps/map.txt");
+        levels[1]=new Level(7,"res/Maps/map1.txt");
+        levels[2]=new Level(6,"res/Maps/map.txt");
+    }
     public static Player getMartha()
     {
         return Martha;
-    }
-    public  Level getLevel1()
-    {
-        return this.level1;
     }
 
     /*! \fn  public void update()
@@ -106,16 +108,15 @@ public class Playing extends State implements StateMethods{
     */
     @Override
     public void update() {
-
         if(paused)
             pauseScreen.update();
         else if (leveleCompleted)
             levelCompletedScreen.update();
         else if (!gameOver){
-            Martha.update(level1, mouse, enemyManager);
+            Martha.update(levels[lvlIndex], mouse, enemyManager);
             IsCloseToBorder();
             mouse.update();
-            enemyManager.update(Martha);
+            enemyManager.update(Martha,levels[lvlIndex]);
         }
     }
 
@@ -134,10 +135,10 @@ public class Playing extends State implements StateMethods{
     public void draw(Graphics g) {
         try {
             Background.drawBgT(g, xLvlOffset);
-            level1.GetMap().drawMap(g, xLvlOffset);
+            levels[lvlIndex].GetMap().drawMap(g, xLvlOffset);
             mouse.draw(g, xLvlOffset);
             Martha.draw(g, xLvlOffset);
-            Player.points.PrintPoints(g, level1);
+            Player.points.PrintPoints(g, levels[lvlIndex]);
             this.PrintBone(g);
             drawLives(g, xLvlOffset, Martha);
             enemyManager.draw(g, xLvlOffset);
@@ -158,7 +159,6 @@ public class Playing extends State implements StateMethods{
 
         }
 
-        levelCompletedScreen.draw(g);
     }
     public void PrintBone(Graphics g)
     {
@@ -288,12 +288,16 @@ public class Playing extends State implements StateMethods{
     }
     public void resetAll()
     {
+
         gameOver=false;
         gameWon=false;
+        leveleCompleted=false;
         Martha.resetAll();
         enemyManager.resetAll();
-        level1.resetAll("res/Maps/map.txt",9);
+        levels[lvlIndex].resetAll(levels[lvlIndex].getPath(),levels[lvlIndex].getPoints());
         mouse.resetAll();
+        if(gameOver)
+            lvlIndex=0;
 
     }
 
@@ -306,5 +310,24 @@ public class Playing extends State implements StateMethods{
     }
     public void unpauseGame(){
         paused=false;
+    }
+
+    public void setLevelCompleted(boolean b) {
+        leveleCompleted=true;
+    }
+    public void loadNextLevel()
+    {
+        lvlIndex++;
+        resetAll();
+        enemyManager=new EnemyManager(this,levels[lvlIndex]);
+        if(lvlIndex==3)
+            gameWon=true;
+
+    }
+    public int getLvlIndex() {
+        return lvlIndex;
+    }
+    public Level getLevel() {
+        return levels[lvlIndex];
     }
 }
