@@ -15,11 +15,11 @@ import static PaooGame.Entity.Collision.*;
 import static PaooGame.Exceptions.BoneNotHereException.handleException;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
 
-    /*! \class Player
-    \brief Clasa ce reprezintă jucătorul din joc.
-    Clasa Player moștenește clasa Entity și conține toate datele și metodele necesare
-    pentru a descrie comportamentul jucătorului.
-    */
+/*! \class Player
+\brief Clasa ce reprezintă jucătorul din joc.
+Clasa Player moștenește clasa Entity și conține toate datele și metodele necesare
+pentru a descrie comportamentul jucătorului.
+*/
 public class Player extends Entity implements Subject {
     private ArrayList<Observer> observers =new ArrayList<>();
     private boolean hasBone=false;
@@ -38,20 +38,20 @@ public class Player extends Entity implements Subject {
     private Playing playing; /// Obiectul Playing pentru a permite accesul la diverse obiecte din joc
     public static Points points; /// Obiectul Points pentru a urmări punctajul jucătorului
 
-        /*! \fn public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map,Playing playing)
-        \brief Constructorul clasei Player.
+    /*! \fn public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map,Playing playing)
+    \brief Constructorul clasei Player.
 
-        Constructorul initializează obiectul de tip Player cu valorile primite ca parametri și setează zona solidă și zona de atac.
+    Constructorul initializează obiectul de tip Player cu valorile primite ca parametri și setează zona solidă și zona de atac.
 
-        \ x Coordonata x a poziției obiectului în cadrul hărții.
-        \ y Coordonata y a poziției obiectului în cadrul hărții.
-        \ speed Viteza de deplasare a obiectului.
-        \ dir Direcția în care se mișcă obiectul .
-        \ keyH Handler pentru tastatură pentru a detecta comenzile utilizatorului.
-        \ map Harta jocului pe care se află obiectul.
-        \ playing Referință la jocul în care se află obiectul.
+    \ x Coordonata x a poziției obiectului în cadrul hărții.
+    \ y Coordonata y a poziției obiectului în cadrul hărții.
+    \ speed Viteza de deplasare a obiectului.
+    \ dir Direcția în care se mișcă obiectul .
+    \ keyH Handler pentru tastatură pentru a detecta comenzile utilizatorului.
+    \ map Harta jocului pe care se află obiectul.
+    \ playing Referință la jocul în care se află obiectul.
 
-        */
+    */
     public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map,Playing playing) {
         super(x, y,speed,dir);
         points=new Points();
@@ -95,54 +95,55 @@ public class Player extends Entity implements Subject {
     Actualizează poziția jucătorului și zona de atac și verifică coliziunile cu diversele obiecte din joc, precum pești, șobolani și oase.
      De asemenea, verifică dacă jucătorul se află în apă și îl scufundă în acest caz.
      */
-    public void update(Level level,Mouse mouse,EnemyManager enemyManager) {
+    public void update(Level level,Mouse mouse,Mouse mouse1,EnemyManager enemyManager) {
 
-            if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead()) {
-                if(playing.getLvlIndex()==2)
-                    playing.setGameWon(true);
-                else
-                    playing.setLevelCompleted(true);//aici era set game won
-            }
-
-            if (lives <= 0) {
-                playing.SetGameOver(true);
-                direction = "death";
-                return;
-            }
-
-
-            updatePosition();
-
-            updateAttackArea();
-            if (Objects.equals(direction, "attack"))
-                checkAttack();
-
-            IsFish(getSolidArea(), level,this);
-            IsMouse(getSolidArea(), mouse,this);
-            try {
-                IsBone(getSolidArea(), level,this,keyH);
-            }catch (BoneNotHereException e)
-            {
-                handleException(e);
-            }
-            IsWater(this, this.map);
+        if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead()  && IsAtFinish(this.solidArea,playing.getLevel())) {
+            if(playing.getLvlIndex()==2)
+                playing.setGameWon(true);
+            else
+                playing.setLevelCompleted(true);//aici era set game won
         }
 
-        private boolean Intersect( ArrayList<Enemy> rex) {
-            for(Enemy r: rex)
-                if ((!r.isHurt && solidArea.intersects(r.solidArea)) ) {
-                        return true;
-                }
-            return false;
+        if (lives <= 0) {
+            playing.SetGameOver(true);
+            direction = "death";
+            return;
         }
 
-        /*!
-        \fn private void checkAttack()
-        \brief Verifică dacă jucătorul atacă.
 
-        Funcția verifică dacă jucătorul se află în starea de atac și își marchează atacul ca fiind verificat.
-        Apoi, apelează funcția de verificare a loviturii în inamici din obiectul Playing.
-         */
+        updatePosition();
+
+        updateAttackArea();
+        if (Objects.equals(direction, "attack"))
+            checkAttack();
+
+        IsFish(getSolidArea(), level,this);
+        IsMouse(getSolidArea(), mouse,this);
+        IsMouse(getSolidArea(), mouse1,this);
+        try {
+            IsBone(getSolidArea(), level,this,keyH);
+        }catch (BoneNotHereException e)
+        {
+            handleException(e);
+        }
+        IsWater(this, this.map);
+    }
+
+    private boolean Intersect( ArrayList<Enemy> rex) {
+        for(Enemy r: rex)
+            if ((!r.isHurt && solidArea.intersects(r.solidArea)) ) {
+                return true;
+            }
+        return false;
+    }
+
+    /*!
+    \fn private void checkAttack()
+    \brief Verifică dacă jucătorul atacă.
+
+    Funcția verifică dacă jucătorul se află în starea de atac și își marchează atacul ca fiind verificat.
+    Apoi, apelează funcția de verificare a loviturii în inamici din obiectul Playing.
+     */
     private void checkAttack() {
         if (attackChecked)
             return;
@@ -161,7 +162,7 @@ public class Player extends Entity implements Subject {
         Zona de atac este poziționată la o anumită înălțime față de zona solidă a jucătorului.
     */
 
-        private void updateAttackArea() {
+    private void updateAttackArea() {
         if(Objects.equals(direction, "right")
                 || (Objects.equals(direction, "up")
                 && Objects.equals(lastPressed, "right"))){
@@ -252,175 +253,175 @@ public class Player extends Entity implements Subject {
 
         if(attackPressed)
             direction="attack";
-       updateCounter();
+        updateCounter();
 
     }
 
-        /*! \fn private void resetInAir()
-        \brief Resetarea stării "inAir" a jucătorului.
+    /*! \fn private void resetInAir()
+    \brief Resetarea stării "inAir" a jucătorului.
 
-        Această funcție setează starea "inAir" a jucătorului la fals și resetează viteza aerului la 0. Această funcție este apelată ori de câte ori jucătorul aterizează pe o suprafață solidă sau se ciocnește de un obstacol în timp ce sare.
+    Această funcție setează starea "inAir" a jucătorului la fals și resetează viteza aerului la 0. Această funcție este apelată ori de câte ori jucătorul aterizează pe o suprafață solidă sau se ciocnește de un obstacol în timp ce sare.
 
-        */
+    */
     private void resetInAir() {
         inAir=false;
         airSpeed=0;
     }
 
-        /*! \fn private void updateXPos(float xSpeed)
-        \brief Actualizează poziția pe axa X a jucătorului.
+    /*! \fn private void updateXPos(float xSpeed)
+    \brief Actualizează poziția pe axa X a jucătorului.
 
-        Această funcție actualizează poziția jucătorului pe axa X, cu o viteză dată ca parametru.
-        Funcția verifică dacă există coliziuni cu zone solide de pe hartă și actualizează poziția doar dacă nu există coliziuni.
+    Această funcție actualizează poziția jucătorului pe axa X, cu o viteză dată ca parametru.
+    Funcția verifică dacă există coliziuni cu zone solide de pe hartă și actualizează poziția doar dacă nu există coliziuni.
 
-        \param xSpeed Viteza cu care se va actualiza poziția jucătorului pe axa X.
+    \param xSpeed Viteza cu care se va actualiza poziția jucătorului pe axa X.
 
-        */
+    */
     private void updateXPos(float xSpeed) {
         if(CanMoveHere(getSolidArea().x+xSpeed,getSolidArea().y,getSolidArea().width,getSolidArea().height,map) && !Intersect(playing.getEnemyManager().getRex()))
             getSolidArea().x+=xSpeed;
     }
-        /*! \fn public void draw(Graphics g,int lvlOffset)
-            \brief Desenează jucătorul.
+    /*! \fn public void draw(Graphics g,int lvlOffset)
+        \brief Desenează jucătorul.
 
-            Această funcție primește ca parametri un obiect de tip Graphics pentru a desena jucătorul și un offset .
-            Funcția apelează funcția drawPlayer pentru a desena jucătorul .
+        Această funcție primește ca parametri un obiect de tip Graphics pentru a desena jucătorul și un offset .
+        Funcția apelează funcția drawPlayer pentru a desena jucătorul .
 
-            \param g Obiectul de tip Graphics folosit pentru a desena jucătorul și nivelul.
-            \param lvlOffset Offset-ul de pe axa X folosit pentru a desena jucatorul  corect fata de harta.
+        \param g Obiectul de tip Graphics folosit pentru a desena jucătorul și nivelul.
+        \param lvlOffset Offset-ul de pe axa X folosit pentru a desena jucatorul  corect fata de harta.
 
-            */
+        */
     public void draw(Graphics g,int lvlOffset) {
 
         drawPlayer(g,lvlOffset);
     }
 
-        /*! \fn private void drawPlayer(Graphics g,int lvlOffset)
-        \brief Desenează personajul pe ecran.
+    /*! \fn private void drawPlayer(Graphics g,int lvlOffset)
+    \brief Desenează personajul pe ecran.
 
-        Această funcție primește obiectul Graphics și un offset pentru nivelul curent. Funcția desenează
-        personajul cu imaginea corespunzătoare stării sale curente, cu ajutorul obiectului Graphics.
+    Această funcție primește obiectul Graphics și un offset pentru nivelul curent. Funcția desenează
+    personajul cu imaginea corespunzătoare stării sale curente, cu ajutorul obiectului Graphics.
 
-        \param g Obiectul Graphics folosit pentru a desena personajul.
-        \param lvlOffset Offset-ul nivelului curent, folosit pentru a desena personajul la poziția corectă.
+    \param g Obiectul Graphics folosit pentru a desena personajul.
+    \param lvlOffset Offset-ul nivelului curent, folosit pentru a desena personajul la poziția corectă.
 
-        */
+    */
     private void drawPlayer(Graphics g,int lvlOffset) {
-            BufferedImage image = Assets.M_walkD0;
+        BufferedImage image = Assets.M_walkD0;
 
-            if (Objects.equals(lastPressed, "right"))
-                image = Assets.M_jumpD2;
-            else if (Objects.equals(lastPressed, "left"))
-                image = Assets.M_jumpS2;
+        if (Objects.equals(lastPressed, "right"))
+            image = Assets.M_jumpD2;
+        else if (Objects.equals(lastPressed, "left"))
+            image = Assets.M_jumpS2;
 
-            switch (direction) {
-                case "up":
-                    if (Objects.equals(lastPressed, "right")) {
-                        if (num == 1)
-                            image = Assets.M_jumpD1;
-                        if (num == 2)
-                            image = Assets.M_jumpD2;
-                        if (num == 3)
-                            image = Assets.M_jumpD3;
-                        if (num == 4)
-                            image = Assets.M_jumpD2;
-                        break;
-                    }
-                    else if (Objects.equals(lastPressed, "left")) {
-                        if (num == 1)
-                            image = Assets.M_jumpS1;
-                        if (num == 2)
-                            image = Assets.M_jumpS2;
-                        if (num == 3)
-                            image = Assets.M_jumpS3;
-                        if(num==4)
-                            image = Assets.M_jumpS2;
-
-                        break;
-                    }
-                case "left":
+        switch (direction) {
+            case "up":
+                if (Objects.equals(lastPressed, "right")) {
                     if (num == 1)
-                        image = Assets.M_walkS0;
+                        image = Assets.M_jumpD1;
                     if (num == 2)
-                        image = Assets.M_walkS1;
-                    if (num == 3)
-                        image = Assets.M_walkS2;
-                    if (num == 4)
-                        image = Assets.M_walkS3;
-                    break;
-                case "right":
-                    if (num == 1)
-                        image = Assets.M_walkD0;
-                    if (num == 2)
-                        image = Assets.M_walkD1;
-                    if (num == 3)
-                        image = Assets.M_walkD2;
-                    if (num == 4)
-                        image = Assets.M_walkD3;
-                    break;
-                case "down":
-                    if (Objects.equals(lastPressed, "right"))
                         image = Assets.M_jumpD2;
-                    else if (Objects.equals(lastPressed, "left"))
+                    if (num == 3)
+                        image = Assets.M_jumpD3;
+                    if (num == 4)
+                        image = Assets.M_jumpD2;
+                    break;
+                }
+                else if (Objects.equals(lastPressed, "left")) {
+                    if (num == 1)
+                        image = Assets.M_jumpS1;
+                    if (num == 2)
                         image = Assets.M_jumpS2;
+                    if (num == 3)
+                        image = Assets.M_jumpS3;
+                    if(num==4)
+                        image = Assets.M_jumpS2;
+
                     break;
-                case "idle":
-                    if(num==1 || num==3)
-                        image = Assets.M_idle1;
-                    if(num==2 || num==4)
-                        image = Assets.M_idle2;
+                }
+            case "left":
+                if (num == 1)
+                    image = Assets.M_walkS0;
+                if (num == 2)
+                    image = Assets.M_walkS1;
+                if (num == 3)
+                    image = Assets.M_walkS2;
+                if (num == 4)
+                    image = Assets.M_walkS3;
+                break;
+            case "right":
+                if (num == 1)
+                    image = Assets.M_walkD0;
+                if (num == 2)
+                    image = Assets.M_walkD1;
+                if (num == 3)
+                    image = Assets.M_walkD2;
+                if (num == 4)
+                    image = Assets.M_walkD3;
+                break;
+            case "down":
+                if (Objects.equals(lastPressed, "right"))
+                    image = Assets.M_jumpD2;
+                else if (Objects.equals(lastPressed, "left"))
+                    image = Assets.M_jumpS2;
+                break;
+            case "idle":
+                if(num==1 || num==3)
+                    image = Assets.M_idle1;
+                if(num==2 || num==4)
+                    image = Assets.M_idle2;
+                updateCounter();
+                break;
+            case "attack":
+                if (Objects.equals(lastPressed, "right")) {
+                    if (num == 1)
+                        image = Assets.M_attackD0;
+                    if (num == 2)
+                        image = Assets.M_attackD1;
+                    if (num == 3)
+                        image = Assets.M_attackD3;
+                    if (num == 4)
+                        image = Assets.M_attackD1;
                     updateCounter();
-                    break;
-                case "attack":
-                    if (Objects.equals(lastPressed, "right")) {
-                        if (num == 1)
-                            image = Assets.M_attackD0;
-                        if (num == 2)
-                            image = Assets.M_attackD1;
-                        if (num == 3)
-                            image = Assets.M_attackD3;
-                        if (num == 4)
-                            image = Assets.M_attackD1;
-                        updateCounter();
-                    }
-                    else if (Objects.equals(lastPressed, "left")) {
-                        if (num == 1)
-                            image = Assets.M_attackS0;
-                        if (num == 2)
-                            image = Assets.M_attackS1;
-                        if (num == 3)
-                            image = Assets.M_attackS3;
-                        if (num == 4)
-                            image = Assets.M_attackS1;
-                        updateCounter();
-                    }
-                    break;
-                case "death":
-                    if (Objects.equals(lastPressed, "right")) {
+                }
+                else if (Objects.equals(lastPressed, "left")) {
+                    if (num == 1)
+                        image = Assets.M_attackS0;
+                    if (num == 2)
+                        image = Assets.M_attackS1;
+                    if (num == 3)
+                        image = Assets.M_attackS3;
+                    if (num == 4)
+                        image = Assets.M_attackS1;
+                    updateCounter();
+                }
+                break;
+            case "death":
+                if (Objects.equals(lastPressed, "right")) {
 
-                        image = Assets.MarthaDeath[2];
-                        if(!playing.gameOver)
-                            updateCounter();
-                    }
-                    else if (Objects.equals(lastPressed, "left")) {
-                        image = Assets.MarthaDeath[6];
-                        if(!playing.gameOver)
-                            updateCounter();
-                    }
-                    break;
-            }
+                    image = Assets.MarthaDeath[2];
+                    if(!playing.gameOver)
+                        updateCounter();
+                }
+                else if (Objects.equals(lastPressed, "left")) {
+                    image = Assets.MarthaDeath[6];
+                    if(!playing.gameOver)
+                        updateCounter();
+                }
+                break;
+        }
 
-            g.drawImage(image,(int)(getSolidArea().x-xOffset)-lvlOffset,(int) (getSolidArea().y-yOffset), Width, Height, null);
+        g.drawImage(image,(int)(getSolidArea().x-xOffset)-lvlOffset,(int) (getSolidArea().y-yOffset), Width, Height, null);
     }
 
-        /*! \fn private void updateCounter()
-        \brief Actualizează contorul pentru animația jucătorului.
+    /*! \fn private void updateCounter()
+    \brief Actualizează contorul pentru animația jucătorului.
 
-        Această funcție actualizează contorul pentru animația jucătorului.
-        Contorul se utilizează pentru a schimba imaginea jucătorului și a crea o animație.
-        Funcția incrementează contorul și, dacă acesta depășește 12, actualizează numărul de animație și resetează contorul.
+    Această funcție actualizează contorul pentru animația jucătorului.
+    Contorul se utilizează pentru a schimba imaginea jucătorului și a crea o animație.
+    Funcția incrementează contorul și, dacă acesta depășește 12, actualizează numărul de animație și resetează contorul.
 
-        */
+    */
     private void updateCounter() {
         counter++;
         if (counter > 12) {
@@ -441,60 +442,60 @@ public class Player extends Entity implements Subject {
         }
     }
 
-        /*!
-    \fn public void changeCoord(int x, int y)
-    \brief Schimbă coordonatele zonei solide a obiectului.
+    /*!
+\fn public void changeCoord(int x, int y)
+\brief Schimbă coordonatele zonei solide a obiectului.
 
-    Această funcție primește două valori întregi, x și y, care reprezintă noile coordonate ale zonei solide a obiectului.
-     Aceste coordonate sunt setate în membrul de date solidArea al obiectului.
+Această funcție primește două valori întregi, x și y, care reprezintă noile coordonate ale zonei solide a obiectului.
+ Aceste coordonate sunt setate în membrul de date solidArea al obiectului.
 
-    \param x Coordonata x a zonei solide.
-    \param y Coordonata y a zonei solide.
-    */
+\param x Coordonata x a zonei solide.
+\param y Coordonata y a zonei solide.
+*/
     public  void changeCoord(int x, int y)
     {
         solidArea.x=x;
         solidArea.y=y;
     }
 
-        /*!
-        \fn public void changeLife()
-        \brief Scade numărul de vieți al obiectului cu 1.
+    /*!
+    \fn public void changeLife()
+    \brief Scade numărul de vieți al obiectului cu 1.
 
-        Această funcție scade numărul de vieți al obiectului curent cu 1.
-        Dacă numărul de vieți este deja 0, funcția nu face nimic.
-        */
+    Această funcție scade numărul de vieți al obiectului curent cu 1.
+    Dacă numărul de vieți este deja 0, funcția nu face nimic.
+    */
     public  void  changeLife()
     {
         if(this.lives>0)
             lives--;
     }
 
-        /*!
-        \fn public int getLives()
-        \brief Funcția returnează numărul de vieți ale jucătorului.
+    /*!
+    \fn public int getLives()
+    \brief Funcția returnează numărul de vieți ale jucătorului.
 
-        Această funcție returnează numărul de vieți ale jucătorului stocat în variabila "lives".
-        \return Numărul de vieți ale jucătorului.
-        */
+    Această funcție returnează numărul de vieți ale jucătorului stocat în variabila "lives".
+    \return Numărul de vieți ale jucătorului.
+    */
     public  int getLives()
     {
         return lives;
     }
 
 
-        /*!
+    /*!
 
-        \fn public void resetAll()
-        \brief Funcția resetează toate variabilele și proprietățile jucătorului la valorile lor inițiale.
-        Această funcție este utilizată pentru a reseta jocul și a-l reporni de la început.
-         Ea resetează direcția jucătorului la "dreapta", starea "inAir" la fals,
-         numărul de vieți la 3 și poziția jucătorului la poziția inițială.
-         De asemenea, resetează punctele și starea "bone" ale jucătorului la valorile lor inițiale.
-         Dacă jucătorul nu se află pe o suprafață solidă după resetare, starea "inAir" va fi setată la adevărat.
-        \return Nicio valoare nu este returnată de această funcție.
-        */
-        public void resetAll() {
+    \fn public void resetAll()
+    \brief Funcția resetează toate variabilele și proprietățile jucătorului la valorile lor inițiale.
+    Această funcție este utilizată pentru a reseta jocul și a-l reporni de la început.
+     Ea resetează direcția jucătorului la "dreapta", starea "inAir" la fals,
+     numărul de vieți la 3 și poziția jucătorului la poziția inițială.
+     De asemenea, resetează punctele și starea "bone" ale jucătorului la valorile lor inițiale.
+     Dacă jucătorul nu se află pe o suprafață solidă după resetare, starea "inAir" va fi setată la adevărat.
+    \return Nicio valoare nu este returnată de această funcție.
+    */
+    public void resetAll() {
         direction="right";
         inAir=false;
         this.lives=3;
@@ -507,33 +508,33 @@ public class Player extends Entity implements Subject {
 //        points.setBone(false );
         if (!IsEntityOnFloor(getSolidArea(), map))
             inAir = true;
-  }
+    }
 
-        public Points getPoints() {
-            return points;
-        }
-        public void collectBone(){
-            hasBone=true;
-            notifyObservers();
-        }
-        public void loseBone(){
-            hasBone=false;
-            notifyObservers();
-        }
-        public boolean getHasBone()
-        {
-            return hasBone;
-        }
-        public void registerObserver(Observer observer) {
-            observers.add(observer);
-        }
-        public void removeObserver(Observer observer) {
-            observers.remove(observer);
-        }
-        public void notifyObservers() {
-            for (Observer observer : observers) {
-                observer.update(hasBone);
-            }
+    public Points getPoints() {
+        return points;
+    }
+    public void collectBone(){
+        hasBone=true;
+        notifyObservers();
+    }
+    public void loseBone(){
+        hasBone=false;
+        notifyObservers();
+    }
+    public boolean getHasBone()
+    {
+        return hasBone;
+    }
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(hasBone);
         }
     }
+}
 

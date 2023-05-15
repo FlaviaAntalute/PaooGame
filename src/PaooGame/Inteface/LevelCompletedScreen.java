@@ -63,6 +63,7 @@ public class LevelCompletedScreen {
             if (menu.isMousePressed())
             {
                 playing.resetAll();
+                playing.setLvlIndex(0);
                 Gamestate.state=Gamestate.MENU;
             }
         }

@@ -3,10 +3,10 @@ package PaooGame.Entity;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-    /*!
-        Clasa abstractă Entity reprezintă entitățile din joc (ex: jucător, inamic).
-        Aceasta conține variabile și metode comune tuturor entităților.
-    */
+/*!
+    Clasa abstractă Entity reprezintă entitățile din joc (ex: jucător, inamic).
+    Aceasta conține variabile și metode comune tuturor entităților.
+*/
 public abstract class Entity {
     protected int x;    /// poziția x a entității
     public int y;       /// poziția y a entității
@@ -21,14 +21,14 @@ public abstract class Entity {
     protected static int xOffset=12;     /// compensație pentru poziționarea imaginii entității
     protected static int yOffset=12;    /// compensație pentru poziționarea imaginii entității
 
-        /*! \fn  public Entity(int x, int y, int s,String dir)
+    /*! \fn  public Entity(int x, int y, int s,String dir)
 
-            \Constructor pentru clasa Entity.
-            \ x poziția inițială pe axa x a entității
-            \ y poziția inițială pe axa y a entității
-            \ s viteza entității
-            \ dir direcția inițială a entității (stânga, dreapta, sus, jos)
-        */
+        \Constructor pentru clasa Entity.
+        \ x poziția inițială pe axa x a entității
+        \ y poziția inițială pe axa y a entității
+        \ s viteza entității
+        \ dir direcția inițială a entității (stânga, dreapta, sus, jos)
+    */
     public Entity(int x, int y, int s,String dir)
     {
         this.x=x;
@@ -36,21 +36,21 @@ public abstract class Entity {
         this.speed=s;
         this.direction=dir;
     }
-        /*! \fn protected void initSolidArea(float x,float y, float width,float height)
+    /*! \fn protected void initSolidArea(float x,float y, float width,float height)
 
-            \Inițializează zona solidă asociată entității.
-            \ x poziția x a zonei solide
-            \ y poziția y a zonei solide
-            \ width lățimea zonei solide
-            \ height înălțimea zonei solide
-         */
+        \Inițializează zona solidă asociată entității.
+        \ x poziția x a zonei solide
+        \ y poziția y a zonei solide
+        \ width lățimea zonei solide
+        \ height înălțimea zonei solide
+     */
     protected void initSolidArea(float x,float y, float width,float height)
     {
         solidArea=new Rectangle2D.Float(x,y,width,height);
     }
-        /*!
-         Returnează zona solidă asociată entității.
-         */
+    /*!
+     Returnează zona solidă asociată entității.
+     */
     public Rectangle2D.Float getSolidArea() {
         return solidArea;
     }

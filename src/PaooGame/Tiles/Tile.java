@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
  */
 public class Tile
 {
-    private static final int NO_TILES   = 60;
+    private static final int NO_TILES   = 80;
     public static Tile[] tiles = new Tile[NO_TILES];       /*!< Vector de referinte de tipuri de dale.*/
     public static final int TILE_WIDTH  = 32;                       /*!< Latimea unei dale.*/
     public static final int TILE_HEIGHT = 32;                       /*!< Inaltimea unei dale.*/
@@ -25,6 +25,8 @@ public class Tile
     public static Tile grassTile4= new GrassTile4(4);
     public static Tile grassTile5 = new GrassTile5(5);
     public static Tile grassTile6 = new GrassTile6(6);
+    public static Tile grassTile7 = new GrassTile7(23);
+    public static Tile grassTile8 = new GrassTile8(24);
 
     public static Tile waterTile = new WaterTile(7);     /*!< Dala de tip apa*/
     public static Tile waterTile1 = new WaterTile1(8);
@@ -59,6 +61,35 @@ public class Tile
     public static Tile max=new max(41);
     public static Tile snake=new snake(42);
     public static Tile rex=new rex(43);
+    public static Tile winter0=new Winter0(44);
+    public static Tile winter1=new Winter1(45);
+    public static Tile winter2=new Winter2(46);
+    public static Tile winter3=new Winter3(47);
+    public static Tile winter4=new Winter4(48);
+    public static Tile winter5=new Winter5(49);
+    public static Tile winter6=new Winter6(50);
+    public static Tile winter7=new Winter7(51);
+    public static Tile winter8=new Winter8(52);
+    public static Tile winter9=new Winter9(53);
+    public static Tile winter10=new Winter10(54);
+    public static Tile winter11=new Winter11(55);
+    public static Tile winter12=new Winter12(56);
+    public static Tile winter13=new Winter13(57);
+    public static Tile winter14=new Winter14(58);
+    public static Tile winter15=new Winter15(59);
+    public static Tile winter16=new Winter16(60);
+    public static Tile winter17=new Winter17(61);
+    public static Tile winter18=new Winter18(62);
+    public static Tile winter19=new Winter19(63);
+    public static Tile winter20=new Winter20(64);
+    public static Tile winter21=new Winter21(65);
+    public static Tile winter22=new Winter22(66);
+    public static Tile winter23=new Winter23(67);
+    public static Tile winter24=new Winter24(68);
+    public static Tile winter25=new Winter25(69);
+    public static Tile winter26=new Winter26(70);
+    public static Tile winter27=new Winter27(71);
+    public static Tile cats=new Cats(72);
 
 
 
@@ -102,11 +133,27 @@ public class Tile
         else if(idd==Tile.peste.GetId())
             g.drawImage(img, x, y,20, 20, null);
         else if(idd==Tile.iarba1.GetId())
-            g.drawImage(img, x, y+22,25,15 , null);
+            g.drawImage(img, x, y+22,40,10 , null);
         else if(idd==Tile.tufis2.GetId())
             g.drawImage(img, x, y,45,TILE_HEIGHT , null);
         else if(idd==Tile.pietre.GetId())
             g.drawImage(img, x, y+22,25,15 , null);
+        else if(idd==Tile.winter20.GetId())
+            g.drawImage(img, x, y,TILE_WIDTH*5,TILE_HEIGHT*2 , null);
+        else if(idd==Tile.winter21.GetId())
+            g.drawImage(img, x, y,TILE_HEIGHT*2,TILE_HEIGHT*2 , null);
+        else if(idd==Tile.winter22.GetId())
+            g.drawImage(img, x, y-18,50,50 , null);
+        else if(idd==Tile.winter23.GetId())
+            g.drawImage(img, x, y-48,70,80 , null);
+        else if(idd==Tile.winter24.GetId())
+            g.drawImage(img, x, y+12,30,20 , null);
+        else if(idd==Tile.winter25.GetId())
+            g.drawImage(img, x, y-118,145,150 , null);
+        else if(idd==Tile.winter26.GetId())
+            g.drawImage(img, x-20, y-118,110,150 , null);
+        else if(idd==Tile.cats.GetId())
+            g.drawImage(img, x, y-6,50, 40, null);
         else
             g.drawImage(img, x, y, TILE_WIDTH, TILE_HEIGHT, null);
     }

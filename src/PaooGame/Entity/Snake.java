@@ -30,7 +30,7 @@ public class Snake extends Enemy{
         if (direction == "idle") {
             if(lastDir=="left")
                 image = Assets.Snake[5];
-             else if (lastDir=="right")
+            else if (lastDir=="right")
                 image = Assets.Snake[0];
         } else if (direction == "right") {
             if (num == 1)

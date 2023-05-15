@@ -39,9 +39,6 @@ public class Menu extends State implements StateMethods {
 
         g.setColor(Color.green);
         g.setFont(f1);
-//        g.drawString("Press ENTER to start",game.getWnd().GetWndWidth()/2-90, 215);
-//        g.drawString("To win you have to collect all the food and defeat all the enemies",game.getWnd().GetWndWidth()/2-250, 245);
-//
         Background.drawBgT(g,0);
         g.drawString("Catventure",game.getWnd().GetWndWidth()/2-270, 100);
 

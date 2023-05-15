@@ -23,8 +23,8 @@ public class SpriteSheet
         \param img Un obiect BufferedImage valid.
      */
     public SpriteSheet(BufferedImage buffImg)    {
-            /// Retine referinta catre BufferedImage object.
-            spriteSheet = buffImg;
+        /// Retine referinta catre BufferedImage object.
+        spriteSheet = buffImg;
     }
 
     /*! \fn public BufferedImage crop(int x, int y)

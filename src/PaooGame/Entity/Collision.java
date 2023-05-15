@@ -8,27 +8,26 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static PaooGame.Entity.Mouse.getyOffset;
 import static PaooGame.Useful.Constants.PlayerConstants.STARTX;
 import static PaooGame.Useful.Constants.PlayerConstants.STARTY;
 
 public class Collision {
 
-        /*!\fn public static boolean CanMoveHere(float x, float y, float width, float height, int[][] map)
-            \brief Verifică dacă un obiect poate fi mutat la o poziție specifică pe hartă.
+    /*!\fn public static boolean CanMoveHere(float x, float y, float width, float height, int[][] map)
+        \brief Verifică dacă un obiect poate fi mutat la o poziție specifică pe hartă.
 
-            \ Această metodă primește coordonatele (x, y) ale poziției obiectului, lățimea și înălțimea acestuia
-            \ și o hartă reprezentată sub formă de matrice bidimensională de intregi (int[][] map),
-            \ și verifică dacă obiectul poate fi mutat la poziția specificată fără a se intersecta cu un obiect solid de pe hartă,
-            \ prin apeluri ale functiei isSolid().
+        \ Această metodă primește coordonatele (x, y) ale poziției obiectului, lățimea și înălțimea acestuia
+        \ și o hartă reprezentată sub formă de matrice bidimensională de intregi (int[][] map),
+        \ și verifică dacă obiectul poate fi mutat la poziția specificată fără a se intersecta cu un obiect solid de pe hartă,
+        \ prin apeluri ale functiei isSolid().
 
-            \ x Coordonata X a poziției obiectului.
-            \ y Coordonata Y a poziției obiectului.
-            \ width Lățimea obiectului.
-            \ height Înălțimea obiectului.
-            \ map Matricea reprezentând harta.
-            \ Returnează valoarea booleană true dacă obiectul poate fi mutat la poziția specificată și false în caz contrar.
-        */
+        \ x Coordonata X a poziției obiectului.
+        \ y Coordonata Y a poziției obiectului.
+        \ width Lățimea obiectului.
+        \ height Înălțimea obiectului.
+        \ map Matricea reprezentând harta.
+        \ Returnează valoarea booleană true dacă obiectul poate fi mutat la poziția specificată și false în caz contrar.
+    */
     public static boolean CanMoveHere(float x, float y,float width,float height,int[][] map)
     {
         if(!isSolid(x,y,map))
@@ -39,21 +38,21 @@ public class Collision {
         return false;
 
     }
-        /*!\fn public static boolean isSolid(float x, float y, int[][] map)
-            \brief Verifică dacă un anumit punct de coordonate (x, y) se află pe un tile solid din harta dată.
+    /*!\fn public static boolean isSolid(float x, float y, int[][] map)
+        \brief Verifică dacă un anumit punct de coordonate (x, y) se află pe un tile solid din harta dată.
 
-            \ x Coordonata orizontală a punctului în pixeli.
-            \ y Coordonata verticală a punctului în pixeli.
-            \ map Harta de verificat, reprezentată ca o matrice bidimensională de intregi.
-            \ Returnează valoarea true dacă punctul se află pe un tile solid și false în caz contrar.
+        \ x Coordonata orizontală a punctului în pixeli.
+        \ y Coordonata verticală a punctului în pixeli.
+        \ map Harta de verificat, reprezentată ca o matrice bidimensională de intregi.
+        \ Returnează valoarea true dacă punctul se află pe un tile solid și false în caz contrar.
 
-            Metoda verifică dacă punctul de coordonate (x, y) se află pe un tile solid din harta dată.
-            Mai întâi, verifică dacă coordonatele (x, y) se află în afara hărții,
-            caz în care returnează valoarea true. Dacă punctul se află în interiorul hărții,
-            calculează indicii tile-ului asociat punctului și verifică dacă tile-ul este solid prin apelul functiei IsSolid() specifica fiecarei dale .
-            Dacă tile-ul nu este solid, metoda returnează valoarea false.
-            În caz contrar, metoda returnează valoarea true.
-        */
+        Metoda verifică dacă punctul de coordonate (x, y) se află pe un tile solid din harta dată.
+        Mai întâi, verifică dacă coordonatele (x, y) se află în afara hărții,
+        caz în care returnează valoarea true. Dacă punctul se află în interiorul hărții,
+        calculează indicii tile-ului asociat punctului și verifică dacă tile-ul este solid prin apelul functiei IsSolid() specifica fiecarei dale .
+        Dacă tile-ul nu este solid, metoda returnează valoarea false.
+        În caz contrar, metoda returnează valoarea true.
+    */
     public static boolean isSolid(float x, float y, int [][] map)
     {
         int maxWidth=map[0].length*Tile.TILE_WIDTH;
@@ -102,13 +101,13 @@ public class Collision {
         Metoda verifică dacă o entitate este pe podea, prin verificarea dacă zona solidă asociată
         entității atinge orice obiect solid pe harta jocului în poziția sa curentă.
      */
-   public static boolean IsEntityOnFloor(Rectangle2D.Float solidArea,int [][] map)
-   {
-       if(!isSolid(solidArea.x,solidArea.y+solidArea.height+1,map))
-           if(!isSolid(solidArea.x+solidArea.width,solidArea.y+solidArea.height+1,map))
-               return false;
-       return true;
-   }
+    public static boolean IsEntityOnFloor(Rectangle2D.Float solidArea,int [][] map)
+    {
+        if(!isSolid(solidArea.x,solidArea.y+solidArea.height+1,map))
+            if(!isSolid(solidArea.x+solidArea.width,solidArea.y+solidArea.height+1,map))
+                return false;
+        return true;
+    }
 
     /*!\fn public static void IsFish(Rectangle2D.Float solidArea, Level level, Player player)
         \brief Verifică dacă jucătorul a ajuns la pește și actualizează scorul.
@@ -123,15 +122,26 @@ public class Collision {
         nivelul este actualizat pentru a elimina peștele și scorul jucătorului este actualizat cu o valoare corespunzătoare punctelor  pentru un pește.
 
     */
-   public static void IsFish(Rectangle2D.Float solidArea,Level level,Player player)
-   {
-       float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
-       float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
-       if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.peste.GetId()) {
-           level.setId((int) yIndex, (int) xIndex, 0);
-           Player.points.addPointsFish();
-       }
-   }
+    public static void IsFish(Rectangle2D.Float solidArea,Level level,Player player)
+    {
+        float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
+        float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
+        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.peste.GetId()) {
+            level.setId((int) yIndex, (int) xIndex, 0);
+            Player.points.addPointsFish();
+        }
+    }
+
+    public static boolean IsAtFinish(Rectangle2D.Float solidArea,Level level)
+    {
+        float xIndex= solidArea.x/ Tile.TILE_HEIGHT;
+        float yIndex= solidArea.y/ Tile.TILE_HEIGHT;
+        if(level.getMap()[(int)yIndex][(int)xIndex]==Tile.cats.GetId()) {
+            return true;
+        }
+        return false;
+
+    }
 
     /*! \fn public static void IsBone(Rectangle2D.Float solidArea, Level level, Player player, KeyHandler keyH)
         \ Verifică dacă entitatea jucătorului se intersectează cu un os
@@ -169,7 +179,7 @@ public class Collision {
     */
     public static void IsMouse(Rectangle2D.Float solidArea,Mouse mouse,Player player)
     {
-        if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y-getyOffset())  {
+        if(mouse.isMouse && (int)solidArea.x==mouse.x && (int)solidArea.y== mouse.y)  {
             Player.points.addPointsMouse();
             mouse.isMouse=false;
         }
@@ -200,24 +210,26 @@ public class Collision {
             return isSolid(solidArea.x+xSpeed+solidArea.width,solidArea.y+ solidArea.height+1,map);
     }
 
-        /*!\fn public static void IsWater(Player player, int[][] map)
-            \brief Verifică dacă jucătorul a intrat în apă și actualizează starea și poziția jucătorului.
+    /*!\fn public static void IsWater(Player player, int[][] map)
+        \brief Verifică dacă jucătorul a intrat în apă și actualizează starea și poziția jucătorului.
 
-             Metoda verifică dacă jucătorul a intrat în apă prin verificarea codului dalei din harta nivelului în funcție de poziția solidArea a jucătorului.
-             Dacă codul dalei corespunde cu unul dintre codurile dalelor pentru apă, starea de viață a jucătorului este redusă și poziția sa este resetată la poziția de start.
+         Metoda verifică dacă jucătorul a intrat în apă prin verificarea codului dalei din harta nivelului în funcție de poziția solidArea a jucătorului.
+         Dacă codul dalei corespunde cu unul dintre codurile dalelor pentru apă, starea de viață a jucătorului este redusă și poziția sa este resetată la poziția de start.
 
-            \ player Jucătorul curent.
-            \ map Harta nivelului curent.
-        */
+        \ player Jucătorul curent.
+        \ map Harta nivelului curent.
+    */
     public static void IsWater(Player player ,int [][] map )
     {
         float xIndex= player.getSolidArea().x/ Tile.TILE_HEIGHT;
         float yIndex= player.getSolidArea().y/ Tile.TILE_HEIGHT;
         if(map[(int)yIndex][(int)xIndex]==Tile.waterTile.GetId() || map[(int)yIndex][(int)xIndex]==Tile.waterTile.GetId()
                 || map[(int)yIndex][(int)xIndex]==Tile.waterTile1.GetId()
-                || map[(int)yIndex][(int)xIndex]==Tile.waterTile2.GetId()) {
-           player.changeLife();
-           player.changeCoord(STARTX,STARTY);
+                || map[(int)yIndex][(int)xIndex]==Tile.waterTile2.GetId()
+                || map[(int)yIndex][(int)xIndex]==Tile.winter14.GetId()
+                || map[(int)yIndex][(int)xIndex]==Tile.winter15.GetId()) {
+            player.changeLife();
+            player.changeCoord(STARTX,STARTY);
         }
 
     }

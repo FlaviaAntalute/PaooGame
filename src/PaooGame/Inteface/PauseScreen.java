@@ -61,6 +61,7 @@ public class PauseScreen {
         if(isIn(e,menuB)){
             if(menuB.isMousePressed()) {
                 Gamestate.state = Gamestate.MENU;
+                playing.setLvlIndex(0);
                 playing.unpauseGame();
                 playing.resetAll();
             }

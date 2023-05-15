@@ -29,7 +29,7 @@ public class Rex extends Enemy{
         BufferedImage image = null;
         /// Verificăm starea și direcția entității Rex pentru a selecta sprite-ul corespunzător
 
-       if (direction == "right") {
+        if (direction == "right") {
             if (num == 1)
                 image = Assets.Rex[0];
             if (num == 2)
@@ -52,62 +52,62 @@ public class Rex extends Enemy{
             if (num == 5)
                 image = Assets.Rex[9];
         } else if (direction == "attack") {
-           if (lastDir == "left") {
-               if (num == 1)
-                   image = Assets.Rex[5];
-               if (num == 2)
-                   image = Assets.Rex[6];
-               if (num == 3)
-                   image = Assets.Rex[18];
-               if (num == 4)
-                   image = Assets.Rex[7];
-               if (num == 5)
-                   image = Assets.Rex[18];
-           }
-           if (lastDir == "right") {
-               if (num == 1)
-                   image = Assets.Rex[0];
-               if (num == 2)
-                   image = Assets.Rex[1];
-               if (num == 3)
-                   image = Assets.Rex[19];
-               if (num == 4)
-                   image = Assets.Rex[2];
-               if (num == 5)
-                   image = Assets.Rex[19];
-           }
-       }else if (Objects.equals(direction, "calm")) {
-                if(Objects.equals(lastDir, "left"))
-                    image=Assets.Rex[17];
-                if(Objects.equals(lastDir, "right"))
-                    image=Assets.Rex[13];
+            if (lastDir == "left") {
+                if (num == 1)
+                    image = Assets.Rex[5];
+                if (num == 2)
+                    image = Assets.Rex[6];
+                if (num == 3)
+                    image = Assets.Rex[18];
+                if (num == 4)
+                    image = Assets.Rex[7];
+                if (num == 5)
+                    image = Assets.Rex[18];
+            }
+            if (lastDir == "right") {
+                if (num == 1)
+                    image = Assets.Rex[0];
+                if (num == 2)
+                    image = Assets.Rex[1];
+                if (num == 3)
+                    image = Assets.Rex[19];
+                if (num == 4)
+                    image = Assets.Rex[2];
+                if (num == 5)
+                    image = Assets.Rex[19];
+            }
+        }else if (Objects.equals(direction, "calm")) {
+            if(Objects.equals(lastDir, "left"))
+                image=Assets.Rex[17];
+            if(Objects.equals(lastDir, "right"))
+                image=Assets.Rex[13];
         }
-       else if (Objects.equals(direction, "hurt")) {
-           if (Objects.equals(lastDir, "left")) {
-               if (num == 1)
-                   image = Assets.Rex[14];
-               if (num == 2)
-                   image = Assets.Rex[15];
-               if (num == 3)
-                   image = Assets.Rex[16];
-               if (num == 4)
-                   image = Assets.Rex[17];
-               if (num == 5)
-                   image = Assets.Rex[17];
-           }
-           if (lastDir == "right") {
-               if (num == 1)
-                   image = Assets.Rex[10];
-               if (num == 2)
-                   image = Assets.Rex[11];
-               if (num == 3)
-                   image = Assets.Rex[12];
-               if (num == 4)
-                   image = Assets.Rex[13];
-               if (num == 5)
-                   image = Assets.Rex[13];
-           }
-       }
+        else if (Objects.equals(direction, "hurt")) {
+            if (Objects.equals(lastDir, "left")) {
+                if (num == 1)
+                    image = Assets.Rex[14];
+                if (num == 2)
+                    image = Assets.Rex[15];
+                if (num == 3)
+                    image = Assets.Rex[16];
+                if (num == 4)
+                    image = Assets.Rex[17];
+                if (num == 5)
+                    image = Assets.Rex[17];
+            }
+            if (lastDir == "right") {
+                if (num == 1)
+                    image = Assets.Rex[10];
+                if (num == 2)
+                    image = Assets.Rex[11];
+                if (num == 3)
+                    image = Assets.Rex[12];
+                if (num == 4)
+                    image = Assets.Rex[13];
+                if (num == 5)
+                    image = Assets.Rex[13];
+            }
+        }
         /// Desenăm sprite-ul corespunzător entității Snake
         /// X și Y sunt coordonatele de desenare ale sprite-ului
         /// MaxXOffset și MaxYOffset sunt constante care reprezintă offset-ul de desenare

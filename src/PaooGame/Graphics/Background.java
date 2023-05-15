@@ -20,4 +20,17 @@ public class Background {
             g.drawImage(bg4, i*WIDTH-(int)(lvlOffset*0.3), 0, WIDTH, HEIGHT, null);
         }
     }
+
+    public static void drawBgW(Graphics g, int xLvlOffset) {
+        for(int i=0;i<1;++i)
+            g.drawImage(bgw, i*WIDTH, 40, WIDTH*2+50, HEIGHT, null);
+
+        g.drawImage(star1,150-(int)(xLvlOffset*0.15),120,50,50,null);
+        g.drawImage(star1,350-(int)(xLvlOffset*0.15),70,50,50,null);
+        g.drawImage(star1,560-(int)(xLvlOffset*0.15),140,50,50,null);
+        g.drawImage(star1,770-(int)(xLvlOffset*0.15),200,50,50,null);
+        g.drawImage(star1,890-(int)(xLvlOffset*0.15),90,50,50,null);
+
+
+    }
 }

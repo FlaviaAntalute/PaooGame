@@ -11,8 +11,8 @@ public class Constants {
     }
 
     public static class PlayerConstants{
-        public static final int STARTX=600;
-        public static final int STARTY=70;
+        public static final int STARTX=50;
+        public static final int STARTY=448;
         public static final String STARTDIR="right";
         public static final int SPEED=3;
 

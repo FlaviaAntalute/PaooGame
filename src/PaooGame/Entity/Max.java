@@ -6,24 +6,24 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import static PaooGame.Useful.Constants.EnemyConstants.*;
 
-    /*! class Max
-        Clasa Max reprezintă o subclasă a clasei Enemy și definește caracteristicile inamicului Max din joc.
-    */
+/*! class Max
+    Clasa Max reprezintă o subclasă a clasei Enemy și definește caracteristicile inamicului Max din joc.
+*/
 public class Max extends Enemy {
     private static int Width = 60; ///Lățimea în pixeli a imaginii inamicului Max.
     private static int Height = 55; ///Înălțimea în pixeli a imaginii inamicului Max.
 
-        /*! \fn public Max(int x, int y, int s, String dir)
-            \brief Constructor pentru clasa Max.
+    /*! \fn public Max(int x, int y, int s, String dir)
+        \brief Constructor pentru clasa Max.
 
-            \ x coordonata x a pozitiei initiale a obiectului.
-            \ y coordonata y a pozitiei initiale a obiectului.
-            \ s viteza de miscare a obiectului.
-            \ dir directia initiala de miscare a obiectului.
+        \ x coordonata x a pozitiei initiale a obiectului.
+        \ y coordonata y a pozitiei initiale a obiectului.
+        \ s viteza de miscare a obiectului.
+        \ dir directia initiala de miscare a obiectului.
 
-             Acest constructor initializeaza obiectul Max cu pozitia initiala, viteza de miscare si directia initiala date, si seteaza numarul initial de vieti la 1.
-             De asemenea, initializeaza zona solida si zona de atac asociate obiectului.
-        */
+         Acest constructor initializeaza obiectul Max cu pozitia initiala, viteza de miscare si directia initiala date, si seteaza numarul initial de vieti la 1.
+         De asemenea, initializeaza zona solida si zona de atac asociate obiectului.
+    */
     public Max(int x, int y, int s, String dir) {
         super(x, y, s, MAX, dir);
         lives=1;
@@ -32,12 +32,12 @@ public class Max extends Enemy {
 
     }
 
-        /*! \fn public void drawMax(Graphics g, int xLvlOffset)
-         \brief Desenează sprite-ul corespunzător stării și direcției entității Max.
+    /*! \fn public void drawMax(Graphics g, int xLvlOffset)
+     \brief Desenează sprite-ul corespunzător stării și direcției entității Max.
 
-         \ g obiectul Graphics în care se realizează desenarea
-         \ xLvlOffset offset-ul orizontal al nivelului, utilizat pentru a actualiza poziția de desenare
-         */
+     \ g obiectul Graphics în care se realizează desenarea
+     \ xLvlOffset offset-ul orizontal al nivelului, utilizat pentru a actualiza poziția de desenare
+     */
     public void drawIndividual(Graphics g, int xLvlOffset) {
         BufferedImage image = null;
         /// Verificăm starea și direcția entității Max pentru a selecta sprite-ul corespunzător

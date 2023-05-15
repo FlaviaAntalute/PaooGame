@@ -31,18 +31,18 @@ public abstract class Enemy extends Entity{
 
 
 
-        /*! \fn public Enemy(int x, int y, int s, int type,String dir)
-            \brief Constructorul clasei.
+    /*! \fn public Enemy(int x, int y, int s, int type,String dir)
+        \brief Constructorul clasei.
 
-            Constructorul primește ca parametri poziția inițială (x, y),
-            dimensiunea și direcția de pornire a inamicului.
+        Constructorul primește ca parametri poziția inițială (x, y),
+        dimensiunea și direcția de pornire a inamicului.
 
-            \ x Coordonata x a poziției inițiale a inamicului.
-            \ y Coordonata y a poziției inițiale a inamicului.
-            \ s Dimensiunea inamicului.
-            \ type Tipul inamicului.
-            \ dir Direcția de pornire a inamicului.
-         */
+        \ x Coordonata x a poziției inițiale a inamicului.
+        \ y Coordonata y a poziției inițiale a inamicului.
+        \ s Dimensiunea inamicului.
+        \ type Tipul inamicului.
+        \ dir Direcția de pornire a inamicului.
+     */
     public Enemy(int x, int y, int s, int type,String dir) {
         super(x, y, s,dir);
         this.enemyType=type;
@@ -177,7 +177,7 @@ public abstract class Enemy extends Entity{
 
         \ player Jucătorul curent.
     */
-        protected void TurnToPlayer(Player player)
+    protected void TurnToPlayer(Player player)
     {
         if(player.solidArea.x>solidArea.x)
             direction="right";
@@ -192,15 +192,15 @@ public abstract class Enemy extends Entity{
             \ Returnează valoarea booleană true dacă inamicul se află la distanța de atac față de jucător, altfel false.
     */
     protected boolean CanAttack(Player player) {
-            int distance = (int) Math.abs(player.solidArea.x - solidArea.x);
-            return distance <= attackRange;
+        int distance = (int) Math.abs(player.solidArea.x - solidArea.x);
+        return distance <= attackRange;
     }
 
     /*! \fn  void changeDirection()
         \brief Schimbă direcția în care se mișcă inamicul.
         Dacă inamicul se deplasează spre stânga, funcția îi schimbă direcția de mers spre dreapta și invers.
     */
-        void changeDirection() {
+    void changeDirection() {
         if (Objects.equals(direction, "left"))
             direction = "right";
         else
@@ -212,7 +212,7 @@ public abstract class Enemy extends Entity{
         Funcția crește variabila counter cu 1 și verifică dacă acesta depășește 15.
         În caz afirmativ, numărul imaginii este actualizat cu ajutorul funcției updateNum() și counter-ul este resetat la 0.
     */
-        public void updateCounter() {
+    public void updateCounter() {
         counter++;
         if (counter > 15) {
             this.updateNum();
@@ -260,7 +260,7 @@ public abstract class Enemy extends Entity{
         isAlive=true;
         isHurt=false;
     }
-//    public String getDirection()
+    //    public String getDirection()
 //    {
 //        return direction;
 //    }
@@ -273,82 +273,82 @@ public abstract class Enemy extends Entity{
     {
         return isAlive;
     }
-        /*! \fn private void initAttackArea()
+    /*! \fn private void initAttackArea()
 
-            \Inițializează zona de atac asociată entității.
-            \attackArea o formă rectangulară 2D ce reprezintă zona de atac
-            \attackAreaOffsetX o valoare numerică ce reprezintă offset-ul poziției x a zonei de atac
-        */
-        protected void initAttackArea(int width,int height,int offset) {
-            attackArea=new Rectangle2D.Float(x,y,width,height);
-            attackAreaOffsetX=offset;
-        }
-        /*! \fn public void update(int[][] map,Player player)
-           \brief Metoda de actualizare a stării inamicului Snake.
+        \Inițializează zona de atac asociată entității.
+        \attackArea o formă rectangulară 2D ce reprezintă zona de atac
+        \attackAreaOffsetX o valoare numerică ce reprezintă offset-ul poziției x a zonei de atac
+    */
+    protected void initAttackArea(int width,int height,int offset) {
+        attackArea=new Rectangle2D.Float(x,y,width,height);
+        attackAreaOffsetX=offset;
+    }
+    /*! \fn public void update(int[][] map,Player player)
+       \brief Metoda de actualizare a stării inamicului Snake.
 
-           \ map harta jocului în format matrice de intregi
-           \ player jucătorul din joc
+       \ map harta jocului în format matrice de intregi
+       \ player jucătorul din joc
 
-           Metoda actualizează starea inamicului Snake prin apelarea a trei metode ajutătoare:
-           updateWalk() - actualizează poziția și starea de deplasare a inamicului;
-           updateCounter() - actualizează numărul de cadre până la următoarea acțiune a inamicului;
-           updateAttackArea() - actualizează poziția și dimensiunile zonei de atac a inamicului.
-       */
-        public void update(int[][] map,Player player) {
-            updateWalk(map,player);
-            updateCounter();
-            updateAttackArea();
-        }
+       Metoda actualizează starea inamicului Snake prin apelarea a trei metode ajutătoare:
+       updateWalk() - actualizează poziția și starea de deplasare a inamicului;
+       updateCounter() - actualizează numărul de cadre până la următoarea acțiune a inamicului;
+       updateAttackArea() - actualizează poziția și dimensiunile zonei de atac a inamicului.
+   */
+    public void update(int[][] map,Player player) {
+        updateWalk(map,player);
+        updateCounter();
+        updateAttackArea();
+    }
 
-        /*! \fn public void updateAttackArea()
-            Actualizează poziția zonei de atac în funcție de poziția zonei solide.
-        */
-        public void updateAttackArea()
-        {
-            attackArea.x=solidArea.x-attackAreaOffsetX;
-            attackArea.y=solidArea.y-10;
-        }
+    /*! \fn public void updateAttackArea()
+        Actualizează poziția zonei de atac în funcție de poziția zonei solide.
+    */
+    public void updateAttackArea()
+    {
+        attackArea.x=solidArea.x-attackAreaOffsetX;
+        attackArea.y=solidArea.y-10;
+    }
 
-        /*! \fn public void updateWalk(int[][] map,Player player)
-        \brief Actualizează poziția și mișcarea inamicului.
-        Funcția verifică starea inamicului și actualizează direcția de deplasare și acțiunile în funcție de aceasta.
-        - Dacă inamicul nu s-a mișcat încă, se actualizează poziția.
-        - Dacă inamicul se află în aer, se apelează funcția InAir().
-        - Dacă inamicul este în stare de repaus, se va deplasa spre stânga și va căuta jucătorul.
-        - Dacă inamicul este în stare de atac, se verifică dacă jucătorul este în raza de acțiune a atacului și se efectuează atacul.
-        - Dacă inamicul este rănit, nu se face nimic.
-        \param map Matricea de tip Tile ce reprezintă harta nivelului curent.
-        \param player Obiectul de tip Player ce reprezintă jucătorul.
-        */
-        public void updateWalk(int[][] map,Player player) {
-            if (first)
-                firstUpdate(map);
-            if (inAir)
-                InAir(map);
-            else {
-                if(Objects.equals(direction, "idle"))
-                    direction="left";
-                else if(Objects.equals(direction, "right") || Objects.equals(direction, "left"))
-                {
-                    if (PlayerIsClose(map, player)){
-                        TurnToPlayer(player);
-                        if (CanAttack(player)) {
-                            lastDir = direction;
-                            direction = "attack";
-                        }
+    /*! \fn public void updateWalk(int[][] map,Player player)
+    \brief Actualizează poziția și mișcarea inamicului.
+    Funcția verifică starea inamicului și actualizează direcția de deplasare și acțiunile în funcție de aceasta.
+    - Dacă inamicul nu s-a mișcat încă, se actualizează poziția.
+    - Dacă inamicul se află în aer, se apelează funcția InAir().
+    - Dacă inamicul este în stare de repaus, se va deplasa spre stânga și va căuta jucătorul.
+    - Dacă inamicul este în stare de atac, se verifică dacă jucătorul este în raza de acțiune a atacului și se efectuează atacul.
+    - Dacă inamicul este rănit, nu se face nimic.
+    \param map Matricea de tip Tile ce reprezintă harta nivelului curent.
+    \param player Obiectul de tip Player ce reprezintă jucătorul.
+    */
+    public void updateWalk(int[][] map,Player player) {
+        if (first)
+            firstUpdate(map);
+        if (inAir)
+            InAir(map);
+        else {
+            if(Objects.equals(direction, "idle"))
+                direction="left";
+            else if(Objects.equals(direction, "right") || Objects.equals(direction, "left"))
+            {
+                if (PlayerIsClose(map, player)){
+                    TurnToPlayer(player);
+                    if (CanAttack(player)) {
+                        lastDir = direction;
+                        direction = "attack";
                     }
-                    if(this.enemyType!=REX)
-                        moveEnemy(map);
-                } else if (Objects.equals(direction, "attack")) {
-                    if(num==1)
-                        attackChecked=false;
-                    if(num==2 && !attackChecked)
-                        checkPlayerHit(attackArea,player);
-                } else if (Objects.equals(direction, "hurt")) {
-                    if(enemyType==2)
-                        direction="calm";
                 }
+                if(this.enemyType!=REX)
+                    moveEnemy(map);
+            } else if (Objects.equals(direction, "attack")) {
+                if(num==1)
+                    attackChecked=false;
+                if(num==2 && !attackChecked)
+                    checkPlayerHit(attackArea,player);
+            } else if (Objects.equals(direction, "hurt")) {
+                if(enemyType==2)
+                    direction="calm";
             }
         }
-        public abstract void drawIndividual(Graphics g, int xLvlOffset);
+    }
+    public abstract void drawIndividual(Graphics g, int xLvlOffset);
 } 
