@@ -12,9 +12,9 @@ public class Snake extends Enemy{
     private static int Width = 40; ///Lățimea în pixeli a imaginii inamicului de tip Snake.
     private static int Height = 30; ///Înălțimea în pixeli a imaginii inamicului de tip Snake.
     protected static int yOffset = 5;///Offset-ul în pixeli față de sol pentru a plasa inamicul la nivelul solului în joc.
-    public Snake(int x, int y, int s, String dir) {
+    public Snake(int x, int y, int s, String dir,int life) {
         super(x, y, s, SNAKE, dir);
-        lives=1;
+        lives=life;
         initSolidArea(x,y,35,20);
         initAttackArea(50,30,25);
     }

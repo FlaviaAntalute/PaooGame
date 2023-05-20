@@ -4,6 +4,10 @@ import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -36,13 +40,17 @@ public class EnemyManager {
         for(int i=0;i<level.getMap().length;i++) {
             for (int j = 0; j < level.getMap()[0].length; ++j) {
                 if (level.getMap()[i][j] == Tile.max.GetId()) {
-                    max.add( factory.createEnemy("Max",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle"));
+                    max.add( factory.createEnemy("Max",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "idle",0));
                 }
                 else if (level.getMap()[i][j] == Tile.snake.GetId()) {
-                    snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 1, "idle"));
+                    if(playing.getLvlIndex()==2)
+                        snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 1, "idle",2));
+                    else
+                        snakes.add( factory.createEnemy("Snake",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 1, "idle",1));
+
                 }
                 else if (level.getMap()[i][j] == Tile.rex.GetId()) {
-                    rex.add( factory.createEnemy("Rex",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "right"));
+                    rex.add( factory.createEnemy("Rex",j * Tile.TILE_HEIGHT, i * Tile.TILE_WIDTH, 2, "right",0));
                 }
             }
         }
@@ -171,5 +179,87 @@ public class EnemyManager {
             return true;
         else
             return false;
+    }
+
+    public void saveEnemy(Connection c, Statement stmt) throws SQLException {
+        String str;
+        int i=0;
+        for(Enemy m: max)
+        {
+            if(m.isAlive)
+                str = "UPDATE max SET c" + (i+1)+"="+1+" WHERE rowid =" + 1;
+            else
+                str = "UPDATE max SET c" + (i+1)+"="+0+" WHERE rowid =" +  1;
+            stmt.executeUpdate(str);
+            i++;
+        }
+        i=0;
+        for(Enemy s: snakes)
+        {
+            if(s.isAlive)
+                str = "UPDATE snake SET c" +(i+1)+"="+ 1+" WHERE rowid =" +1;
+            else
+                str = "UPDATE snake SET  c" +(i+1)+"="+ 0+" WHERE rowid =" + 1;
+            stmt.executeUpdate(str);
+            i++;
+        }
+        i=0;
+        if(!rex.isEmpty()) {
+            for (Enemy r : rex) {
+                if (r.isAlive)
+                    str = "UPDATE rex SET c" + (i + 1) + "=" + 1 + " WHERE rowid =" + 1;
+                else
+                    str = "UPDATE rex SET  c" + (i + 1) + "=" + 0 + " WHERE rowid =" + 1;
+                stmt.executeUpdate(str);
+                i++;
+            }
+        }
+
+    }
+
+    public void loadEnemy(Connection c, Statement stmt) throws SQLException {
+        String str;
+        int i=0;
+        str="SELECT * FROM max";
+        ResultSet rs = stmt.executeQuery(str);
+
+        while(rs.next())
+        {
+            for(i=0;i<max.size();++i)
+            {
+                if (rs.getInt(i+1) == 1)
+                    max.get(i).isAlive = true;
+                else
+                    max.get(i).isAlive = false;
+            }
+        }
+
+        str="SELECT * FROM snake";
+        rs = stmt.executeQuery(str);
+        while(rs.next())
+        {
+            for(i=0;i<snakes.size();++i)
+            {
+                if (rs.getInt(i+1) == 1)
+                    snakes.get(i).isAlive = true;
+                else
+                    snakes.get(i).isAlive = false;
+            }
+        }
+
+        if(!rex.isEmpty()) {
+            str = "SELECT * FROM rex";
+            rs = stmt.executeQuery(str);
+            while (rs.next()) {
+                for(i=0;i<rex.size();++i)
+                {
+                    if (rs.getInt(i+1) == 1)
+                        rex.get(i).isAlive = true;
+                    else
+                        rex.get(i).isAlive = false;
+                }
+            }
+        }
+
     }
 }

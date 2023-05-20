@@ -1,12 +1,11 @@
 package PaooGame.Graphics;
 
-import PaooGame.Exceptions.IncorectPathException;
 import PaooGame.Exceptions.IndexCropException;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static PaooGame.Exceptions.IndexCropException.handleException;
-import static PaooGame.Exceptions.IncorectPathException.handleException;
 
 /*! \class public class Assets
     \brief Clasa incarca fiecare element grafic necesar jocului.
@@ -90,6 +89,10 @@ public class Assets
     public static BufferedImage [] menu=new BufferedImage[3];
     public static BufferedImage [] continuee=new BufferedImage[3];
     public static BufferedImage [] next=new BufferedImage[3];
+    public static BufferedImage [] save=new BufferedImage[3];
+    public static BufferedImage [] load=new BufferedImage[3];
+
+
     public static BufferedImage [] winter=new BufferedImage[30];
     public static BufferedImage cats;
     public static BufferedImage [] forest=new BufferedImage[30];
@@ -130,6 +133,7 @@ public class Assets
             gui[5]=ImageLoader.LoadImage("/gui/GameWonImg.png");
             gui[6]=GUI.crop2(177,97,62,30);
             gui[7]=GUI.crop2(177,97,62,30);
+            gui[8]=ImageLoader.LoadImage("/gui/optiuni.png");
             start[0]=GUI.crop2(385,321,62,30);//start1
             start[1]=GUI.crop2(449,321,62,30);//start2
             start[2]=GUI.crop2(513,321,62,30);//start3
@@ -156,7 +160,16 @@ public class Assets
 
             next[0]=GUI.crop2(1,449,62,30);//next
             next[1]=GUI.crop2(65,449,62,30);//next
-            next[2]=GUI.crop2(128,449,62,30);//next
+            next[2]=GUI.crop2(129,449,62,30);//next
+
+            save[0]=GUI.crop2(1,353,62,30);//next
+            save[1]=GUI.crop2(65,353,62,30);//next
+            save[2]=GUI.crop2(129,353,62,30);//next
+
+            load[0]=GUI.crop2(1,385,62,30);//next
+            load[1]=GUI.crop2(65,385,62,30);//next
+            load[2]=GUI.crop2(129,385,62,30);//next
+
 
             /// Se obtin subimaginile corespunzatoare elementelor necesare.
 
@@ -363,9 +376,8 @@ public class Assets
 
         }catch (IndexCropException e){
             handleException(e);
-        }catch (IncorectPathException e)
-        {
-            handleException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 

@@ -38,5 +38,9 @@ public class Level {
     public String getPath() {
         return path;
     }
+
+    public void setMap(int[][] matrix) {
+        m.setMap(matrix);
+    }
 }
 

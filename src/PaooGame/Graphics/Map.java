@@ -34,19 +34,16 @@ public class Map{
     }
     public void drawMap(Graphics g, int lvlOffset)throws IndexOutOfRangeException
     {
-        try {
             for (int i = 0; i < rows; ++i) {
                 for (int j = 0; j < columns ; ++j) {
-                    if (m[i][j] == 0 || m[i][j] == Tile.max.GetId() || m[i][j] == Tile.snake.GetId() || m[i][j] == Tile.rex.GetId())
+                    if(i>=rows || j>=columns)
+                        throw new IndexOutOfRangeException("Ati depasit dimensiunea matricei.");
+                    if (m[i][j] == 0 || m[i][j] == Tile.max.GetId() || m[i][j] == Tile.snake.GetId() || m[i][j] == Tile.rex.GetId() || m[i][j] == Tile.mouse.GetId())
                         continue;
                     else
                         Tile.tiles[m[i][j]].Draw(g, j * Tile.TILE_WIDTH - lvlOffset, i * Tile.TILE_WIDTH, m[i][j]);
                 }
             }
-        }catch (Exception e)
-        {
-            throw new IndexOutOfRangeException("Index out of length!");
-        }
     }
     public int getId(int i,int j){
         return m[i][j];
@@ -55,4 +52,12 @@ public class Map{
          m[i][j]=val;
     }
     public int[][] getMap(){return m;}
+
+    public void setMap(int[][] matrix) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                m[i][j] = matrix[i][j];
+            }
+        }
+    }
 }

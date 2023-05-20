@@ -1,6 +1,7 @@
 package PaooGame;
 import PaooGame.GameStates.Gamestate;
 import PaooGame.GameStates.Menu;
+import PaooGame.GameStates.Options;
 import PaooGame.GameStates.Playing;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Inputs.MouseHandler;
@@ -9,6 +10,7 @@ import PaooGame.Graphics.Assets;
 import PaooGame.Tiles.Tile;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
 
@@ -71,7 +73,7 @@ public class Game extends JPanel implements Runnable
     private MouseHandler mouseH=new MouseHandler(this);/*!Reprezintă un obiect MouseHandler care este asociat cu obiectul curent și este folosit pentru a gestiona input-ul de la mouse în joc.*/
     private Playing playing;/*!Reprezintă un obiect Playing care este utilizat pentru a gestiona starea și mecanica jocului atunci când jocul este în desfășurare.*/
     private Menu menu;/*!Reprezintă un obiect Menu care este utilizat pentru a afișa meniul principal al jocului și pentru a gestiona selecțiile utilizatorului în meniu.*/
-
+    private Options options;
 
     /*! \fn public Game(String title, int width, int height)
         \brief Constructor de initializare al clasei Game.
@@ -131,6 +133,8 @@ public class Game extends JPanel implements Runnable
         menu=new Menu(this);
         /// Inițializează o nouă instanță a clasei Playing care este asociată cu obiectul curent.
         playing=new Playing(this);
+        options=new Options(this);
+        menu.setPlaying(playing);
         /// Adaugă un nou KeyListener la canvas-ul asociat obiectului Wnd curent.
         wnd.GetCanvas().addKeyListener(keyH);
         /// Adaugă un nou MouseListener la canvas-ul asociat obiectului Wnd curent.
@@ -250,8 +254,9 @@ public class Game extends JPanel implements Runnable
                 playing.update();
                 break;
             case OPTIONS:
+                options.update();
+                break;
             case QUIT:
-            default:
                 System.exit(0);
                 break;
         }
@@ -312,6 +317,9 @@ public class Game extends JPanel implements Runnable
                 /// Dacă starea jocului este PLAYING, apelăm metoda draw() a obiectului playing, transmițându-i obiectul Graphics g.
                 playing.draw(g);
                 break;
+            case OPTIONS:
+                options.draw(g);
+                break;
             default:
                 break;
         }
@@ -355,5 +363,8 @@ public class Game extends JPanel implements Runnable
         return playing;
     }
 
+    public Options getOptions() {
+        return options;
+    }
 }
 

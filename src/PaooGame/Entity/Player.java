@@ -4,15 +4,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import PaooGame.Exceptions.BoneNotHereException;
 import PaooGame.GameStates.Playing;
 import PaooGame.Graphics.Assets;
 import PaooGame.Inputs.KeyHandler;
 import PaooGame.Levels.*;
-
 import static PaooGame.Entity.Collision.*;
-import static PaooGame.Exceptions.BoneNotHereException.handleException;
 import static PaooGame.Useful.Constants.PlayerConstants.*;
 
 /*! \class Player
@@ -37,6 +33,7 @@ public class Player extends Entity implements Subject {
     private boolean attackChecked; /// Dacă zona de atac a jucătorului a fost verificată
     private Playing playing; /// Obiectul Playing pentru a permite accesul la diverse obiecte din joc
     public static Points points; /// Obiectul Points pentru a urmări punctajul jucătorului
+    public static int totalPoints=0;
 
     /*! \fn public Player( int x,int y,int speed,String dir,KeyHandler keyH, int[][] map,Playing playing)
     \brief Constructorul clasei Player.
@@ -65,12 +62,21 @@ public class Player extends Entity implements Subject {
             inAir = true;
     }
 
+    public Rectangle2D.Float getAttackArea() {
+        return attackArea;
+    }
+
+    public void setAttackArea(Float x, Float y) {
+       attackArea.x=x;
+       attackArea.y=y;
+    }
+
     /*!\fn private void initAttackArea()
-    \brief Initializează zona de atac a jucătorului.
+        \brief Initializează zona de atac a jucătorului.
 
-    Funcția initializează zona de atac a jucătorului cu o formă dreptunghiulară de dimensiunea 20x20.
+        Funcția initializează zona de atac a jucătorului cu o formă dreptunghiulară de dimensiunea 20x20.
 
-     */
+         */
     private void initAttackArea() {
         attackArea=new Rectangle2D.Float(x,y,20,20);
     }
@@ -95,18 +101,26 @@ public class Player extends Entity implements Subject {
     Actualizează poziția jucătorului și zona de atac și verifică coliziunile cu diversele obiecte din joc, precum pești, șobolani și oase.
      De asemenea, verifică dacă jucătorul se află în apă și îl scufundă în acest caz.
      */
-    public void update(Level level,Mouse mouse,Mouse mouse1,EnemyManager enemyManager) {
+    public void update(Level level,ArrayList<Mouse> mouse,EnemyManager enemyManager) {
 
         if(points.getPoints()==level.getPoints() && enemyManager.allEnemyAreDead()  && IsAtFinish(this.solidArea,playing.getLevel())) {
-            if(playing.getLvlIndex()==2)
+            if(playing.getLvlIndex()==2) {
                 playing.setGameWon(true);
+                playing.setLvlIndex(0);
+            }
             else
                 playing.setLevelCompleted(true);//aici era set game won
+
+            playing.addPoints();
+            playing.savePoints();
         }
 
         if (lives <= 0) {
             playing.SetGameOver(true);
+            playing.setLvlIndex(0);
             direction = "death";
+            playing.addPoints();
+            playing.savePoints();
             return;
         }
 
@@ -118,14 +132,11 @@ public class Player extends Entity implements Subject {
             checkAttack();
 
         IsFish(getSolidArea(), level,this);
-        IsMouse(getSolidArea(), mouse,this);
-        IsMouse(getSolidArea(), mouse1,this);
-        try {
-            IsBone(getSolidArea(), level,this,keyH);
-        }catch (BoneNotHereException e)
-        {
-            handleException(e);
-        }
+        for(Mouse m: mouse)
+            IsMouse(getSolidArea(),m,this);
+
+        IsBone(getSolidArea(), level,this,keyH);
+
         IsWater(this, this.map);
     }
 
@@ -505,7 +516,6 @@ Această funcție primește două valori întregi, x și y, care reprezintă noi
         attackArea.x=x;
         attackArea.y=y;
         points.setPoints(0);
-//        points.setBone(false );
         if (!IsEntityOnFloor(getSolidArea(), map))
             inAir = true;
     }
@@ -535,6 +545,21 @@ Această funcție primește două valori întregi, x și y, care reprezintă noi
         for (Observer observer : observers) {
             observer.update(hasBone);
         }
+    }
+
+    public boolean getInAir() {
+        return inAir;
+    }
+    public void setHasBone(boolean b) {
+        hasBone=b;
+    }
+
+    public void setLives(int anInt) {
+        lives=anInt;
+    }
+
+    public void setInAir(boolean b) {
+        inAir=b;
     }
 }
 

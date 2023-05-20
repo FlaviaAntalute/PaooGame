@@ -12,9 +12,10 @@ import java.awt.event.MouseEvent;
 import static PaooGame.Game.GetWndHeight;
 import static PaooGame.Game.GetWndWidth;
 
-public class LevelCompletedScreen {
+public class LevelCompletedScreen implements NextButtonObserver {
     private Playing playing;
-    UrmButton menu, next;
+    UrmButton menu;
+    NextButton next;
 
     public LevelCompletedScreen(Playing playing){
         this.playing=playing;
@@ -25,15 +26,15 @@ public class LevelCompletedScreen {
         int X= Game.GetWndHeight()/2;
 
         menu=new UrmButton(X+40,300, Assets.menu);
-        next=new UrmButton(X+170,300, Assets.next);
-
+        next=new NextButton(X+170,300, Assets.next);
+        next.addObserver(this);
     }
     public void update()
     {
         menu.update();
         next.update();
     }
-    private boolean isIn(UrmButton b,MouseEvent e)
+    private boolean isIn(PauseButton b,MouseEvent e)
     {
         return b.getBounds().contains(e.getX(),e.getY());
     }
@@ -64,21 +65,30 @@ public class LevelCompletedScreen {
             {
                 playing.resetAll();
                 playing.setLvlIndex(0);
+                playing.addPoints();
                 Gamestate.state=Gamestate.MENU;
             }
         }
         else if(isIn(next,e)) {
             if (next.isMousePressed())
-                playing.loadNextLevel();
+                next.pressButton();
         }
 
         menu.resetBools();
         next.resetBools();
     }
     public void mousePressed(MouseEvent e){
-        if(isIn(menu,e))
+        if(isIn(menu,e)) {
             menu.setMousePressed(true);
-        else if(isIn(next,e))
+        }
+        else if(isIn(next,e)) {
             next.setMousePressed(true);
+        }
+
+    }
+
+    @Override
+    public void updateNextL() {
+        playing.loadNextLevel();
     }
 }

@@ -6,7 +6,7 @@ import static java.awt.Font.BOLD;
 
 public class Points {
     private  int Points=0;
-//    private  boolean isBone=false;
+
     public Points()
     {
 //        isBone=false;
@@ -29,7 +29,6 @@ public class Points {
         g.drawChars(msg,0, msg.length, 120,35);
     }
 
-
     public int getPoints()
     {
         return Points;
@@ -38,12 +37,5 @@ public class Points {
     {
          Points=p;
     }
-//    public void setBone(boolean p)
-//    {
-//        isBone=p;
-//    }
-//
-//    public boolean getBone() {
-//        return isBone;
-//    }
+
 }

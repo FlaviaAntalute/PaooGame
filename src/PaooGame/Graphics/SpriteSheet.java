@@ -37,30 +37,26 @@ public class SpriteSheet
      */
     public BufferedImage crop(int x, int y)throws IndexCropException
     {
-        try {
-            /// Subimaginea (dala) este regasita in sprite sheet specificad coltul stanga sus
-            /// al imaginii si apoi latimea si inaltimea (totul in pixeli). Coltul din stanga sus al imaginii
-            /// se obtine inmultind numarul de ordine al dalei cu dimensiunea in pixeli a unei dale.
+        if(spriteSheet.getWidth()<(x*tileWidth) || spriteSheet.getHeight()<(y*tileHeight))
+            throw new IndexCropException("Ati depasit dimensiunea imaginii!!");
+        else
             return spriteSheet.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-        }
-        catch (Exception e){
-            throw new IndexCropException(e.getMessage());
-        }
+
     }
     public BufferedImage crop1(int x, int y,int Width, int Height)throws IndexCropException
-    { try {
-        return spriteSheet.getSubimage(x * Width, y * Height,Width,Height);
+    {
+        if(spriteSheet.getWidth()<(x*Width) || spriteSheet.getHeight()<(y*Height))
+            throw new IndexCropException("Ati depasit dimensiunea imaginii!!");
+        else
+            return spriteSheet.getSubimage(x * Width, y * Height,Width,Height);
     }
-    catch (Exception e){
-        throw new IndexCropException(e.getMessage());
-    }
-    }
+
     public BufferedImage crop2(int x, int y,int Width, int Height)throws IndexCropException
-    { try {
-        return spriteSheet.getSubimage(x, y ,Width,Height);
-    }
-    catch (Exception e){
-        throw new IndexCropException(e.getMessage());
-    }
+    {
+        if(x>spriteSheet.getWidth() || y>spriteSheet.getHeight())
+            throw new IndexCropException("Ati depasit dimensiunea imaginii!!");
+        else
+            return spriteSheet.getSubimage(x, y ,Width,Height);
+
     }
 }

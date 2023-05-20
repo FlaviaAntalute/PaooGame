@@ -1,6 +1,8 @@
 package PaooGame.Entity;
 
 import PaooGame.Graphics.Assets;
+import PaooGame.Levels.Level;
+import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -144,4 +146,23 @@ public class Mouse extends Entity{
         isMouse=true;
         times=0;
     }
+
+    public boolean getIsMouse()
+    {
+        return this.isMouse;
+    }
+
+    public void setX(int anInt) {
+        this.x=anInt;
+    }
+
+    public void setY(int anInt) {
+        this.y=anInt;
+    }
+
+    public void setIsMouse(boolean b) {
+        this.isMouse=b;
+    }
+
+
 }

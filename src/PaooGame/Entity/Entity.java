@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 */
 public abstract class Entity {
     protected int x;    /// poziția x a entității
-    public int y;       /// poziția y a entității
+    protected int y;       /// poziția y a entității
     protected int speed;/// viteza entității
     protected int Height=48;/// înălțimea entității
     protected int Width=48;/// lățimea entității
@@ -54,6 +54,22 @@ public abstract class Entity {
     public Rectangle2D.Float getSolidArea() {
         return solidArea;
     }
+    public String getDirection() {
+        return direction;
+    }
 
+    public void setSolidArea(float aFloat, float aFloat1) {
+        solidArea.x=aFloat;
+        solidArea.y=aFloat1;
+    }
+    public void setDirection(String string) {
+        direction=string;
+    }
 
+    public int getX() {
+        return this.x;
+    }
+    public int getY() {
+        return this.y;
+    }
 }

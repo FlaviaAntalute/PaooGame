@@ -24,6 +24,9 @@ public class KeyHandler implements KeyListener {
             case PLAYING:
                 game.getPlaying().keyPressed(e);
                 break;
+            case OPTIONS:
+                game.getOptions().keyPressed(e);
+                break;
             default:
                 break;
         }

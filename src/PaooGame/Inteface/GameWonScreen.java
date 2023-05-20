@@ -36,6 +36,7 @@ public class GameWonScreen {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             playing.resetAll();
             playing.setLvlIndex(0);
+            playing.resetTotalPoints();
             Gamestate.state = Gamestate.MENU;
         }
     }

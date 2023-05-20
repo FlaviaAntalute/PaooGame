@@ -91,6 +91,7 @@ public class Tile
     public static Tile winter27=new Winter27(71);
     public static Tile cats=new Cats(72);
 
+    public static Tile mouse=new Mouse(73);
 
 
 
